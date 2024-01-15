@@ -1,3 +1,4 @@
+'use client'
 function HomeIcon() {
 	return (
 		<svg

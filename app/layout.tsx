@@ -11,8 +11,13 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
 	return (
 		<html lang="en" className={GeistSans.className}>
-			<body className="dark:bg-black/95 dark:text-white">
-				<Navbar />{children}</body>
+			<body className="dark:bg-black/95 dark:text-white ">
+				<Navbar />
+				<div className='md:ml-[72px] xl:ml-[244px] p-7'>
+
+					{children}
+				</div>
+			</body>
 		</html>
 	);
 }

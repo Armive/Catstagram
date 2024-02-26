@@ -1,7 +1,7 @@
 export default function Notifications() {
-    return (
-        <div>
-            <p>Notifications</p>
-        </div>
-    )
+  return (
+    <div>
+      <p>Notifications</p>
+    </div>
+  );
 }

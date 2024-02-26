@@ -1,8 +1,7 @@
 export default function Reels() {
-    return (
-
-        <div>
-            <p>Reels</p>
-        </div>
-    )
+  return (
+    <div>
+      <p>Reels</p>
+    </div>
+  );
 }

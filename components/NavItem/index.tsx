@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import {
   Tooltip,
   TooltipContent,
@@ -13,7 +13,7 @@ export const BarItem = ({
   children,
   text,
   className = "",
-  href
+  href,
 }: {
   children: React.ReactNode;
   text: string;
@@ -21,16 +21,12 @@ export const BarItem = ({
   href: string;
 }) => {
   return (
-    <div className={className
-    }>
-      < Link href={href}>
+    <div className={className}>
+      <Link href={href}>
         <TooltipProvider>
-
           <Tooltip>
             <TooltipTrigger>
-              <div
-                className={clsx('flex justify-center items-center  gap-5')}
-              >
+              <div className={clsx("flex justify-center items-center  gap-5")}>
                 {children}
                 <p className="hidden xl:flex text-lg font-light w-[100px]">
                   {text}
@@ -41,6 +37,6 @@ export const BarItem = ({
           </Tooltip>
         </TooltipProvider>
       </Link>
-    </div >
+    </div>
   );
 };

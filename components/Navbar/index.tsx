@@ -11,6 +11,7 @@ import {
 } from "@/components/icons";
 import { BarItem } from "../NavItem";
 import Link from "next/link";
+import { ModeToggle } from "../toggle";
 
 function Navbar() {
   return (
@@ -69,6 +70,7 @@ function Navbar() {
       <BarItem text="More" className="hidden md:flex" href="">
         <MenuIcon />
       </BarItem>
+      <ModeToggle/>
     </section>
   );
 }

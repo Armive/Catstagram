@@ -75,10 +75,6 @@ export default function SignUp() {
 							</div>
 							<section className="flex justify-center items-center gap-3 mt-4">
 								<Button type="submit" className="mt-4">
-									<span>Go Back</span>
-									<LeftArrow />
-								</Button>
-								<Button type="submit" className="mt-4">
 									<span>Next step</span>
 									<RightArrow />
 								</Button>

@@ -31,7 +31,6 @@ import {
 
 export default function SignUp() {
 	const [view, setView] = useState(0);
-	const newLocal = "";
 	const onSubmit = (e: any) => {
 		e.preventDefault();
 		const formData = new FormData(e.target);

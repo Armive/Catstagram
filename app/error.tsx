@@ -1,6 +1,6 @@
 "use client";
 
-import { ErrorIcon, ReloadIcon } from "@/components/icons";
+import {  ReloadIcon } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { useEffect } from "react";
 

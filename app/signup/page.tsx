@@ -1,8 +1,7 @@
 "use client";
-import { z } from "zod";
+
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import {
 	BirthdayIcon,
 	EmailIcon,
@@ -67,18 +66,25 @@ export default function SignUp() {
 										placeholder="johndoe@gmail.com"
 									/>
 								</div>
-								<div className="flex flex-col space-y-1.5">
+								<div className="flex flex-col space-y-1.5 w-full">
 									<Label htmlFor="password">Your Password</Label>
 									<Input type="password" id="password" placeholder="*******" />
 								</div>
 							</div>
-							<section className="flex justify-center items-center gap-3 mt-4">
-								<Button type="submit" className="mt-4">
-									<span>Next step</span>
-									<RightArrow />
-								</Button>
-							</section>
+							<Button type="submit" className="mt-4 w-full">
+								<span>Next step</span>
+								<RightArrow />
+							</Button>
 						</form>
+						<div className="flex items-center my-4">
+							<div className="flex-grow border-t " />
+							<span className="mx-4 text-sm ">OR</span>
+							<div className="flex-grow border-t " />
+						</div>
+						<Button className="flex items-center justify-center space-x-2 w-full">
+							<GithubIcon />
+							<span>Log in with Github</span>
+						</Button>
 					</CardContent>
 				</Card>
 			)}

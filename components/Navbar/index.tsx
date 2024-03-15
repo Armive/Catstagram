@@ -7,6 +7,7 @@ import {
 	CreateIcon,
 	SendIcon,
 	HeartIcon,
+	MenuIcon
 } from "@/components/icons";
 import { BarItem } from "../NavItem";
 import Link from "next/link";
@@ -65,6 +66,9 @@ function Navbar() {
 					<CreateIcon />
 				</BarItem>
 			</div>
+			<BarItem text="More" className="hidden md:flex" href="">
+        		<MenuIcon />
+      		</BarItem>
 		</section>
 	);
 }

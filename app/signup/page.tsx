@@ -1,5 +1,8 @@
 "use client";
 
+import { SignUpContext } from "@/components/signUpContext";
+import { z } from "zod";
+import { useContext, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
@@ -29,13 +32,23 @@ import {
 } from "@/components/ui/select";
 
 export default function SignUp() {
+	const {setUserData, userData} = useContext(SignUpContext)
 	const [view, setView] = useState(0);
 	const onSubmit = (e: any) => {
 		e.preventDefault();
 		const formData = new FormData(e.target);
 		setView((v) => v + 1);
-	};
+		const parsedFormData =Object.fromEntries(formData.entries())
+		setUserData((data:SignUpData)=>({...data,...parsedFormData}))
 
+	};
+	useEffect(()=>{
+		console.log(userData)
+	
+	}, [userData])
+	const onGoBack = ()=>{
+		setView((view)=>view-1)
+	}
 	return (
 		<main className="flex justify-center">
 			{view === 0 && (
@@ -56,7 +69,7 @@ export default function SignUp() {
 							<div className="grid w-full items-center gap-4">
 								<div className="flex flex-col space-y-1.5">
 									<Label htmlFor="name">Your Name</Label>
-									<Input id="Name" name="name" placeholder="Tomy.cat" />
+									<Input id="Name" name="name" placeholder="Tomy.cat" required/>
 								</div>
 								<div className="flex flex-col space-y-1.5">
 									<Label htmlFor="email">Your Email</Label>
@@ -64,11 +77,13 @@ export default function SignUp() {
 										type="email"
 										id="email"
 										placeholder="johndoe@gmail.com"
+										name='email'
+										required
 									/>
 								</div>
 								<div className="flex flex-col space-y-1.5 w-full">
 									<Label htmlFor="password">Your Password</Label>
-									<Input type="password" id="password" placeholder="*******" />
+									<Input type="password" id="password" placeholder="*******" name="password" required/>
 								</div>
 							</div>
 							<Button type="submit" className="mt-4 w-full">
@@ -107,21 +122,21 @@ export default function SignUp() {
 							<section className="flex w-full items-center justify-center gap-4">
 								<div className="flex flex-col space-y-1.5 items-center">
 									<Label htmlFor="day">Day</Label>
-									<Input id="day" name="day" placeholder="8" />
+									<Input id="day" name="day" placeholder="8"  required/>
 								</div>
 								<div className="flex flex-col space-y-1.5 items-center">
 									<Label htmlFor="month">Month</Label>
-									<Input id="month" name="month" placeholder="11" />
+									<Input id="month" name="month" placeholder="11" required/>
 								</div>
 								<div className="flex flex-col space-y-1.5 items-center">
 									<Label htmlFor="year">Year</Label>
-									<Input id="year" name="year" placeholder="2021" />
+									<Input id="year" name="year" placeholder="2021" required />
 								</div>
 							</section>
 
 							<section className="flex items-center gap-3 flex-col">
 								<Label htmlFor="gender">Gender</Label>
-								<Select>
+								<Select name='gender'>
 									<SelectTrigger id="gender">
 										<SelectValue placeholder="Select your gender" />
 									</SelectTrigger>
@@ -133,7 +148,7 @@ export default function SignUp() {
 								</Select>
 							</section>
 							<section className="flex justify-center items-center gap-3 mt-4">
-								<Button type="submit" className="mt-4">
+								<Button type="button" className="mt-4" onClick={onGoBack}>
 									<span>Go Back</span>
 									<LeftArrow />
 								</Button>
@@ -165,7 +180,7 @@ export default function SignUp() {
 							address.
 						</p>
 						<section className="flex justify-center items-center gap-3 mt-4">
-							<Button type="submit">
+							<Button type="button">
 								<LeftArrow />
 								<span>Go Back</span>
 							</Button>

@@ -1,12 +1,16 @@
 'use client'
 import { ReactNode, createContext, useState} from "react";
-export const SignUpContext = createContext({})
+const useData = ()=>{
+    const [userData, setUserData] = useState({})
+    const defaultData:{setUserData:(arg0:any)=>void, userData:SignUpData} = {userData, setUserData}
+    return defaultData
+} 
+export const SignUpContext = createContext(useData())
 
 export const SignUpProvider = ({children}:{children:ReactNode})=>{
-    const [userData, setUserData] = useState({})
     return(
-        <SignUpContext.Provider value={{userData, setUserData}}>
+        <SignUpContext.Provider value={useData()}>
             {children}
         </SignUpContext.Provider>
     )
-}
+} 

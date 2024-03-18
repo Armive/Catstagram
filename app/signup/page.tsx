@@ -2,7 +2,7 @@
 
 import { SignUpContext } from "@/components/signUpContext";
 import { z } from "zod";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
@@ -15,7 +15,6 @@ import {
 } from "@/components/icons";
 import Image from "next/image";
 import { Label } from "@/components/ui/label";
-import { useState } from "react";
 import {
 	Card,
 	CardContent,
@@ -136,7 +135,7 @@ export default function SignUp() {
 
 							<section className="flex items-center gap-3 flex-col">
 								<Label htmlFor="gender">Gender</Label>
-								<Select name='gender'>
+								<Select name='gender' required>
 									<SelectTrigger id="gender">
 										<SelectValue placeholder="Select your gender" />
 									</SelectTrigger>

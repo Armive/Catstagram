@@ -5,4 +5,5 @@ interface SignUpData{
     day?:number,
     month?:number,
     year?:number,
+    gender?: 'male'|'female'|'none'
 }

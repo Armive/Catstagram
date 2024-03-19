@@ -45,10 +45,10 @@ export default function Create() {
 									Only upload things that have to do with <b>animals</b>
 								</li>
 								<li>
-									<b>Don't plagiarize:</b> Never copy other people's work or
-									ideas without giving them proper credit. Always cite sources
-									when using information or content from others and respect
-									copyright.
+									<b>Don&apos;t plagiarize:</b> Never copy other people&apos;s
+									work or ideas without giving them proper credit. Always cite
+									sources when using information or content from others and
+									respect copyright.
 								</li>
 							</ul>
 						</CardFooter>

@@ -38,32 +38,32 @@ function Navbar() {
 					<HomeIcon />
 				</BarItem>
 
-				<BarItem text="Search" className="hidden md:flex" href="search">
+				<BarItem text="Search" className="hidden md:flex" href="/search">
 					<SearchIcon />
 				</BarItem>
 
-				<BarItem text="Explore" href="explore">
+				<BarItem text="Explore" href="/explore">
 					<ExploreIcon />
 				</BarItem>
 
-				<BarItem text="Reels" href="reels">
+				<BarItem text="Reels" href="/reels">
 					<ReelsIcon />
 				</BarItem>
-				<BarItem text="Create" className="flex md:hidden" href="create">
+				<BarItem text="Create" className="flex md:hidden" href="/create">
 					<CreateIcon />
 				</BarItem>
 
-				<BarItem text="Messages" href="messages">
+				<BarItem text="Messages" href="/messages">
 					<SendIcon />
 				</BarItem>
 				<BarItem
 					text="Notifications"
 					className="flex md:hidden"
-					href="notifications"
+					href="/notifications"
 				>
 					<HeartIcon />
 				</BarItem>
-				<BarItem text="Create" className="hidden md:flex" href="create">
+				<BarItem text="Create" className="hidden md:flex" href="/create">
 					<CreateIcon />
 				</BarItem>
 			</div>

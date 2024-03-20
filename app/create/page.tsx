@@ -25,7 +25,7 @@ export default function Create() {
 			<Card className="w-[370px] min-h-[370px] p-3">
 				<Progress value={33.3 * (view + 1)} />
 				{view === 0 && (
-					<form onClick={() => setView(view + 1)}>
+					<form onSubmit={() => setView(view + 1)}>
 						<CardHeader className="flex justify-center items-center flex-col">
 							<CardTitle>Create Post</CardTitle>
 							<CardDescription>
@@ -55,7 +55,7 @@ export default function Create() {
 					</form>
 				)}
 				{view === 1 && (
-					<form onClick={() => setView(view + 1)}>
+					<form onSubmit={() => setView(view + 1)}>
 						<CardHeader className="flex justify-center items-center flex-col">
 							<CardTitle>Create Post</CardTitle>
 							<CardDescription>
@@ -64,7 +64,7 @@ export default function Create() {
 						</CardHeader>
 						<CardContent className="flex gap-3 items-center justify-center">
 							<CameraIcon />
-							<Button type='submit'>Finish</Button>
+							<Button type="submit">Finish</Button>
 						</CardContent>
 						<CardFooter>
 							<div className="grid w-full max-w-sm items-center gap-3 cursor-pointer ">

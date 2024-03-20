@@ -64,7 +64,7 @@ export default function Create() {
 						</CardHeader>
 						<CardContent className="flex gap-3 items-center justify-center">
 							<CameraIcon />
-							<Button>Finish</Button>
+							<Button type='submit'>Finish</Button>
 						</CardContent>
 						<CardFooter>
 							<div className="grid w-full max-w-sm items-center gap-3 cursor-pointer ">

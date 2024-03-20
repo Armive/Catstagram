@@ -25,7 +25,7 @@ export default function Create() {
 			<Card className="w-[370px] min-h-[370px] p-3">
 				<Progress value={33.3 * (view + 1)} />
 				{view === 0 && (
-					<form onClick={() => setView(view + 1)}>
+					<form onSubmit={() => setView(view + 1)}>
 						<CardHeader className="flex justify-center items-center flex-col">
 							<CardTitle>Create Post</CardTitle>
 							<CardDescription>
@@ -55,7 +55,7 @@ export default function Create() {
 					</form>
 				)}
 				{view === 1 && (
-					<form onClick={() => setView(view + 1)}>
+					<form onSubmit={() => setView(view + 1)}>
 						<CardHeader className="flex justify-center items-center flex-col">
 							<CardTitle>Create Post</CardTitle>
 							<CardDescription>
@@ -64,7 +64,11 @@ export default function Create() {
 						</CardHeader>
 						<CardContent className="flex gap-3 items-center justify-center">
 							<CameraIcon />
+<<<<<<< HEAD
 							<Button type='submit'>Finish</Button>
+=======
+							<Button type="submit">Finish</Button>
+>>>>>>> abdf99f (Upload: Fix create bug and add usePathname 🐞🗂️)
 						</CardContent>
 						<CardFooter>
 							<div className="grid w-full max-w-sm items-center gap-3 cursor-pointer ">
@@ -76,13 +80,14 @@ export default function Create() {
 									type="file"
 									className="cursor-pointer"
 									accept=".mp4, .mov, .wnv, .avi, .avchd, .flv, .f4v, .swf, .mkv, .webm, .jpg, .png, .tiff, .psd, .bmp, .webp"
+									required
 								/>
 							</div>
 						</CardFooter>
 					</form>
 				)}
 				{view === 2 && (
-					<form>
+					<>
 						<CardHeader className="flex justify-center items-center flex-col">
 							<CardTitle>Create Post</CardTitle>
 							<CardDescription>
@@ -101,7 +106,7 @@ export default function Create() {
 								Return to Homepage
 							</Link>
 						</CardFooter>
-					</form>
+					</>
 				)}
 			</Card>
 		</main>

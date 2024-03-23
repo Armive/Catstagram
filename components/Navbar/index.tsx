@@ -37,7 +37,6 @@ function Navbar() {
 				<BarItem text="Home" href="/">
 					<HomeIcon />
 				</BarItem>
-
 				<BarItem text="Search" className="hidden md:flex" href="/search">
 					<SearchIcon />
 				</BarItem>

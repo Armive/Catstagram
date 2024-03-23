@@ -27,8 +27,8 @@ export default function RootLayout({
 					disableTransitionOnChange
 				>
 					<Navbar />
-				<ModeToggle />
-					<div className="md:ml-[72px] xl:ml-[244px] p-7">{children}</div>
+					<ModeToggle />
+					<div className="md:ml-[72px] xl:ml-[244px] p-4">{children}</div>
 				</ThemeProvider>
 			</body>
 		</html>

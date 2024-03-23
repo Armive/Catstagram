@@ -31,8 +31,11 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function SignUp() {
+	const router = useRouter();
 	const { setUserData, userData } = useContext(SignUpContext);
 	const [view, setView] = useState(0);
 	const onSubmit = (e: any) => {
@@ -42,15 +45,22 @@ export default function SignUp() {
 		const parsedFormData = Object.fromEntries(formData.entries());
 		setUserData((data: SignUpData) => ({ ...data, ...parsedFormData }));
 	};
-	useEffect(() => {
-		console.log(userData);
-	}, [userData]);
 	const onGoBack = () => {
 		setView((view) => view - 1);
 	};
+
+	const onGithubSignup = () => {
+		fetch("/api/Providers/github", {
+			method: "POST",
+		})
+			.then((response) => response.json())
+			.then((data) => {
+				router.replace(data.url);
+			});
+	};
 	return (
 		<main className="flex justify-center ">
-			<Card className="w-[350px] p-6">
+			<Card className="w-[350px] p-2">
 				<Progress value={33.3 * (view + 1)} />
 
 				{view === 0 && (
@@ -109,11 +119,19 @@ export default function SignUp() {
 								<span className="mx-4 text-sm ">OR</span>
 								<div className="flex-grow border-t " />
 							</div>
-							<Button className="flex items-center justify-center space-x-2 w-full">
+							<Button
+								onClick={onGithubSignup}
+								className="flex items-center justify-center space-x-2 w-full"
+							>
 								<GithubIcon />
-								<span>Log in with Github</span>
+								<span>Sign up with Github</span>
 							</Button>
 						</CardContent>
+						<CardFooter className="flex justify-center">
+							<Link href="/login" className="text-center">
+								Have An Account? Log In
+							</Link>
+						</CardFooter>
 					</>
 				)}
 				{view === 1 && (
@@ -172,6 +190,11 @@ export default function SignUp() {
 								</section>
 							</form>
 						</CardContent>
+						<CardFooter className="flex justify-center">
+							<Link href="/login" className="text-center">
+								Have An Account? Log In
+							</Link>
+						</CardFooter>
 					</>
 				)}
 				{view === 2 && (

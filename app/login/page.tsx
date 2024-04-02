@@ -5,6 +5,7 @@ import { GithubIcon } from "@/components/icons";
 import Image from "next/image";
 import { redirect } from "next/navigation";
 import { createClient } from "@/utils/supabase/server";
+import { headers } from "next/headers";
 
 export default function Login() {
 	const onGithubLogin = async () => {
@@ -13,7 +14,7 @@ export default function Login() {
 		const { data, error } = await supabase.auth.signInWithOAuth({
 			provider: "github",
 			options: {
-				redirectTo: `${process.env.NODE_ENV !== "development" ? "https://catstagram-seven.vercel.app" : "http://localhost:3000"}/api/callback`,
+				redirectTo: `${headers().get('origin')}/api/callback`,
 			},
 		});
 		redirect(data.url || "");

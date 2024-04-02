@@ -33,6 +33,7 @@ import {
 } from "@/components/ui/select";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { headers } from "next/headers";
 
 export default function SignUp() {
 	const router = useRouter();
@@ -48,9 +49,9 @@ export default function SignUp() {
 	const onGoBack = () => {
 		setView((view) => view - 1);
 	};
-
 	const onGithubSignup = () => {
-		fetch("/api/Providers/github", {
+		
+		fetch(`${document.location.origin}/api/Providers/github`, {
 			method: "POST",
 		})
 			.then((response) => response.json())

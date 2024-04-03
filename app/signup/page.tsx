@@ -76,6 +76,16 @@ export default function SignUp() {
 	const onGoBack = ()=>{
 		setView((view)=>view-1)
 	}
+	const onGithubSignup = () => {
+		
+		fetch(`${document.location.origin}/api/Providers/github`, {
+			method: "POST",
+		})
+			.then((response) => response.json())
+			.then((data) => {
+				router.replace(data.url);
+			});
+	};
 	return (
 		<main className="flex justify-center ">
 			<Card className="w-[350px] p-2">
@@ -234,10 +244,7 @@ export default function SignUp() {
 								address.
 							</p>
 							<section className="flex justify-center items-center gap-3 mt-4">
-								<Button type="button">
-									<LeftArrow />
-									<span>Go Back</span>
-								</Button>
+								
 								<a
 									href="http://"
 									target="_blank"
@@ -250,66 +257,7 @@ export default function SignUp() {
 						</CardContent>
 					</>
 				)}
-			</Card>
-							<section className="flex items-center gap-3 flex-col">
-								<Label htmlFor="gender">Gender</Label>
-								<Select name='gender' required>
-									<SelectTrigger id="gender">
-										<SelectValue placeholder="Select your gender" />
-									</SelectTrigger>
-									<SelectContent position="popper">
-										<SelectItem value="female">Female</SelectItem>
-										<SelectItem value="male">Male</SelectItem>
-										<SelectItem value="none">Better not to say</SelectItem>
-									</SelectContent>
-								</Select>
-							</section>
-							<section className="flex justify-center items-center gap-3 mt-4">
-								<Button type="button" className="mt-4" onClick={onGoBack}>
-									<span>Go Back</span>
-									<LeftArrow />
-								</Button>
-								<Button type="submit" className="mt-4">
-									<span>Next step</span>
-									<RightArrow />
-								</Button>
-							</section>
-						</form>
-					</CardContent>
-				</Card>
-			)}
-			{view === 2 && (
-				<Card className="w-[350px]">
-					<CardHeader className="flex items-center">
-						<Image
-							src="/catstagram.png"
-							alt="catslogo"
-							className=" hidden xl:flex dark:invert self-center"
-							width={159}
-							height={38}
-						/>
-						<CardTitle>Verify your email</CardTitle>
-						<EmailIcon />
-					</CardHeader>
-					<CardContent className="flex justify-center flex-col">
-						<p className="text-center">
-							To enter to Catstagram go to your Email to verify the Email
-							address.
-						</p>
-						<section className="flex justify-center items-center gap-3 mt-4">
-							
-							<a
-								href="http://"
-								target="_blank"
-								rel="noopener noreferrer"
-								className="text-black/80 hover:text-gray-500 dark:text-white duration-200 text-center"
-							>
-								Click to confirm Email
-							</a>
-						</section>
-					</CardContent>
-				</Card>
-			)}
+			</Card>		
 		</main>
 	);
 }

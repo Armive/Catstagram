@@ -11,40 +11,40 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 export const BarItem = ({
-	children,
-	text,
-	className = "",
-	href,
+  children,
+  text,
+  className = "",
+  href,
 }: {
-	children: React.ReactNode;
-	text: string;
-	className?: string;
-	href: string;
+  children: React.ReactNode;
+  text: string;
+  className?: string;
+  href: string;
 }) => {
-	const pathname = usePathname();
-	return (
-		<div className={className}>
-			<Link href={href}>
-				<TooltipProvider>
-					<Tooltip>
-						<TooltipTrigger>
-							<div
-								className={clsx(
-									"flex justify-center items-center  gap-5 duration-75",
-									{
-										"font-semibold": pathname === href,
-										"font-light ": pathname !== href,
-									}
-								)}
-							>
-								{children}
-								<p className="hidden xl:flex text-lg   w-[100px]">{text}</p>
-							</div>
-						</TooltipTrigger>
-						<TooltipContent>{text}</TooltipContent>
-					</Tooltip>
-				</TooltipProvider>
-			</Link>
-		</div>
-	);
+  const pathname = usePathname();
+  return (
+    <div className={className}>
+      <Link href={href}>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger>
+              <div
+                className={clsx(
+                  "flex justify-center items-center  gap-5 duration-75",
+                  {
+                    "font-semibold": pathname === href,
+                    "font-light ": pathname !== href,
+                  },
+                )}
+              >
+                {children}
+                <p className="hidden xl:flex text-lg   w-[100px]">{text}</p>
+              </div>
+            </TooltipTrigger>
+            <TooltipContent>{text}</TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      </Link>
+    </div>
+  );
 };

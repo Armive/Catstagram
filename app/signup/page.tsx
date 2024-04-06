@@ -8,28 +8,28 @@ import { useContext, useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
-	BirthdayIcon,
-	EmailIcon,
-	GithubIcon,
-	LeftArrow,
-	PasswordIcon,
-	RightArrow,
+  BirthdayIcon,
+  EmailIcon,
+  GithubIcon,
+  LeftArrow,
+  PasswordIcon,
+  RightArrow,
 } from "@/components/icons";
 import Image from "next/image";
 import { Label } from "@/components/ui/label";
 import {
-	Card,
-	CardContent,
-	CardFooter,
-	CardHeader,
-	CardTitle,
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
 } from "@/components/ui/card";
 import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from "@/components/ui/select";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -91,87 +91,87 @@ export default function SignUp() {
 			<Card className="w-[350px] p-2">
 				<Progress value={33.3 * (view + 1)} />
 
-				{view === 0 && (
-					<>
-						<CardHeader className="flex items-center">
-							<Image
-								src="/catstagram.png"
-								alt="catslogo"
-								className=" hidden xl:flex dark:invert self-center"
-								width={159}
-								height={38}
-							/>
-							<CardTitle>Create Your Account</CardTitle>
-							<PasswordIcon />
-						</CardHeader>
-						<CardContent>
-							<form onSubmit={onSubmit}>
-								<div className="grid w-full items-center gap-4">
-									<div className="flex flex-col space-y-1.5">
-										<Label htmlFor="name">Your Name</Label>
-										<Input
-											id="Name"
-											name="name"
-											placeholder="Tomy.cat"
-											required
-										/>
-									</div>
-									<div className="flex flex-col space-y-1.5">
-										<Label htmlFor="email">Your Email</Label>
-										<Input
-											type="email"
-											id="email"
-											placeholder="johndoe@gmail.com"
-											name="email"
-											required
-										/>
-									</div>
-									<div className="flex flex-col space-y-1.5 w-full">
-										<Label htmlFor="password">Your Password</Label>
-										<Input
-											type="password"
-											id="password"
-											placeholder="*******"
-											name="password"
-											required
-										/>
-									</div>
-								</div>
-								<Button type="submit" className="mt-4 w-full">
-									<span>Next step</span>
-									<RightArrow />
-								</Button>
-							</form>
-							<div className="flex items-center my-4">
-								<div className="flex-grow border-t " />
-								<span className="mx-4 text-sm ">OR</span>
-								<div className="flex-grow border-t " />
-							</div>
-							<Button
-								onClick={onGithubSignup}
-								className="flex items-center justify-center space-x-2 w-full"
-							>
-								<GithubIcon />
-								<span>Sign up with Github</span>
-							</Button>
-						</CardContent>
-						<CardFooter className="flex justify-center">
-							<Link href="/login" className="text-center">
-								Have An Account? Log In
-							</Link>
-						</CardFooter>
-					</>
-				)}
-				{view === 1 && (
-					<>
-						<CardHeader className="flex items-center">
-							<Image
-								src="/catstagram.png"
-								alt="catslogo"
-								className=" hidden xl:flex dark:invert self-center"
-								width={159}
-								height={38}
-							/>
+        {view === 0 && (
+          <>
+            <CardHeader className="flex items-center">
+              <Image
+                src="/catstagram.png"
+                alt="catslogo"
+                className=" hidden xl:flex dark:invert self-center"
+                width={159}
+                height={38}
+              />
+              <CardTitle>Create Your Account</CardTitle>
+              <PasswordIcon />
+            </CardHeader>
+            <CardContent>
+              <form onSubmit={onSubmit}>
+                <div className="grid w-full items-center gap-4">
+                  <div className="flex flex-col space-y-1.5">
+                    <Label htmlFor="name">Your Name</Label>
+                    <Input
+                      id="Name"
+                      name="name"
+                      placeholder="Tomy.cat"
+                      required
+                    />
+                  </div>
+                  <div className="flex flex-col space-y-1.5">
+                    <Label htmlFor="email">Your Email</Label>
+                    <Input
+                      type="email"
+                      id="email"
+                      placeholder="johndoe@gmail.com"
+                      name="email"
+                      required
+                    />
+                  </div>
+                  <div className="flex flex-col space-y-1.5 w-full">
+                    <Label htmlFor="password">Your Password</Label>
+                    <Input
+                      type="password"
+                      id="password"
+                      placeholder="*******"
+                      name="password"
+                      required
+                    />
+                  </div>
+                </div>
+                <Button type="submit" className="mt-4 w-full">
+                  <span>Next step</span>
+                  <RightArrow />
+                </Button>
+              </form>
+              <div className="flex items-center my-4">
+                <div className="flex-grow border-t " />
+                <span className="mx-4 text-sm ">OR</span>
+                <div className="flex-grow border-t " />
+              </div>
+              <Button
+                onClick={onGithubSignup}
+                className="flex items-center justify-center space-x-2 w-full"
+              >
+                <GithubIcon />
+                <span>Sign up with Github</span>
+              </Button>
+            </CardContent>
+            <CardFooter className="flex justify-center">
+              <Link href="/login" className="text-center">
+                Have An Account? Log In
+              </Link>
+            </CardFooter>
+          </>
+        )}
+        {view === 1 && (
+          <>
+            <CardHeader className="flex items-center">
+              <Image
+                src="/catstagram.png"
+                alt="catslogo"
+                className=" hidden xl:flex dark:invert self-center"
+                width={159}
+                height={38}
+              />
 
 							<CardTitle>Date of birth and gender</CardTitle>
 							<BirthdayIcon />

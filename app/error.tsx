@@ -1,6 +1,7 @@
 "use client";
 
 import { ReloadIcon } from "@/components/icons";
+import { ReloadIcon } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { useEffect } from "react";
 
@@ -11,8 +12,6 @@ export default function Error({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
-
-
   return (
     <div className="flex  justify-center items-center flex-col gap-5">
       <p className="font-bold text-5xl ">ERROR</p>

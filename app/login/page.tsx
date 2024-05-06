@@ -8,17 +8,17 @@ import { createClient } from "@/utils/supabase/server";
 import { headers } from "next/headers";
 
 export default function Login() {
-	const onGithubLogin = async () => {
-		"use server";
-		const supabase = createClient();
-		const { data, error } = await supabase.auth.signInWithOAuth({
-			provider: "github",
-			options: {
-				redirectTo: `${headers().get('origin')}/api/callback`,
-			},
-		});
-		redirect(data.url || "");
-	};
+  const onGithubLogin = async () => {
+    "use server";
+    const supabase = createClient();
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: "github",
+      options: {
+        redirectTo: `${headers().get("origin")}/api/callback`,
+      },
+    });
+    redirect(data.url || "");
+  };
 
   return (
     <div className="flex min-h-screen items-center justify-center ">

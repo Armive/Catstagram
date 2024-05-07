@@ -32,7 +32,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-
+import { Loader } from "@/components/Loader";
 
 const User = z.object({
   name: z.string(),
@@ -48,22 +48,24 @@ export default function SignUp() {
   const router = useRouter();
 
   const { setUserData, userData } = useContext(SignUpContext);
-  
+
   const [view, setView] = useState(0);
   const [loading, setLoading] = useState(false);
-  
+
   const onGoBack = () => {
     setView((view) => view - 1);
   };
-  
-  const onGithubSignup = async() => {
-    const response = await fetch(`${document.location.origin}/api/Providers/github`, {
-      method: "POST",
-    })
-    const data = await response.json() 
+
+  const onGithubSignup = async () => {
+    const response = await fetch(
+      `${document.location.origin}/api/Providers/github`,
+      {
+        method: "POST",
+      },
+    );
+    const data = await response.json();
     router.replace(data.url);
   };
-
 
   const nextStep = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -75,7 +77,7 @@ export default function SignUp() {
     ) as SignUpData;
     setUserData((data: SignUpData) => ({ ...data, ...formData }));
   };
-  
+
   const submit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = Object.fromEntries(
@@ -118,7 +120,6 @@ export default function SignUp() {
       setLoading(false);
       setView(2);
     }
-
   };
 
   return (
@@ -150,6 +151,7 @@ export default function SignUp() {
                       placeholder="Tomy.cat"
                       required
                       disabled={loading}
+                      maxLength={20}
                     />
                   </div>
                   <div className="flex flex-col space-y-1.5">
@@ -161,6 +163,7 @@ export default function SignUp() {
                       name="email"
                       required
                       disabled={loading}
+                      maxLength={50}
                     />
                   </div>
                   <div className="flex flex-col space-y-1.5 w-full">
@@ -172,10 +175,15 @@ export default function SignUp() {
                       name="password"
                       required
                       disabled={loading}
+                      maxLength={30}
                     />
                   </div>
                 </div>
-                <Button type="submit" className="mt-4 w-full" disabled={loading}>
+                <Button
+                  type="submit"
+                  className="mt-4 w-full"
+                  disabled={loading}
+                >
                   <span>Next step</span>
                   <RightArrow />
                 </Button>
@@ -229,6 +237,7 @@ export default function SignUp() {
                       min="1"
                       max="31"
                       disabled={loading}
+                      maxLength={2}
                     />
                   </div>
                   <div className="flex flex-col space-y-1.5 items-center">
@@ -242,6 +251,7 @@ export default function SignUp() {
                       min="1"
                       max="12"
                       disabled={loading}
+                      maxLength={2}
                     />
                   </div>
                   <div className="flex flex-col space-y-1.5 items-center">
@@ -255,6 +265,8 @@ export default function SignUp() {
                       min="1950"
                       max="2014"
                       disabled={loading}
+                      minLength={4}
+                      maxLength={4}
                     />
                   </div>
                 </section>
@@ -273,13 +285,27 @@ export default function SignUp() {
                   </Select>
                 </section>
                 <section className="flex justify-center items-center gap-3 mt-4">
-                  <Button type="button" className="mt-4" onClick={onGoBack} disabled={loading}>
+                  <Button
+                    type="button"
+                    className="mt-4"
+                    onClick={onGoBack}
+                    disabled={loading}
+                  >
                     <LeftArrow />
                     <span>Go Back</span>
                   </Button>
-                  <Button type="submit" className="mt-4" disabled={loading}>
-                    <span>Next step</span>
+                  <Button
+                    type="submit"
+                    className="mt-4 w-32"
+                    disabled={loading}
+                  >
+                    <span>{loading ? "Loading" : "Next step"}</span>
                     <RightArrow />
+                    {loading ? (
+                      <>
+                        <Loader />
+                      </>
+                    ) : null}
                   </Button>
                 </section>
               </form>

@@ -33,36 +33,22 @@ function EmailIcon() {
   );
 }
 
-function ViewIcon() {
-	return (
-		<svg
-			xmlns="http://www.w3.org/2000/svg"
-			width="24"
-			height="24"
-			viewBox="0 0 24 24"
-		>
-			<g fill="none" stroke="currentColor" stroke-width="1.5">
-				<path d="M3.275 15.296C2.425 14.192 2 13.639 2 12c0-1.64.425-2.191 1.275-3.296C4.972 6.5 7.818 4 12 4c4.182 0 7.028 2.5 8.725 4.704C21.575 9.81 22 10.361 22 12c0 1.64-.425 2.191-1.275 3.296C19.028 17.5 16.182 20 12 20c-4.182 0-7.028-2.5-8.725-4.704Z" />
-				<path d="M15 12a3 3 0 1 1-6 0a3 3 0 0 1 6 0Z" />
-			</g>
-		</svg>
-	);
-}
+
 
 function ViewIcon() {
-	return (
-		<svg
-			xmlns="http://www.w3.org/2000/svg"
-			width="24"
-			height="24"
-			viewBox="0 0 24 24"
-		>
-			<g fill="none" stroke="currentColor" stroke-width="1.5">
-				<path d="M3.275 15.296C2.425 14.192 2 13.639 2 12c0-1.64.425-2.191 1.275-3.296C4.972 6.5 7.818 4 12 4c4.182 0 7.028 2.5 8.725 4.704C21.575 9.81 22 10.361 22 12c0 1.64-.425 2.191-1.275 3.296C19.028 17.5 16.182 20 12 20c-4.182 0-7.028-2.5-8.725-4.704Z" />
-				<path d="M15 12a3 3 0 1 1-6 0a3 3 0 0 1 6 0Z" />
-			</g>
-		</svg>
-	);
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+    >
+      <g fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M3.275 15.296C2.425 14.192 2 13.639 2 12c0-1.64.425-2.191 1.275-3.296C4.972 6.5 7.818 4 12 4c4.182 0 7.028 2.5 8.725 4.704C21.575 9.81 22 10.361 22 12c0 1.64-.425 2.191-1.275 3.296C19.028 17.5 16.182 20 12 20c-4.182 0-7.028-2.5-8.725-4.704Z" />
+        <path d="M15 12a3 3 0 1 1-6 0a3 3 0 0 1 6 0Z" />
+      </g>
+    </svg>
+  );
 }
 
 function SearchIcon() {
@@ -228,42 +214,25 @@ function MenuIcon() {
 }
 
 function MenuBarKebabIcon() {
-	return (
-		<svg
-			xmlns="http://www.w3.org/2000/svg"
-			width="24"
-			height="24"
-			viewBox="0 0 24 24"
-		>
-			<path
-				fill="none"
-				stroke="currentColor"
-				stroke-linejoin="round"
-				stroke-width="3"
-				d="M12 12h.01v.01H12zm0-7h.01v.01H12zm0 14h.01v.01H12z"
-			/>
-		</svg>
-	);
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+    >
+      <path
+        fill="none"
+        stroke="currentColor"
+        stroke-linejoin="round"
+        stroke-width="3"
+        d="M12 12h.01v.01H12zm0-7h.01v.01H12zm0 14h.01v.01H12z"
+      />
+    </svg>
+  );
 }
 
-function MenuBarKebabIcon() {
-	return (
-		<svg
-			xmlns="http://www.w3.org/2000/svg"
-			width="24"
-			height="24"
-			viewBox="0 0 24 24"
-		>
-			<path
-				fill="none"
-				stroke="currentColor"
-				stroke-linejoin="round"
-				stroke-width="3"
-				d="M12 12h.01v.01H12zm0-7h.01v.01H12zm0 14h.01v.01H12z"
-			/>
-		</svg>
-	);
-}
+
 
 function RightArrow() {
   return (
@@ -568,42 +537,42 @@ function FlagIcon() {
       />
     </svg>
   );
-	return (
-		<svg
-			xmlns="http://www.w3.org/2000/svg"
-			width="24"
-			height="24"
-			viewBox="0 0 24 24"
-		>
-			<path
-				fill="none"
-				stroke="currentColor"
-				strokeLinecap="round"
-				strokeWidth="1.5"
-				d="M5 22v-8m0 0l2.47-.494a8.676 8.676 0 0 1 4.925.452a8.677 8.677 0 0 0 5.327.361l.214-.053A1.404 1.404 0 0 0 19 12.904V5.537a1.2 1.2 0 0 0-1.49-1.164a7.999 7.999 0 0 1-4.911-.334l-.204-.081a8.677 8.677 0 0 0-4.924-.452L5 4m0 10v-3m0-7V2m0 2v3"
-			/>
-		</svg>
-	);
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+    >
+      <path
+        fill="none"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeWidth="1.5"
+        d="M5 22v-8m0 0l2.47-.494a8.676 8.676 0 0 1 4.925.452a8.677 8.677 0 0 0 5.327.361l.214-.053A1.404 1.404 0 0 0 19 12.904V5.537a1.2 1.2 0 0 0-1.49-1.164a7.999 7.999 0 0 1-4.911-.334l-.204-.081a8.677 8.677 0 0 0-4.924-.452L5 4m0 10v-3m0-7V2m0 2v3"
+      />
+    </svg>
+  );
 }
 
 function SwitchIcon() {
-	return (
-		<svg
-			xmlns="http://www.w3.org/2000/svg"
-			width="24"
-			height="24"
-			viewBox="0 0 24 24"
-		>
-			<path
-				fill="none"
-				stroke="currentColor"
-				strokeLinecap="round"
-				strokeLinejoin="round"
-				strokeWidth="2"
-				d="m16 3l4 4l-4 4m-6-4h10M8 13l-4 4l4 4m-4-4h9"
-			/>
-		</svg>
-	);
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+    >
+      <path
+        fill="none"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2"
+        d="m16 3l4 4l-4 4m-6-4h10M8 13l-4 4l4 4m-4-4h9"
+      />
+    </svg>
+  );
 }
 
 function LogOutIcon() {
@@ -643,55 +612,39 @@ function CameraIcon() {
 }
 
 function CheckIcon() {
-	return (
-		<svg
-			xmlns="http://www.w3.org/2000/svg"
-			width="24"
-			height="24"
-			viewBox="0 0 24 24"
-		>
-			<path
-				fill="currentColor"
-				d="m10.6 16.6l7.05-7.05l-1.4-1.4l-5.65 5.65l-2.85-2.85l-1.4 1.4zM12 22q-2.075 0-3.9-.788t-3.175-2.137q-1.35-1.35-2.137-3.175T2 12q0-2.075.788-3.9t2.137-3.175q1.35-1.35 3.175-2.137T12 2q2.075 0 3.9.788t3.175 2.137q1.35 1.35 2.138 3.175T22 12q0 2.075-.788 3.9t-2.137 3.175q-1.35 1.35-3.175 2.138T12 22m0-2q3.35 0 5.675-2.325T20 12q0-3.35-2.325-5.675T12 4Q8.65 4 6.325 6.325T4 12q0 3.35 2.325 5.675T12 20m0-8"
-			/>
-		</svg>
-	);
-}
-
-function CommentIcon() {
-	return (
-		<svg
-			xmlns="http://www.w3.org/2000/svg"
-			width="24"
-			height="24"
-			viewBox="0 0 24 24"
-		>
-			<path
-				fill="currentColor"
-				d="M12 2A10 10 0 0 0 2 12a9.89 9.89 0 0 0 2.26 6.33l-2 2a1 1 0 0 0-.21 1.09A1 1 0 0 0 3 22h9a10 10 0 0 0 0-20m0 18H5.41l.93-.93a1 1 0 0 0 0-1.41A8 8 0 1 1 12 20"
-			/>
-		</svg>
-	);
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+    >
+      <path
+        fill="currentColor"
+        d="m10.6 16.6l7.05-7.05l-1.4-1.4l-5.65 5.65l-2.85-2.85l-1.4 1.4zM12 22q-2.075 0-3.9-.788t-3.175-2.137q-1.35-1.35-2.137-3.175T2 12q0-2.075.788-3.9t2.137-3.175q1.35-1.35 3.175-2.137T12 2q2.075 0 3.9.788t3.175 2.137q1.35 1.35 2.138 3.175T22 12q0 2.075-.788 3.9t-2.137 3.175q-1.35 1.35-3.175 2.138T12 22m0-2q3.35 0 5.675-2.325T20 12q0-3.35-2.325-5.675T12 4Q8.65 4 6.325 6.325T4 12q0 3.35 2.325 5.675T12 20m0-8"
+      />
+    </svg>
+  );
 }
 
 function BookMarkIcon() {
-	return (
-		<svg
-			xmlns="http://www.w3.org/2000/svg"
-			width="24"
-			height="24"
-			viewBox="0 0 24 24"
-		>
-			<path
-				fill="none"
-				stroke="currentColor"
-				stroke-linecap="round"
-				stroke-linejoin="round"
-				stroke-width="1.5"
-				d="M7.527 20.841C6.861 21.274 6 20.772 6 19.952V3.942c0-.52.336-.942.75-.942h10.5c.414 0 .75.422.75.942v16.01c0 .82-.861 1.322-1.527.89l-3.946-2.562a.962.962 0 0 0-1.054 0z"
-			/>
-		</svg>
-	);
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+    >
+      <path
+        fill="none"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="1.5"
+        d="M7.527 20.841C6.861 21.274 6 20.772 6 19.952V3.942c0-.52.336-.942.75-.942h10.5c.414 0 .75.422.75.942v16.01c0 .82-.861 1.322-1.527.89l-3.946-2.562a.962.962 0 0 0-1.054 0z"
+      />
+    </svg>
+  );
 }
 
 export {
@@ -725,37 +678,7 @@ export {
   LogOutIcon,
   CameraIcon,
   CheckIcon,
-	HomeIcon,
-	SearchIcon,
-	MenuIcon,
-	CreateIcon,
-	ReelsIcon,
-	ExploreIcon,
-	CommentIcon,
-	HeartIcon,
-	SaveIcon,
-	SendIcon,
-	AlertIcon,
-	ActivityIcon,
-	MoonIcon,
-	StarIcon,
-	PeopleIcon,
-	GithubIcon,
-	BirthdayIcon,
-	LeftArrow,
-	RightArrow,
-	EmailIcon,
-	PasswordIcon,
-	ReloadIcon,
-	GoogleIcon,
-	SettingsIcon,
-	SavedIcon,
-	FlagIcon,
-	SwitchIcon,
-	LogOutIcon,
-	CameraIcon,
-	CheckIcon,
-	ViewIcon,
-	MenuBarKebabIcon,
-	BookMarkIcon,
+  ViewIcon,
+  MenuBarKebabIcon,
+  BookMarkIcon,
 };

@@ -37,7 +37,7 @@ import { Loader } from "@/components/Loader";
 const User = z.object({
   name: z.string(),
   email: z.string().email().min(5),
-  password: z.string().min(6),
+  password: z.string().min(6).max(30),
   day: z.number().lt(31).gt(0),
   month: z.number().lt(12).gt(0),
   year: z.number().gt(1950).lt(2014),
@@ -81,7 +81,7 @@ export default function SignUp() {
   const submit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = Object.fromEntries(
-      new FormData(e.target as HTMLFormElement).entries(),
+      new FormData(e.target as unknown as HTMLFormElement).entries(),
     ) as SignUpData;
     setUserData((data: SignUpData) => ({ ...data, ...formData }));
   };
@@ -176,6 +176,7 @@ export default function SignUp() {
                       required
                       disabled={loading}
                       maxLength={30}
+                      minLength={6}
                     />
                   </div>
                 </div>
@@ -259,7 +260,7 @@ export default function SignUp() {
                     <Input
                       id="year"
                       name="year"
-                      placeholder="2021"
+                      placeholder="2012"
                       required
                       type="number"
                       min="1950"

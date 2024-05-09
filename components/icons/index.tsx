@@ -25,15 +25,13 @@ function EmailIcon() {
     >
       <path
         fill="currentColor"
-        fill-rule="evenodd"
+        fillRule="evenodd"
         d="M19 2.75a2.25 2.25 0 1 0 0 4.5a2.25 2.25 0 0 0 0-4.5M15.25 5a3.75 3.75 0 1 1 7.5 0a3.75 3.75 0 0 1-7.5 0M9.944 3.25H13a.75.75 0 0 1 0 1.5h-3c-1.907 0-3.261.002-4.29.14c-1.005.135-1.585.389-2.008.812c-.423.423-.677 1.003-.812 2.009c-.138 1.028-.14 2.382-.14 4.289c0 1.907.002 3.262.14 4.29c.135 1.005.389 1.585.812 2.008c.423.423 1.003.677 2.009.812c1.028.138 2.382.14 4.289.14h4c1.907 0 3.262-.002 4.29-.14c1.005-.135 1.585-.389 2.008-.812c.423-.423.677-1.003.812-2.009c.138-1.028.14-2.382.14-4.289c0-.373.003-.645.005-.88c.004-.379.007-.658-.005-1.1a.75.75 0 0 1 1.5-.04c.012.467.009.785.005 1.187c-.002.234-.005.497-.005.833v.056c0 1.838 0 3.294-.153 4.433c-.158 1.172-.49 2.121-1.238 2.87c-.749.748-1.698 1.08-2.87 1.238c-1.14.153-2.595.153-4.433.153H9.944c-1.838 0-3.294 0-4.433-.153c-1.172-.158-2.121-.49-2.87-1.238c-.748-.749-1.08-1.698-1.238-2.87c-.153-1.14-.153-2.595-.153-4.433v-.112c0-1.838 0-3.294.153-4.433c.158-1.172.49-2.121 1.238-2.87c.749-.748 1.698-1.08 2.87-1.238c1.14-.153 2.595-.153 4.433-.153m-4.52 4.27a.75.75 0 0 1 1.056-.096l2.16 1.799c.933.777 1.58 1.315 2.128 1.667c.529.34.888.455 1.233.455c.345 0 .704-.114 1.233-.455c.547-.352 1.195-.89 2.128-1.667a.75.75 0 1 1 .96 1.152l-.037.032c-.887.738-1.605 1.337-2.24 1.745c-.66.425-1.303.693-2.044.693c-.741 0-1.384-.269-2.045-.693c-.634-.408-1.352-1.007-2.239-1.745L5.52 8.577a.75.75 0 0 1-.096-1.057"
-        clip-rule="evenodd"
+        clipRule="evenodd"
       />
     </svg>
   );
 }
-
-
 
 function ViewIcon() {
   return (
@@ -43,7 +41,7 @@ function ViewIcon() {
       height="24"
       viewBox="0 0 24 24"
     >
-      <g fill="none" stroke="currentColor" stroke-width="1.5">
+      <g fill="none" stroke="currentColor" strokeWidth="1.5">
         <path d="M3.275 15.296C2.425 14.192 2 13.639 2 12c0-1.64.425-2.191 1.275-3.296C4.972 6.5 7.818 4 12 4c4.182 0 7.028 2.5 8.725 4.704C21.575 9.81 22 10.361 22 12c0 1.64-.425 2.191-1.275 3.296C19.028 17.5 16.182 20 12 20c-4.182 0-7.028-2.5-8.725-4.704Z" />
         <path d="M15 12a3 3 0 1 1-6 0a3 3 0 0 1 6 0Z" />
       </g>
@@ -126,7 +124,7 @@ function CommentIcon() {
         d="M20.656 17.008a9.993 9.993 0 1 0-3.59 3.615L22 22Z"
         fill="none"
         stroke="currentColor"
-        stroke-linejoin="round"
+        strokeLinejoin="round"
         strokeWidth="2"
       ></path>
     </svg>
@@ -224,15 +222,13 @@ function MenuBarKebabIcon() {
       <path
         fill="none"
         stroke="currentColor"
-        stroke-linejoin="round"
-        stroke-width="3"
+        strokeLinejoin="round"
+        strokeWidth="3"
         d="M12 12h.01v.01H12zm0-7h.01v.01H12zm0 14h.01v.01H12z"
       />
     </svg>
   );
 }
-
-
 
 function RightArrow() {
   return (
@@ -314,7 +310,7 @@ function PeopleIcon() {
         fill="none"
         stroke="currentColor"
         strokeLinecap="round"
-        stroke-linejoin="round"
+        strokeLinejoin="round"
         strokeWidth="2"
       >
         <circle cx="5" cy="9" r="2.25" />
@@ -388,7 +384,7 @@ function ActivityIcon() {
         fill="none"
         stroke="currentColor"
         strokeLinecap="round"
-        stroke-linejoin="round"
+        strokeLinejoin="round"
         strokeWidth="2"
       >
         <rect width="18" height="18" x="3" y="3" rx="2" />
@@ -410,7 +406,7 @@ function AlertIcon() {
         fill="none"
         stroke="currentColor"
         strokeLinecap="round"
-        stroke-linejoin="round"
+        strokeLinejoin="round"
         strokeWidth="2"
       >
         <circle cx="12" cy="12" r="10" />
@@ -469,9 +465,9 @@ function SettingsIcon() {
       <g
         fill="none"
         stroke="currentColor"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2"
       >
         <path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 0 0-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 0 0-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 0 0-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 0 0-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 0 0 1.066-2.573c-.94-1.543.826-3.31 2.37-2.37c1 .608 2.296.07 2.572-1.065" />
         <path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0-6 0" />
@@ -491,9 +487,9 @@ function ReloadIcon() {
       <path
         fill="none"
         stroke="currentColor"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2"
         d="M19 13.5A7.5 7.5 0 1 1 11.5 6H20m0 0l-3-3m3 3l-3 3"
       />
     </svg>
@@ -622,9 +618,9 @@ function BookMarkIcon() {
       <path
         fill="none"
         stroke="currentColor"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1.5"
         d="M7.527 20.841C6.861 21.274 6 20.772 6 19.952V3.942c0-.52.336-.942.75-.942h10.5c.414 0 .75.422.75.942v16.01c0 .82-.861 1.322-1.527.89l-3.946-2.562a.962.962 0 0 0-1.054 0z"
       />
     </svg>

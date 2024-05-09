@@ -1,15 +1,12 @@
+"use client";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuPortal,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
@@ -21,8 +18,16 @@ import {
   SettingsIcon,
   SwitchIcon,
 } from "../icons";
+import { useRouter } from "next/navigation";
 
 export function MoreBar() {
+  const router = useRouter();
+  const logOut = async () => {
+    const data = await fetch(`${document.location.origin}/api/logout`);
+    const result = await data.json();
+    router.replace(result.url);
+  };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className=" justify-center items-center  gap-5 hidden md:flex">
@@ -60,7 +65,7 @@ export function MoreBar() {
         </DropdownMenuItem>
         <DropdownMenuSeparator />
 
-        <DropdownMenuItem className="flex gap-2">
+        <DropdownMenuItem className="flex gap-2" onClick={() => logOut()}>
           <LogOutIcon />
           <span>Log out</span>
         </DropdownMenuItem>

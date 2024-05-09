@@ -152,6 +152,7 @@ export default function SignUp() {
                       required
                       disabled={loading}
                       maxLength={20}
+                      autoComplete="off"
                     />
                   </div>
                   <div className="flex flex-col space-y-1.5">
@@ -164,6 +165,7 @@ export default function SignUp() {
                       required
                       disabled={loading}
                       maxLength={50}
+                      autoComplete="off"
                     />
                   </div>
                   <div className="flex flex-col space-y-1.5 w-full">
@@ -177,6 +179,7 @@ export default function SignUp() {
                       disabled={loading}
                       maxLength={30}
                       minLength={6}
+                      autoComplete="off"
                     />
                   </div>
                 </div>

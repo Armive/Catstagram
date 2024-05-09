@@ -174,7 +174,7 @@ export default function SignUp() {
                       type="password"
                       id="password"
                       placeholder="*******"
-                      name="password"
+                      name="password" 
                       required
                       disabled={loading}
                       maxLength={30}

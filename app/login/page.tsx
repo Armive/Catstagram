@@ -20,6 +20,22 @@ export default function Login() {
     redirect(data.url || "");
   };
 
+  const login = async (formdata: FormData) => {
+    "use server";
+    const supabase = createClient();
+    const password = formdata.get('password') as string;
+    const email = formdata.get('email')as string;
+  
+    const {error} = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+    if(!error){
+      redirect(`${headers().get('origin')}/`)
+    }
+    redirect(`${headers().get('origin')}/login?message='Could not signin`)
+  };
+
   return (
     <div className="flex min-h-screen items-center justify-center ">
       <div className="w-full max-w-xs p-8 space-y-6 rounded-lg shadow-md flex flex-col ">
@@ -30,10 +46,10 @@ export default function Login() {
           width={159}
           height={38}
         />
-        <form className="space-y-4">
-          <Input placeholder="Username" type="text" />
+        <form className="space-y-4" action={login}>
+          <Input placeholder="Email" type="text" name="email"/>
 
-          <Input placeholder="Password" type="password" />
+          <Input placeholder="Password" type="password" name="password" minLength={6} maxLength={30}/>
 
           <Button className="w-full" type="submit">
             Log in

@@ -42,7 +42,7 @@ export default function Login() {
         <Image
           src="/catstagram.png"
           alt="catslogo"
-          className=" hidden xl:flex dark:invert self-center"
+          className=" flex dark:invert self-center"
           width={159}
           height={38}
         />

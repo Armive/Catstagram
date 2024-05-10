@@ -3,8 +3,6 @@ import { GeistSans } from "geist/font/sans";
 import "./globals.css";
 import { Navbar } from "@/components/Navbar";
 import { ThemeProvider } from "@/components/theme-provider";
-import { BarItem } from "@/components/NavItem";
-import { MenuIcon } from "@/components/icons";
 import { ModeToggle } from "@/components/toggle";
 
 export const metadata: Metadata = {
@@ -26,9 +24,8 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <Navbar />
           <ModeToggle />
-          <div className="md:ml-[72px] xl:ml-[244px] p-4">{children}</div>
+          <div className="">{children}</div>
         </ThemeProvider>
       </body>
     </html>

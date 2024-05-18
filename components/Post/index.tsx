@@ -3,6 +3,7 @@ import { Input } from "@/components/ui/input";
 import { BookMarkIcon, FlagIcon, HeartIcon, SendIcon } from "../icons";
 import Image from "next/image";
 import { EmojiPostBar } from "../EmojiPostBar";
+import { ReportComponent } from "../ReportBar";
 
 export function Post({ url }: { url: string }) {
   return (
@@ -20,12 +21,7 @@ export function Post({ url }: { url: string }) {
             </Avatar>
             <section className="flex justify-between gap-8">
               <span className="font-semibold text-sm">malteseloverclub</span>
-              <div
-                className="cursor-pointer absolute right-3 top-4"
-                title="Report"
-              >
-                <FlagIcon />
-              </div>
+              <ReportComponent />
             </section>
           </div>
         </div>

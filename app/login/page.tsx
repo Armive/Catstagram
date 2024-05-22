@@ -33,7 +33,7 @@ export default function Login() {
     if(!error){
       redirect(`${headers().get('origin')}/`)
     }
-    redirect(`${headers().get('origin')}/login?message='Could not signin`)
+    redirect(`${headers().get('origin')}/login?message='Could not sign in'`)
   };
 
   return (

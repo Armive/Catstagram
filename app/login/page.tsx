@@ -23,17 +23,17 @@ export default function Login() {
   const login = async (formdata: FormData) => {
     "use server";
     const supabase = createClient();
-    const password = formdata.get('password') as string;
-    const email = formdata.get('email')as string;
-  
-    const {error} = await supabase.auth.signInWithPassword({
+    const password = formdata.get("password") as string;
+    const email = formdata.get("email") as string;
+
+    const { error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
-    if(!error){
-      redirect(`${headers().get('origin')}/`)
+    if (!error) {
+      redirect(`${headers().get("origin")}/`);
     }
-    redirect(`${headers().get('origin')}/login?message='Could not sign in'`)
+    redirect(`${headers().get("origin")}/login?message='Could not sign in'`);
   };
 
   return (
@@ -47,9 +47,15 @@ export default function Login() {
           height={38}
         />
         <form className="space-y-4" action={login}>
-          <Input placeholder="Email" type="text" name="email"/>
+          <Input placeholder="Email" type="text" name="email" />
 
-          <Input placeholder="Password" type="password" name="password" minLength={6} maxLength={30}/>
+          <Input
+            placeholder="Password"
+            type="password"
+            name="password"
+            minLength={6}
+            maxLength={30}
+          />
 
           <Button className="w-full" type="submit">
             Log in

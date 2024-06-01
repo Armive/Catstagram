@@ -17,8 +17,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 
 
-export default function About({ params }) {
-  console.log(params.user);
+export default function About({ params }:{params:{user:string}}) {
   return (
     <div className="flex  flex-col items-center p-4  rounded-lg">
       <div className="relative mb-4">

@@ -152,7 +152,8 @@ export default function SignUp() {
                       disabled={loading}
                       maxLength={20}
                       autoComplete="off"
-                    />
+                      defaultValue={userData.name}
+                      />
                   </div>
                   <div className="flex flex-col space-y-1.5">
                     <Label htmlFor="email">Your Email</Label>
@@ -165,7 +166,8 @@ export default function SignUp() {
                       disabled={loading}
                       maxLength={50}
                       autoComplete="off"
-                    />
+                      defaultValue={userData.email}
+                      />
                   </div>
                   <div className="flex flex-col space-y-1.5 w-full">
                     <Label htmlFor="password">Your Password</Label>
@@ -173,6 +175,7 @@ export default function SignUp() {
                       type="password"
                       id="password"
                       placeholder="*******"
+                      defaultValue={userData.password}
                       name="password" 
                       required
                       disabled={loading}

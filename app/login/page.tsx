@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { GithubIcon } from "@/components/icons";
 import Image from "next/image";
+import { Label } from "@/components/ui/label";
 import { redirect } from "next/navigation";
 import { createClient } from "@/utils/supabase/server";
 import { headers } from "next/headers";
@@ -33,56 +34,76 @@ export default function Login() {
     if (!error) {
       redirect(`${headers().get("origin")}/`);
     }
-    redirect(`${headers().get("origin")}/login?message='Could not sign in'`);
+    redirect(`${headers().get('origin')}/login?message='Could not signin`)
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center ">
-      <div className="w-full max-w-xs p-8 space-y-6 rounded-lg shadow-md flex flex-col ">
+    <div className="w-full lg:grid lg:min-h-screen lg:grid-cols-2 xl:min-h-screen ">
+      <div className="flex items-center justify-center py-12">
+        <div className="mx-auto grid w-[350px] gap-6">
+          <div className="grid gap-2 text-center">
+            <h1 className="text-3xl font-bold">Login</h1>
+            <p className="text-balance text-muted-foreground">
+              Enter your email below to login to your account
+            </p>
+          </div>
+          <form className="grid gap-4" action={login}>
+            <div className="grid gap-2">
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                placeholder="m@example.com"
+                required
+              />
+            </div>
+            <div className="grid gap-2">
+              <div className="flex items-center">
+                <Label htmlFor="password">Password</Label>
+                <Link
+                  href="/forgot-password"
+                  className="ml-auto inline-block text-sm underline"
+                >
+                  Forgot your password?
+                </Link>
+              </div>
+              <Input
+                id="password"
+                type="password"
+                required
+                minLength={6}
+                maxLength={30}
+              />
+            </div>
+            <Button type="submit" className="w-full">
+              Login
+            </Button>
+          </form>
+          <form
+            className="text-center flex gap-4 flex-col"
+            action={onGithubLogin}
+          >
+            <Button variant="outline" className="w-full flex gap-3">
+              <GithubIcon /> Login with Github
+            </Button>
+          </form>
+
+          <div className="mt-4 text-center text-sm">
+            Don&apos;t have an account?{" "}
+            <Link href="/signup" className="underline">
+              Sign up
+            </Link>
+          </div>
+        </div>
+      </div>
+      <div className="hidden bg-muted lg:block">
         <Image
-          src="/catstagram.png"
-          alt="catslogo"
-          className=" flex dark:invert self-center"
-          width={159}
-          height={38}
+          src="/animal.png"
+          alt="Image"
+          width="1920"
+          height="1080"
+          className="h-full w-full object-cover"
         />
-        <form className="space-y-4" action={login}>
-          <Input placeholder="Email" type="text" name="email" />
-
-          <Input
-            placeholder="Password"
-            type="password"
-            name="password"
-            minLength={6}
-            maxLength={30}
-          />
-
-          <Button className="w-full" type="submit">
-            Log in
-          </Button>
-        </form>
-        <div className="flex items-center">
-          <div className="flex-grow border-t " />
-          <span className="mx-4 text-sm ">OR</span>
-          <div className="flex-grow border-t " />
-        </div>
-        <form
-          className="text-center flex gap-4 flex-col"
-          action={onGithubLogin}
-        >
-          <Button className="flex items-center justify-center space-x-2 w-full">
-            <GithubIcon />
-            <span>Log in with Github</span>
-          </Button>
-        </form>
-        <div className="text-center">
-          <Link href="#">Forgot password?</Link>
-        </div>
-        <div className="text-center">
-          <Link className="text-sm" href="/signup">
-            Dont have an account? Sign up
-          </Link>
-        </div>
       </div>
     </div>
   );

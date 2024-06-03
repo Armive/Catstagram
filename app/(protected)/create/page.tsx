@@ -147,19 +147,19 @@ export default function Create() {
                   <Label htmlFor="title"  >
                     Title
                   </Label>
-                  <Input required disabled={loading} maxLength={30} id='title' type="text" placeholder="My cat in the forest" name='title' />
+                  <Input required disabled={loading} minLength={10} maxLength={40} id='title' type="text" placeholder="My cat in the forest" name='title' />
                 </div>
                 <div className="grid w-full max-w-sm items-center gap-3 cursor-pointer ">
                   <Label htmlFor="description" >
                     Description
                   </Label>
-                  <Textarea disabled={loading} maxLength={60} required id='description' placeholder="My cat in the forest eating a mouse " name='description' />
+                  <Textarea disabled={loading} cols={10} minLength={10} maxLength={600} required id='description' placeholder="The cat just ate my mouse over a red fence in my neighborhoo" name='description' />
                 </div>
                 <div className="grid w-full max-w-sm items-center gap-3 cursor-pointer ">
                   <Label htmlFor="place"  >
                     Place
                   </Label>
-                  <Input id='place' required type="text" placeholder="Catsland" name='place' disabled={loading} maxLength={25}/>
+                  <Input id='place' required type="text" placeholder="Catsland" name='place' minLength={2} disabled={loading} maxLength={25}/>
                 </div>
 
               </CardFooter>

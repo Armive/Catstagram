@@ -313,6 +313,7 @@ function PeopleIcon() {
   );
 }
 
+
 function MoonIcon() {
   return (
     <svg

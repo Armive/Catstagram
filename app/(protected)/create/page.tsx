@@ -1,6 +1,5 @@
 "use client";
-
-import { FormEvent, useEffect, useState } from "react";
+import { DragEvent, FormEvent,  useState } from "react";
 import { Progress } from "@/components/ui/progress";
 
 import { Button } from "@/components/ui/button";
@@ -18,52 +17,69 @@ import { Label } from "@/components/ui/label";
 import { CameraIcon, CheckIcon } from "@/components/icons";
 import Link from "next/link";
 import { Textarea } from "@/components/ui/textarea";
+import Image from "next/image";
 
 
 export default function Create() {
-  const [file, setFile] = useState<Blob|string>('')
+  const [file, setFile] = useState<File | string>('')
   const [loading, setLoading] = useState<boolean>(false)
   const [view, setView] = useState(0);
   const submitFirstPage = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    const form = e.target as HTMLFormElement
-    const inputFileElement = form.querySelector('.input-file') as HTMLInputElement
-
-    const file = inputFileElement?.files?.[0] as Blob
-    setFile(file)
-
-
-
+    setView((view)=>view+1)
   }
+
+
+
   const submitSecondPage = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const form = e.target as HTMLFormElement
     const formDataForm = new FormData(form)
-
     const place = formDataForm.get('place') || ''
     const title = formDataForm.get('title') || ''
     const description = formDataForm.get('description') || ''
     const formdata = new FormData()
-
-    const requestOptions = { method: 'POST', body: formdata };
-    formdata.append('file', file)
+    formdata.append('file', file as Blob)
     formdata.append('place', place)
     formdata.append('title', title)
     formdata.append('description', description)
     setLoading(true)
+    const requestOptions = { method: 'POST', body: formdata};
+    console.log(file)
+    requestOptions.body.forEach((data)=>console.log(data))
     const response = await fetch(`${document.location.origin}/api/create`, requestOptions)
     const data = await response.json()
     if (response.status === 200) {
       setView((view) => view + 1);
       setLoading(false)
     }
+  }
+ 
 
-
+  const onDragOver = (e: DragEvent<HTMLLabelElement>) => {
+    e.preventDefault()
+    setLoading(true)
   }
 
+  const onDragLeave = (e: DragEvent<HTMLLabelElement>) => {
+    e.preventDefault()
+    setLoading(false)
+  }
+  const onDragEnd = (e: DragEvent<HTMLLabelElement>) => {
+    e.preventDefault()
+    setLoading(false)
+  }
+
+  const onDrop = (e: DragEvent<HTMLLabelElement>) => {
+    e.preventDefault()
+    setLoading(false)
+    if (e.dataTransfer?.files?.length) {
+      setFile(e.dataTransfer?.files?.[0])
+    }
+  }
   return (
     <main className="flex justify-center ">
-      <Card className={`w-[370px] min-h-[370px] p-3 ${loading ?'animate-pulse':''}`}>
+      <Card className={`w-[370px] min-h-[370px] p-3 ${loading ? 'animate-pulse' : ''}`}>
         <Progress value={25 * (view + 1)} />
         {view === 0 && (
           <form onSubmit={() => setView(view + 1)}>
@@ -97,7 +113,6 @@ export default function Create() {
         )}
         {view === 1 && (
           <form onSubmit={(e) => {
-            setView(view + 1)
             submitFirstPage(e)
           }}>
             <CardHeader className="flex justify-center items-center flex-col">
@@ -108,20 +123,35 @@ export default function Create() {
             </CardHeader>
             <CardContent className="flex gap-3 items-center justify-center">
               <CameraIcon />
-              <Button type="submit" disabled={loading} >Continue</Button>
+              <Button type="submit" disabled={loading && Boolean(file)}>Continue</Button>
             </CardContent>
-            <CardFooter className="flex flex-col gap-8 mt-8">
+            <CardFooter className="flex flex-col gap-8 mt-8 items-center justify-center">
 
-              <div className="grid w-full max-w-sm items-center gap-3 cursor-pointer ">
-                <Label htmlFor="picture" className="text-center">
-                  Drag The Photos, Videos Or Choose The File
+              <div className="flex w-full max-w-sm justify-center items-center gap-3 cursor-pointer ">
+                <Label htmlFor="picture" className="text-center cursor-pointer" onDragOver={onDragOver} onDragLeave={onDragLeave} onDragEnd={onDragEnd} onDrop={onDrop}>
+                  {file ? (
+                  <Image
+                    width={250} 
+                    height={250} 
+                    src={URL.createObjectURL(file as Blob)} 
+                    alt="Preview Image" 
+                    className="object-cover rounded-lg h-250 w-250" 
+                  />
+                  ): (
+                  <div  className="rounded-lg h-[250px] w-[250px] border-2 border-foreground border-dashed flex items-center justify-center">
+                    <p className="max-w-[170px] text-md">Drag The Photos, Videos Or Choose The File</p>
+                  </div>)
+
+
+                  }
+
                 </Label>
                 <Input
                   disabled={loading}
-                  required
+                  onChange={(e) => setFile(e?.target?.files?.[0] || '')}
                   id="picture"
                   type="file"
-                  className="cursor-pointer input-file"
+                  className="cursor-pointer input-file hidden"
                   accept=".mp4, .mov, .wnv, .avi, .avchd, .flv, .f4v, .swf, .mkv, .webm, .jpg, .png, .tiff, .psd, .bmp, .webp"
                 />
               </div>
@@ -147,19 +177,19 @@ export default function Create() {
                   <Label htmlFor="title"  >
                     Title
                   </Label>
-                  <Input required disabled={loading} maxLength={30} id='title' type="text" placeholder="My cat in the forest" name='title' />
+                  <Input required disabled={loading} minLength={10} maxLength={40} id='title' type="text" placeholder="My cat in the forest" name='title' />
                 </div>
                 <div className="grid w-full max-w-sm items-center gap-3 cursor-pointer ">
                   <Label htmlFor="description" >
                     Description
                   </Label>
-                  <Textarea disabled={loading} maxLength={60} required id='description' placeholder="My cat in the forest eating a mouse " name='description' />
+                  <Textarea disabled={loading} cols={10} minLength={10} maxLength={600} required id='description' placeholder="The cat just ate my mouse over a red fence in my neighborhoo" name='description' />
                 </div>
                 <div className="grid w-full max-w-sm items-center gap-3 cursor-pointer ">
                   <Label htmlFor="place"  >
                     Place
                   </Label>
-                  <Input id='place' required type="text" placeholder="Catsland" name='place' disabled={loading} maxLength={25}/>
+                  <Input id='place' required type="text" placeholder="Catsland" name='place' minLength={2} disabled={loading} maxLength={25} />
                 </div>
 
               </CardFooter>

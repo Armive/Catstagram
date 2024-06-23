@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { GeistSans } from "geist/font/sans";
+import { SpeedInsights } from "@vercel/speed-insights/next"
 import "./globals.css";
 import { Navbar } from "@/components/Navbar";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -17,6 +18,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={GeistSans.className}>
+      <SpeedInsights/>
       <body>
         <ThemeProvider
           attribute="class"

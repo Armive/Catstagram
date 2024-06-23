@@ -6,7 +6,10 @@ export default async function Home() {
   const supabase = createClient();
 let { data: posts, error } = await supabase
 .from('posts')
-.select('*') 
+.select('*')
+.order('created_at',{
+  ascending:false
+}) 
 
 
   return (

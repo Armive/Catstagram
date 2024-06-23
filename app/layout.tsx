@@ -27,7 +27,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <ModeToggle />
-          <div className="">{children}</div>
+          <div>{children}</div>
         </ThemeProvider>
       </body>
     </html>

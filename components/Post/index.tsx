@@ -12,8 +12,8 @@ export function Post({ url,title, description,hearts, visualisations }: { url: s
   const [isBookMarkIconPressed, setIsBookMarkIconPressed] = useState(false)
   
   return (
-    <div className="max-w-sm mx-auto w-[450px]  relative ">
-      <div className="border rounded-lg flex justify-center items-center flex-col	 px-10 gap-2 p-3">
+    <div className="max-w-sm md:mx-auto w-[350px] sm:w-[450px]  relative ">
+      <div className="border rounded-lg flex justify-center items-center flex-col	  px-5 sm:px-10 gap-2 py-3">
         <div className="flex items-center justify-between px-3 py-2 ">
           <div className="flex items-center space-x-2  gap-3 ">
             <Avatar>

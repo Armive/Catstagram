@@ -5,6 +5,7 @@ import "./globals.css";
 import { Navbar } from "@/components/Navbar";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ModeToggle } from "@/components/toggle";
+import { Toaster } from "@/components/ui/toaster"
 
 export const metadata: Metadata = {
   title: "Catstagram",
@@ -20,6 +21,7 @@ export default function RootLayout({
     <html lang="en" className={GeistSans.className}>
       <SpeedInsights/>
       <body>
+        <Toaster/>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

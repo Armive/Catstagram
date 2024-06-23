@@ -3,11 +3,10 @@ import {
   HomeIcon,
   SearchIcon,
   ExploreIcon,
-  ReelsIcon,
   CreateIcon,
   SendIcon,
   HeartIcon,
-  MenuIcon,
+  PostsIcon,
 } from "@/components/icons";
 import { BarItem } from "../NavItem";
 import Link from "next/link";
@@ -45,8 +44,8 @@ function Navbar() {
           <ExploreIcon />
         </BarItem>
 
-        <BarItem text="Reels" href="/reels">
-          <ReelsIcon />
+        <BarItem text="Mews" href="/posts">
+          <PostsIcon/>
         </BarItem>
         <BarItem text="Create" className="flex md:hidden" href="/create">
           <CreateIcon />

@@ -1,16 +1,28 @@
-"use client"
+"use client";
 import { AvatarImage, AvatarFallback, Avatar } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { BookMarkIcon, FlagIcon, HeartIcon, SendIcon } from "../icons";
 import Image from "next/image";
-import { EmojiPostBar } from "../EmojiPostBar"; 
+import { EmojiPostBar } from "../EmojiPostBar";
 import { ReportComponent } from "../ReportBar";
 import { useState } from "react";
 
-export function Post({ url,title, description,hearts, visualisations }: { url: string ,  title: string, description:string, hearts: number, visualisations: number}) {
-  const [isHeartIconPressed, setIsHeartIconPressed] = useState(false)
-  const [isBookMarkIconPressed, setIsBookMarkIconPressed] = useState(false)
-  
+export function Post({
+  url,
+  title,
+  description,
+  hearts,
+  visualisations,
+}: {
+  url: string;
+  title: string;
+  description: string;
+  hearts: number;
+  visualisations: number;
+}) {
+  const [isHeartIconPressed, setIsHeartIconPressed] = useState(false);
+  const [isBookMarkIconPressed, setIsBookMarkIconPressed] = useState(false);
+
   return (
     <div className="max-w-sm md:mx-auto w-[350px] sm:w-[450px]  relative ">
       <div className="border rounded-lg flex justify-center items-center flex-col	  px-5 sm:px-10 gap-2 py-3">
@@ -39,24 +51,31 @@ export function Post({ url,title, description,hearts, visualisations }: { url: s
             height="280"
           />
         </section>
-        <section>
-          <p>{title}</p>
-        </section>
-        <div className="flex flex-col px-3 py-2  gap-2">
-          <div className="flex items-center ">
-            <HeartIcon isHeartIconPressed={isHeartIconPressed} onClick={()=>setIsHeartIconPressed(!isHeartIconPressed)} className={`cursor-pointer active:animate-heartbeat animate-duration-fast ${isHeartIconPressed? 'dark:text-white text-black':'dark:text-white text-black'}`}/>
-            
-            <div className="flex-grow" />
-            <BookMarkIcon isBookMarkIconPressed={isBookMarkIconPressed} onClick={()=>setIsBookMarkIconPressed(!isBookMarkIconPressed)} className={`cursor-pointer active:animate-heartbeat animate-duration-fast ${isBookMarkIconPressed? 'dark:text-white text-black':'dark:text-white text-black'}`}/>
-          </div>
-          <div className="flex justify-around ">
-            <span className="font-semibold text-sm">{hearts} Hearts</span>
-            <span className="font-semibold text-sm">{visualisations} Visualisations</span>
-          </div>
+
+        <div className="flex flex-col px-3 py-2   ">
           <div className="text-center">
             <span>{description}</span>
           </div>
-          <div className="text-sm text-gray-500">View all comments</div>
+          <div className="flex items-center justify-between p-3">
+            <HeartIcon
+              isHeartIconPressed={isHeartIconPressed}
+              onClick={() => setIsHeartIconPressed(!isHeartIconPressed)}
+              className={`cursor-pointer active:animate-heartbeat animate-duration-fast ${isHeartIconPressed ? "dark:text-white text-black" : "dark:text-white text-black"}`}
+            />
+            <span className="font-semibold text-sm">{hearts} Hearts</span>
+            <span className="font-semibold text-sm">
+              {visualisations} Views
+            </span>
+            <BookMarkIcon
+              isBookMarkIconPressed={isBookMarkIconPressed}
+              onClick={() => setIsBookMarkIconPressed(!isBookMarkIconPressed)}
+              className={`cursor-pointer active:animate-heartbeat animate-duration-fast ${isBookMarkIconPressed ? "dark:text-white text-black" : "dark:text-white text-black"}`}
+            />
+          </div>
+
+          <div className="text-sm text-foreground flex">
+            <span>View all comments</span>
+          </div>
           <div className="flex items-center space-x-2">
             <Avatar>
               <AvatarImage

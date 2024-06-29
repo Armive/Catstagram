@@ -3,26 +3,14 @@ import { AvatarImage, AvatarFallback, Avatar } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { BookMarkIcon, FlagIcon, HeartIcon, SendIcon } from "../icons";
 import Image from "next/image";
-import { EmojiPostBar } from "../EmojiPostBar";
 import { ReportComponent } from "../ReportBar";
 import { useState } from "react";
+import { createClient } from "@/utils/supabase/server";
 
-export function Post({
-  url,
-  title,
-  description,
-  hearts,
-  visualisations,
-}: {
-  url: string;
-  title: string;
-  description: string;
-  hearts: number;
-  visualisations: number;
-}) {
-  const [isHeartIconPressed, setIsHeartIconPressed] = useState(false);
-  const [isBookMarkIconPressed, setIsBookMarkIconPressed] = useState(false);
-
+export  function Post({ url,title, description,hearts, visualisations, user }: { url: string , user:{id:string, first_name:'text', name:string}, title: string, description:string, hearts: number, visualisations: number}) {
+  const [isHeartIconPressed, setIsHeartIconPressed] = useState(false)
+  const [isBookMarkIconPressed, setIsBookMarkIconPressed] = useState(false)
+  
   return (
     <div className="max-w-sm md:mx-auto w-[350px] sm:w-[450px]  relative ">
       <div className="border rounded-lg flex justify-center items-center flex-col	  px-5 sm:px-10 gap-2 py-3">
@@ -31,13 +19,13 @@ export function Post({
             <Avatar>
               <AvatarImage
                 alt="malteseloverclub"
-                src="https://i.pinimg.com/736x/0d/14/4d/0d144d7a74013209d24ce6c05b8cfb51.jpg"
+                src="ht"
                 className="object-cover"
               />
-              <AvatarFallback>ML</AvatarFallback>
+              <AvatarFallback>{user.name[0] || user.first_name[0]}</AvatarFallback>
             </Avatar>
             <section className="flex justify-between gap-8">
-              <span className="font-semibold text-sm">malteseloverclub</span>
+              <span className="font-semibold text-sm">{user.name || user.first_name}</span>
               <ReportComponent />
             </section>
           </div>

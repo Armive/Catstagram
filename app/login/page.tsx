@@ -55,6 +55,7 @@ export default function Login() {
                 type="email"
                 placeholder="m@example.com"
                 required
+                name="email"
               />
             </div>
             <div className="grid gap-2">
@@ -73,6 +74,7 @@ export default function Login() {
                 required
                 minLength={6}
                 maxLength={30}
+                name="password"
               />
             </div>
             <Button type="submit" className="w-full">

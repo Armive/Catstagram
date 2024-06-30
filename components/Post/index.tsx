@@ -8,24 +8,10 @@ import { useState } from "react";
 import Link from "next/link";
 import { Button } from "../ui/button";
 
-export function Post({
-  url,
-  title,
-  description,
-  hearts,
-  visualisations,
-  user,
-}: {
-  url: string;
-  user: { id: string; first_name: "text"; name: string };
-  title: string;
-  description: string;
-  hearts: number;
-  visualisations: number;
-}) {
-  const [isHeartIconPressed, setIsHeartIconPressed] = useState(false);
-  const [isBookMarkIconPressed, setIsBookMarkIconPressed] = useState(false);
-
+export  function Post({ url,title, description,hearts, visualisations, user }: { url: string , user:{id:string, first_name:'text', name:string, avatar_url:string}, title: string, description:string, hearts: number, visualisations: number}) {
+  const [isHeartIconPressed, setIsHeartIconPressed] = useState(false)
+  const [isBookMarkIconPressed, setIsBookMarkIconPressed] = useState(false)
+  
   return (
     <div className="max-w-sm md:mx-auto w-[350px] sm:w-[450px]  relative ">
       <div className="border rounded-lg flex justify-center items-center flex-col	  px-5 sm:px-10  py-3">
@@ -34,7 +20,7 @@ export function Post({
             <Avatar>
               <AvatarImage
                 alt="malteseloverclub"
-                src="ht"
+                src={user.avatar_url || ''}
                 className="object-cover"
               />
               <AvatarFallback>

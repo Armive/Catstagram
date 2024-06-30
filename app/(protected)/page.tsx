@@ -21,7 +21,7 @@ export default async function Home() {
         const {data:user} = await supabase.from('profiles').select('*').eq('id', post.user_id)
         console.log(user , post.user_id)
         
-        return <Post user={user?.[0]  as {id:string, first_name:'text', name:string}||{id:'', name:'', first_name:''}} description={post.description} url={url.data.publicUrl} title={post.title} key={post.id} hearts={post.hearts} visualisations={post.visualisations} />
+        return <Post user={user?.[0]  as {id:string, first_name:'text', name:string, avatar_url:string}||{id:'', name:'', first_name:'', avatar_url:''}} description={post.description} url={url.data.publicUrl} title={post.title} key={post.id} hearts={post.hearts} visualisations={post.visualisations} />
       }
       )
     }

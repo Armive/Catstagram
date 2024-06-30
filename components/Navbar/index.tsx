@@ -45,7 +45,7 @@ function Navbar() {
         </BarItem>
 
         <BarItem text="Mews" href="/posts">
-          <PostsIcon/>
+          <PostsIcon />
         </BarItem>
         <BarItem text="Create" className="flex md:hidden" href="/create">
           <CreateIcon />

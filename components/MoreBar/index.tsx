@@ -40,32 +40,35 @@ export function MoreBar() {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem className="flex gap-2">
+          <DropdownMenuItem className="flex gap-2 cursor-pointer">
             <SettingsIcon />
             <span>Settings</span>
           </DropdownMenuItem>
-          <DropdownMenuItem className="flex gap-2">
+          <DropdownMenuItem className="flex gap-2 cursor-pointer">
             <ActivityIcon />
             <span>Your Activity</span>
           </DropdownMenuItem>
-          <DropdownMenuItem className="flex gap-2">
+          <DropdownMenuItem className="flex gap-2 cursor-pointer">
             <SavedIcon />
             <span>Saved</span>
           </DropdownMenuItem>
-          <DropdownMenuItem className="flex gap-2">
+          <DropdownMenuItem className="flex gap-2 cursor-pointer">
             <FlagIcon />
             <span>Report A Problem</span>
           </DropdownMenuItem>
         </DropdownMenuGroup>
 
         <DropdownMenuSeparator />
-        <DropdownMenuItem className="flex gap-2">
+        <DropdownMenuItem className="flex gap-2 cursor-pointer">
           <SwitchIcon />
           <span>Switch Accounts</span>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
 
-        <DropdownMenuItem className="flex gap-2" onClick={() => logOut()}>
+        <DropdownMenuItem
+          className="flex gap-2 cursor-pointer"
+          onClick={() => logOut()}
+        >
           <LogOutIcon />
           <span>Log out</span>
         </DropdownMenuItem>

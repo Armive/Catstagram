@@ -81,7 +81,7 @@ export default function Create() {
   useEffect(() => {
     if (file) {
       const acceptedFiles = [
-        "image/jpg",
+        "image/jpeg",
         "image/png",
         "image/tiff",
         "image/psd",

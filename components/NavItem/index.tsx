@@ -30,7 +30,7 @@ export const BarItem = ({
             <TooltipTrigger>
               <div
                 className={clsx(
-                  "flex justify-center items-center  gap-5 duration-75",
+                  "flex justify-center items-center  gap-5 duration-7x5",
                   {
                     "font-semibold": pathname === href,
                     "font-light ": pathname !== href,

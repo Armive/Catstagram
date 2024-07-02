@@ -51,7 +51,7 @@ function Navbar() {
           <CreateIcon />
         </BarItem>
 
-        <BarItem text="Messages" href="/messages">
+        <BarItem text="Mewssages" href="/messages">
           <SendIcon />
         </BarItem>
         <BarItem

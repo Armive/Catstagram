@@ -35,6 +35,7 @@ export default async function Home() {
             key={post.id}
             hearts={post.hearts}
             visualisations={post.visualisations}
+            place={post.place}
           />
         );
       })}

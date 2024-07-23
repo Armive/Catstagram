@@ -1,17 +1,40 @@
 "use client";
 import { AvatarImage, AvatarFallback, Avatar } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
-import { BookMarkIcon, FlagIcon, HeartIcon, SendIcon } from "../icons";
+import {
+  BookMarkIcon,
+  FlagIcon,
+  HeartIcon,
+  LocationIcon,
+  SendIcon,
+} from "../icons";
 import Image from "next/image";
 import { ReportComponent } from "../ReportBar";
 import { useState } from "react";
 import Link from "next/link";
 import { Button } from "../ui/button";
 
-export  function Post({ url,title, description,hearts, visualisations, user }: { url: string , user:{id:string, first_name:'text', name:string, avatar_url:string}, title: string, description:string, hearts: number, visualisations: number}) {
-  const [isHeartIconPressed, setIsHeartIconPressed] = useState(false)
-  const [isBookMarkIconPressed, setIsBookMarkIconPressed] = useState(false)
-  
+export function Post({
+  url,
+  title,
+  description,
+  hearts,
+  visualisations,
+  user,
+  place,
+}: {
+  url: string;
+  user: { id: string; first_name: "text"; name: string; avatar_url: string };
+  title: string;
+  description: string;
+  hearts: { personIds: string[] };
+  visualisations: number;
+  place: string;
+}) {
+  console.log(hearts);
+  const [isHeartIconPressed, setIsHeartIconPressed] = useState(false);
+  const [isBookMarkIconPressed, setIsBookMarkIconPressed] = useState(false);
+
   return (
     <div className="max-w-sm md:mx-auto w-[350px] sm:w-[450px]  relative ">
       <div className="border rounded-lg flex justify-center items-center flex-col	  px-5 sm:px-10  py-3">
@@ -20,7 +43,7 @@ export  function Post({ url,title, description,hearts, visualisations, user }: {
             <Avatar>
               <AvatarImage
                 alt="malteseloverclub"
-                src={user.avatar_url || ''}
+                src={user.avatar_url || ""}
                 className="object-cover"
               />
               <AvatarFallback>
@@ -28,14 +51,14 @@ export  function Post({ url,title, description,hearts, visualisations, user }: {
               </AvatarFallback>
             </Avatar>
             <section className="flex justify-between gap-8">
-              <span className="font-semibold text-sm">
+              <span className="font-semibold text-sm ">
                 {user.name || user.first_name}
               </span>
               <ReportComponent />
             </section>
           </div>
         </div>
-        <section className="border border-gray-100 p-3 rounded-sm">
+        <section className="border border-gray-100 p-3 flex flex-col rounded-sm   gap-3">
           <Image
             src={url}
             alt="Bichon maltes"
@@ -43,6 +66,10 @@ export  function Post({ url,title, description,hearts, visualisations, user }: {
             width="280"
             height="280"
           />
+          <div className="flex items-center gap-2 justify-center">
+            <LocationIcon />
+            <span>{place}</span>
+          </div>
         </section>
 
         <div className="flex flex-col px-3 py-2   ">
@@ -55,7 +82,7 @@ export  function Post({ url,title, description,hearts, visualisations, user }: {
               onClick={() => setIsHeartIconPressed(!isHeartIconPressed)}
               className={`cursor-pointer active:animate-heartbeat animate-duration-fast ${isHeartIconPressed ? "dark:text-white text-black" : "dark:text-white text-black"}`}
             />
-            <span className="font-semibold text-sm">{hearts} Hearts</span>
+            <span className="font-semibold text-sm">{0} Hearts</span>
             <span className="font-semibold text-sm">
               {visualisations} Views
             </span>

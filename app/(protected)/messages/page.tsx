@@ -60,7 +60,7 @@ export default function Component() {
             <div className="grid gap-0.5">
               <p className="text-sm font-medium leading-none">Influencer 3</p>
               <p className="text-xs text-muted-foreground">
-                Let's collaborate on a new project! &middot; 1h
+                Lets collaborate on a new project! &middot; 1h
               </p>
             </div>
           </Link>
@@ -87,7 +87,7 @@ export default function Component() {
             <p>Hey, check out my new video! Let me know what you think. 🎥</p>
           </article>
           <article className="flex w-max max-w-[65%] flex-col gap-2 rounded-full px-4 py-2 text-sm bg-muted">
-            <p>Looks great! I'll check it out later today.</p>
+            <p>Looks great! Ill check it out later today.</p>
           </article>
           <figure className="flex w-max max-w-[65%] flex-col gap-2 rounded-xl overflow-hidden text-sm ml-auto">
             <Image
@@ -100,10 +100,10 @@ export default function Component() {
             <figcaption>Influencer 1</figcaption>
           </figure>
           <article className="flex w-max max-w-[65%] flex-col gap-2 rounded-full px-4 py-2 text-sm ml-auto bg-primary text-primary-foreground">
-            <p>Awesome, thanks! Let's plan a collaboration soon.</p>
+            <p>Awesome, thanks! Lets plan a collaboration soon.</p>
           </article>
           <article className="flex w-max max-w-[65%] flex-col gap-2 rounded-full px-4 py-2 text-sm bg-muted">
-            <p>Sounds good, I'm free this weekend.</p>
+            <p>Sounds good, Im free this weekend.</p>
           </article>
         </section>
         <form className="flex w-full items-center space-x-2 p-3">

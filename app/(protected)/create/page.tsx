@@ -94,11 +94,11 @@ export default function Create() {
         toast({
           description: `Failed to load  file with type .${image?.type.split("/")[1]}`,
           type: "foreground",
-          duration:7000
+          duration: 7000,
         });
       }
     }
-  }, [file]);
+  }, [file, toast]);
   return (
     <main className="flex justify-center ">
       <Card

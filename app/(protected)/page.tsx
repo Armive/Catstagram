@@ -27,7 +27,8 @@ export default async function Home() {
                 id: string;
                 first_name: "text";
                 name: string;
-              }) || { id: "", name: "", first_name: "" }
+                avatar_url: string;
+              }) || { id: "", name: "", first_name: "", avatar_url: "" }
             }
             description={post.description}
             url={url.data.publicUrl}

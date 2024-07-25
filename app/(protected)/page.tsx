@@ -34,7 +34,6 @@ export default async function Home() {
             url={url.data.publicUrl}
             title={post.title}
             key={post.id}
-            hearts={post.hearts}
             visualisations={post.visualisations}
             place={post.place}
           />

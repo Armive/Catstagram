@@ -84,8 +84,8 @@ function ExploreIcon() {
 
 function HeartIcon({
   ...props
-}: { isHeartIconPressed?: boolean } & React.SVGProps<SVGSVGElement>) {
-  if (props?.isHeartIconPressed) {
+}: { ishearticonpressed?: string } & React.SVGProps<SVGSVGElement>) {
+  if (props?.ishearticonpressed === 'true') {
     return (
       <svg
         {...props}
@@ -112,9 +112,9 @@ function HeartIcon({
       <path
         fill="none"
         stroke="currentColor"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2"
         d="M19.5 12.572L12 20l-7.5-7.428A5 5 0 1 1 12 6.006a5 5 0 1 1 7.5 6.572"
       />
     </svg>
@@ -166,13 +166,13 @@ function PostsIcon() {
         />
         <path
           stroke="currentColor"
-          stroke-width="1.5"
+          strokeWidth="1.5"
           d="M12.826 16c0 .173-.361.313-.806.313c-.446 0-.807-.14-.807-.313s.361-.312.807-.312c.445 0 .806.14.806.312Zm2.674-2.406c0 .431-.217.781-.484.781s-.484-.35-.484-.781c0-.432.217-.781.484-.781s.484.35.484.78Zm-6 0c0 .431-.217.781-.484.781s-.484-.35-.484-.781c0-.432.217-.781.484-.781s.484.35.484.78Z"
         />
         <path
           stroke="currentColor"
-          stroke-linecap="round"
-          stroke-width="1.5"
+          strokeLinecap="round"
+          strokeWidth="1.5"
           d="M22 15.469c-.483-.313-2.58-1.094-3.387-1.094m1.774 3.594c-.484-.313-1.613-1.094-2.42-1.094M2 15.469c.484-.313 2.58-1.094 3.387-1.094m-1.774 3.594c.484-.313 1.613-1.094 2.42-1.094"
         />
       </g>
@@ -448,7 +448,7 @@ function SavedIcon() {
       <g fill="currentColor">
         <path d="M9.146 12.293a2 2 0 0 1 2.829-2.829L12 9.49l.025-.026a2 2 0 1 1 2.829 2.829l-2.829 2.828l-.025-.025l-.025.025z" />
         <path
-          fill-rule="evenodd"
+          fillRule="evenodd"
           d="M3 4a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3v16a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3zm3-1h12a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1"
           clip-rule="evenodd"
         />
@@ -566,8 +566,8 @@ function CheckIcon() {
 
 function BookMarkIcon({
   ...props
-}: { isBookMarkIconPressed: boolean } & React.SVGProps<SVGSVGElement>) {
-  if (props.isBookMarkIconPressed) {
+}: { isbookmarkiconpressed: string } & React.SVGProps<SVGSVGElement>) {
+  if (props.isbookmarkiconpressed === 'true') {
     return (
       <svg
         {...props}
@@ -594,7 +594,7 @@ function BookMarkIcon({
       height="24"
       viewBox="0 0 24 24"
     >
-      <g fill="none" fill-rule="evenodd">
+      <g fill="none" fillRule="evenodd">
         <path d="M24 0v24H0V0zM12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035c-.01-.004-.019-.001-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427c-.002-.01-.009-.017-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093c.012.004.023 0 .029-.008l.004-.014l-.034-.614c-.003-.012-.01-.02-.02-.022m-.715.002a.023.023 0 0 0-.027.006l-.006.014l-.034.614c0 .012.007.02.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z" />
         <path
           fill="currentColor"
@@ -616,8 +616,8 @@ function SmileIcon() {
       <g
         fill="none"
         stroke="currentColor"
-        stroke-linecap="round"
-        stroke-width="2"
+        strokeLinecap="round"
+        strokeWidth="2"
       >
         <path
           stroke-dasharray="60"

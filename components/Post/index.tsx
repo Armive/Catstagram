@@ -18,7 +18,6 @@ export function Post({
   url,
   title,
   description,
-  hearts,
   visualisations,
   user,
   place,
@@ -27,11 +26,10 @@ export function Post({
   user: { id: string; first_name: "text"; name: string; avatar_url: string };
   title: string;
   description: string;
-  hearts: { personIds: string[] };
+  
   visualisations: number;
   place: string;
 }) {
-  console.log(hearts);
   const [isHeartIconPressed, setIsHeartIconPressed] = useState(false);
   const [isBookMarkIconPressed, setIsBookMarkIconPressed] = useState(false);
 
@@ -78,7 +76,7 @@ export function Post({
           </div>
           <div className="flex items-center justify-between p-3">
             <HeartIcon
-              isHeartIconPressed={isHeartIconPressed}
+              ishearticonpressed={String(isHeartIconPressed)}
               onClick={() => setIsHeartIconPressed(!isHeartIconPressed)}
               className={`cursor-pointer active:animate-heartbeat animate-duration-fast ${isHeartIconPressed ? "dark:text-white text-black" : "dark:text-white text-black"}`}
             />
@@ -87,7 +85,7 @@ export function Post({
               {visualisations} Views
             </span>
             <BookMarkIcon
-              isBookMarkIconPressed={isBookMarkIconPressed}
+              isbookmarkiconpressed={String(isBookMarkIconPressed)}
               onClick={() => setIsBookMarkIconPressed(!isBookMarkIconPressed)}
               className={`cursor-pointer active:animate-heartbeat animate-duration-fast ${isBookMarkIconPressed ? "dark:text-white text-black" : "dark:text-white text-black"}`}
             />

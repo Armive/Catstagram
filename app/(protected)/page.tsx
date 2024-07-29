@@ -9,7 +9,7 @@ export default async function Home() {
     .order("created_at", {
       ascending: false,
     });
-
+  const { data: userdata } = await supabase.auth.getUser();
   return (
     <div className=" flex flex-col gap-6  py-6 max-sm:items-center ">
       {posts?.map(async (post) => {
@@ -20,8 +20,19 @@ export default async function Home() {
           .select("*")
           .eq("id", post.user_id);
 
+        const { data, error } = await supabase
+          .from("post_likes")
+          .select("user_id")
+          .eq("post_id", post.id);
+
+        const hearts = data?.map((d) => d.user_id as string);
+        const initialIsheartIconPressed = hearts?.includes(
+          userdata.user?.id as string,
+        );
         return (
           <Post
+            initialIsheartIconPressed={initialIsheartIconPressed || false}
+            hearts={hearts}
             user={
               (user?.[0] as {
                 id: string;
@@ -36,6 +47,7 @@ export default async function Home() {
             key={post.id}
             visualisations={post.visualisations}
             place={post.place}
+            id={post.id}
           />
         );
       })}

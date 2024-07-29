@@ -21,17 +21,39 @@ export function Post({
   visualisations,
   user,
   place,
+  id,
+  hearts,
+  initialIsheartIconPressed,
 }: {
   url: string;
   user: { id: string; first_name: "text"; name: string; avatar_url: string };
   title: string;
   description: string;
-  
+  id?: string;
   visualisations: number;
   place: string;
+  initialIsheartIconPressed: boolean;
+  hearts?: string[];
 }) {
-  const [isHeartIconPressed, setIsHeartIconPressed] = useState(false);
+  const [isHeartIconPressed, setIsHeartIconPressed] = useState(
+    initialIsheartIconPressed,
+  );
   const [isBookMarkIconPressed, setIsBookMarkIconPressed] = useState(false);
+  const onHeartClick = async () => {
+    if (!id) return;
+    if (isHeartIconPressed) {
+      await fetch(`${document.location.origin}/api/posts/hearts/remove`, {
+        method: "POST",
+        body: JSON.stringify({ post_id: id }),
+      });
+    } else {
+      await  fetch(`${document.location.origin}/api/posts/hearts/add`, {
+        method: "POST",
+        body: JSON.stringify({ post_id: id }),
+      });
+    }
+    setIsHeartIconPressed(!isHeartIconPressed);
+  };
 
   return (
     <div className="max-w-sm md:mx-auto w-[350px] sm:w-[450px]  relative ">
@@ -77,10 +99,19 @@ export function Post({
           <div className="flex items-center justify-between p-3">
             <HeartIcon
               ishearticonpressed={String(isHeartIconPressed)}
-              onClick={() => setIsHeartIconPressed(!isHeartIconPressed)}
+              onClick={onHeartClick}
               className={`cursor-pointer active:animate-heartbeat animate-duration-fast ${isHeartIconPressed ? "dark:text-white text-black" : "dark:text-white text-black"}`}
             />
-            <span className="font-semibold text-sm">{0} Hearts</span>
+            <span className="font-semibold text-sm">
+              {initialIsheartIconPressed
+                ? isHeartIconPressed
+                  ? hearts?.length
+                  : (hearts?.length || 0) - 1
+                : isHeartIconPressed
+                  ? (hearts?.length || 0) + 1
+                  : hearts?.length}{" "}
+              Hearts
+            </span>
             <span className="font-semibold text-sm">
               {visualisations} Views
             </span>

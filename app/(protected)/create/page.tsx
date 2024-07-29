@@ -44,8 +44,7 @@ export default function Create() {
     formdata.append("description", description);
     setLoading(true);
     const requestOptions = { method: "POST", body: formdata };
-    console.log(file);
-    requestOptions.body.forEach((data) => console.log(data));
+   
     const response = await fetch(
       `${document.location.origin}/api/create`,
       requestOptions,
@@ -238,7 +237,6 @@ export default function Create() {
                 <Label htmlFor="place">Place</Label>
                 <Input
                   id="place"
-                  required
                   type="text"
                   placeholder="Catsland"
                   name="place"

@@ -1,9 +1,8 @@
 import { Post } from "@/components/Post";
 import { createClient } from "@/utils/supabase/server";
-import { data } from "autoprefixer";
 export default async function Home() {
   const supabase = createClient();
-  let { data: posts, error } = await supabase
+  let { data: posts } = await supabase
     .from("posts")
     .select("*")
     .order("created_at", {
@@ -29,6 +28,16 @@ export default async function Home() {
         const initialIsheartIconPressed = hearts?.includes(
           userdata.user?.id as string,
         );
+
+        const { data: saves } = await supabase
+          .from("saved_posts")
+          .select("user_id")
+          .eq("post_id", post.id);
+
+        const initialIsBookMarkIconPressed = saves?.some(
+          (save) => save.user_id === userdata.user?.id,
+        );
+
         return (
           <Post
             initialIsheartIconPressed={initialIsheartIconPressed || false}
@@ -48,6 +57,7 @@ export default async function Home() {
             visualisations={post.visualisations}
             place={post.place}
             id={post.id}
+            initialIsBookMarkIconPressed={initialIsBookMarkIconPressed || false}
           />
         );
       })}

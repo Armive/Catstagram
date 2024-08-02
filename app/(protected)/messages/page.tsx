@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import Image from "next/image";
-import { SendIcon, SettingsIcon } from "@/components/icons";
+import { SendIcon } from "@/components/icons";
 
 export default function Component() {
   return (

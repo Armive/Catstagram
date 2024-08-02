@@ -4,7 +4,7 @@ import { ReloadIcon } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { useEffect } from "react";
 
-export default function Error({
+export default function ErrorPage({
   error,
   reset,
 }: {

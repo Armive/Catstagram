@@ -11,7 +11,7 @@ export function SearchItem({
   name: string;
   isFollowed: boolean;
   followers: number;
-  latestReels: Boolean;
+  latestReels: boolean;
 }) {
   return (
     <TableRow className="border-none  cursor-pointer">

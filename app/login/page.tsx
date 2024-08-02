@@ -8,7 +8,11 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/utils/supabase/server";
 import { headers } from "next/headers";
 
-export default function Login() {
+export default function Login({
+  searchParams,
+}: {
+  searchParams: { message?: string };
+}) {
   const onGithubLogin = async () => {
     "use server";
     const supabase = createClient();
@@ -34,7 +38,7 @@ export default function Login() {
     if (!error) {
       redirect(`${headers().get("origin")}/`);
     }
-    redirect(`${headers().get('origin')}/login?message='Could not signin`)
+    redirect(`${headers().get("origin")}/login?message=credentialerrors`);
   };
 
   return (
@@ -80,6 +84,9 @@ export default function Login() {
             <Button type="submit" className="w-full">
               Login
             </Button>
+            {searchParams.message === "credentialerrors" ? (
+              <p className="font-medium">Login failed. Check credentials.</p>
+            ) : null}
           </form>
           <form
             className="text-center flex gap-4 flex-col"

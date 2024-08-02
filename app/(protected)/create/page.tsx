@@ -1,5 +1,5 @@
 "use client";
-import { DragEvent, FormEvent, useEffect, useState } from "react";
+import { type DragEvent, type FormEvent, useEffect, useState } from "react";
 import { Progress } from "@/components/ui/progress";
 import { useToast } from "@/components/ui/use-toast";
 
@@ -44,12 +44,21 @@ export default function Create() {
     formdata.append("description", description);
     setLoading(true);
     const requestOptions = { method: "POST", body: formdata };
-   
+
     const response = await fetch(
       `${document.location.origin}/api/create`,
       requestOptions,
     );
-    const data = await response.json();
+
+    if (response.status === 500) {
+      toast({
+        title: "Internal Server Error",
+        description: "Please try again later.",
+      });
+      setLoading(false);
+      return;
+    }
+
     if (response.status === 200) {
       setView((view) => view + 1);
       setLoading(false);

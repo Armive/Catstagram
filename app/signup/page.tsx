@@ -1,5 +1,5 @@
 "use client";
-import { FormEvent, useContext, useEffect, useState } from "react";
+import { type FormEvent, useContext, useEffect, useState } from "react";
 import { z } from "zod";
 import Image from "next/image";
 import Link from "next/link";
@@ -31,7 +31,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-
 
 const User = z.object({
   name: z.string(),
@@ -88,7 +87,7 @@ export default function SignUp() {
   useEffect(() => {
     const { name, email, password, day, month, year, gender } = userData;
 
-    const validatedData: any = User.safeParse({
+    const validatedData = User.safeParse({
       name,
       email,
       password,
@@ -123,7 +122,9 @@ export default function SignUp() {
 
   return (
     <main className="flex justify-center w-full p-4  lg:w-[50vw]">
-      <Card className={`w-[350px] p-2 h-fit duration-1000  ${loading? 'animate-pulse': ''}`}>
+      <Card
+        className={`w-[350px] p-2 h-fit duration-1000  ${loading ? "animate-pulse" : ""}`}
+      >
         <Progress value={33.3 * (view + 1)} />
 
         {view === 0 && (
@@ -137,9 +138,11 @@ export default function SignUp() {
                 height={38}
               />
               <CardTitle>Create Your Account</CardTitle>
-              <CardDescription className="text-center">Write your details in the below form</CardDescription>
+              <CardDescription className="text-center">
+                Write your details in the below form
+              </CardDescription>
             </CardHeader>
-            <CardContent >
+            <CardContent>
               <form onSubmit={nextStep}>
                 <div className="grid w-full items-center gap-4">
                   <div className="flex flex-col space-y-1.5">
@@ -153,7 +156,7 @@ export default function SignUp() {
                       maxLength={20}
                       autoComplete="off"
                       defaultValue={userData.name}
-                      />
+                    />
                   </div>
                   <div className="flex flex-col space-y-1.5">
                     <Label htmlFor="email">Your Email</Label>
@@ -167,7 +170,7 @@ export default function SignUp() {
                       maxLength={50}
                       autoComplete="off"
                       defaultValue={userData.email}
-                      />
+                    />
                   </div>
                   <div className="flex flex-col space-y-1.5 w-full">
                     <Label htmlFor="password">Your Password</Label>
@@ -176,7 +179,7 @@ export default function SignUp() {
                       id="password"
                       placeholder="*******"
                       defaultValue={userData.password}
-                      name="password" 
+                      name="password"
                       required
                       disabled={loading}
                       maxLength={30}
@@ -227,7 +230,9 @@ export default function SignUp() {
               />
 
               <CardTitle>Date of birth and gender</CardTitle>
-              <CardDescription>Write your details in the below form</CardDescription>
+              <CardDescription>
+                Write your details in the below form
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <form onSubmit={submit} className="flex gap-4 flex-col">
@@ -307,7 +312,6 @@ export default function SignUp() {
                   >
                     <span>{loading ? "Loading" : "Next step"}</span>
                     <RightArrow />
-                    
                   </Button>
                 </section>
               </form>
@@ -350,10 +354,7 @@ export default function SignUp() {
             </CardContent>
           </>
         )}
-        
-        
       </Card>
-      
     </main>
   );
 }

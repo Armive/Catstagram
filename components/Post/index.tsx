@@ -16,7 +16,6 @@ import { Button } from "../ui/button";
 
 export function Post({
   url,
-  title,
   description,
   visualisations,
   user,
@@ -43,22 +42,28 @@ export function Post({
   );
 
   const [isHeartLoading, setIsHeartLoading] = useState(false);
-  
+
   const onHeartClick = async () => {
     if (!id || isHeartLoading) return;
     setIsHeartLoading(true);
     if (isHeartIconPressed) {
-      const response = await fetch(`${document.location.origin}/api/posts/hearts/remove`, {
-        method: "POST",
-        body: JSON.stringify({ post_id: id }),
-      });
-      if(response.status === 200) setIsHeartIconPressed(!isHeartIconPressed)
+      const response = await fetch(
+        `${document.location.origin}/api/posts/hearts/remove`,
+        {
+          method: "POST",
+          body: JSON.stringify({ post_id: id }),
+        },
+      );
+      if (response.status === 200) setIsHeartIconPressed(!isHeartIconPressed);
     } else {
-      const response = await fetch(`${document.location.origin}/api/posts/hearts/add`, {
-        method: "POST",
-        body: JSON.stringify({ post_id: id }),
-      });
-      if(response.status === 200) setIsHeartIconPressed(!isHeartIconPressed)
+      const response = await fetch(
+        `${document.location.origin}/api/posts/hearts/add`,
+        {
+          method: "POST",
+          body: JSON.stringify({ post_id: id }),
+        },
+      );
+      if (response.status === 200) setIsHeartIconPressed(!isHeartIconPressed);
     }
     setIsHeartLoading(false);
   };
@@ -70,21 +75,29 @@ export function Post({
   );
 
   const onBookmarkClick = async () => {
-    if (!id||isBookmarkLoading) return;
-    
+    if (!id || isBookmarkLoading) return;
+
     setIsBookmarkLoading(true);
     if (isBookMarkIconPressed) {
-      const response = await fetch(`${document.location.origin}/api/posts/saved/remove`, {
-        method: "POST",
-        body: JSON.stringify({ post_id: id }),
-      });
-      if(response.status === 200) setIsBookMarkIconPressed(!isBookMarkIconPressed)
+      const response = await fetch(
+        `${document.location.origin}/api/posts/saved/remove`,
+        {
+          method: "POST",
+          body: JSON.stringify({ post_id: id }),
+        },
+      );
+      if (response.status === 200)
+        setIsBookMarkIconPressed(!isBookMarkIconPressed);
     } else {
-      const response = await fetch(`${document.location.origin}/api/posts/saved/add`, {
-        method: "POST",
-        body: JSON.stringify({ post_id: id }),
-      });
-      if(response.status === 200)setIsBookMarkIconPressed(!isBookMarkIconPressed)
+      const response = await fetch(
+        `${document.location.origin}/api/posts/saved/add`,
+        {
+          method: "POST",
+          body: JSON.stringify({ post_id: id }),
+        },
+      );
+      if (response.status === 200)
+        setIsBookMarkIconPressed(!isBookMarkIconPressed);
     }
     setIsBookmarkLoading(false);
   };

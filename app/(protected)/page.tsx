@@ -2,7 +2,7 @@ import { Post } from "@/components/Post";
 import { createClient } from "@/utils/supabase/server";
 export default async function Home() {
   const supabase = createClient();
-  let { data: posts } = await supabase
+  const { data: posts } = await supabase
     .from("posts")
     .select("*")
     .order("created_at", {

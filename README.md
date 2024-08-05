@@ -86,6 +86,6 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 For questions, comments, or suggestions, please contact:
 
 - Name: Your Name
-- Email: dfreys1236@gmail.com
+- Email: dfreyes1236@gmail.com
 - GitHub: [Armive](https://github.com/Armive)
 

@@ -1,93 +1,91 @@
-<a href="https://demo-nextjs-with-supabase.vercel.app/">
-  <img alt="Next.js and Supabase Starter Kit - the fastest way to build apps with Next.js and Supabase" src="https://demo-nextjs-with-supabase.vercel.app/opengraph-image.png">
-  <h1 align="center">Next.js and Supabase Starter Kit</h1>
-</a>
 
-<p align="center">
- The fastest way to build apps with Next.js and Supabase
-</p>
+# Catstagram
 
-<p align="center">
-  <a href="#features"><strong>Features</strong></a> ·
-  <a href="#demo"><strong>Demo</strong></a> ·
-  <a href="#deploy-to-vercel"><strong>Deploy to Vercel</strong></a> ·
-  <a href="#clone-and-run-locally"><strong>Clone and run locally</strong></a> ·
-  <a href="#feedback-and-issues"><strong>Feedback and issues</strong></a>
-  <a href="#more-supabase-examples"><strong>More Examples</strong></a>
-</p>
-<br/>
+Catstagram is a social media platform dedicated to cat enthusiasts. Share, like, and comment on pictures of your favorite felines, connect with other cat lovers, and build a community around your love for cats.
+
+## Table of Contents
+
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Contributing](#contributing)
+- [License](#license)
+- [Contact](#contact)
 
 ## Features
 
-- Works across the entire [Next.js](https://nextjs.org) stack
-  - App Router
-  - Pages Router
-  - Middleware
-  - Client
-  - Server
-  - It just works!
-- supabase-ssr. A package to configure Supabase Auth to use cookies
-- Styling with [Tailwind CSS](https://tailwindcss.com)
-- Optional deployment with [Supabase Vercel Integration and Vercel deploy](#deploy-your-own)
-  - Environment variables automatically assigned to Vercel project
+- **User Profiles**: Create and customize your profile.
+- **Photo Sharing**: Upload, like, and comment on cat photos.
+- **Feed**: View and interact with posts from other users.
+- **Notifications**: Get notified when someone likes or comments on your posts.
+- **Search**: Find other users and cat photos by keywords and hashtags.
+- **Direct Messaging**: Communicate with other users privately.
 
-## Demo
+## Tech Stack
 
-You can view a fully working demo at [demo-nextjs-with-supabase.vercel.app](https://demo-nextjs-with-supabase.vercel.app/).
+- **Frontend**: React, Next.js, Tailwind CSS
+- **Backend**: Supabase (PostgreSQL, Auth, Storage)
+- **Deployment**: Vercel
 
-## Deploy to Vercel
+## Installation
 
-Vercel deployment will guide you through creating a Supabase account and project.
+1. Clone the repository:
 
-After installation of the Supabase integration, all relevant environment variables will be assigned to the project so the deployment is fully functioning.
+    ```bash
+    git clone https://github.com/Armive/Catstagram.git
+    cd Catstagram
+    ```
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fnext.js%2Ftree%2Fcanary%2Fexamples%2Fwith-supabase&project-name=nextjs-with-supabase&repository-name=nextjs-with-supabase&demo-title=nextjs-with-supabase&demo-description=This%20starter%20configures%20Supabase%20Auth%20to%20use%20cookies%2C%20making%20the%20user's%20session%20available%20throughout%20the%20entire%20Next.js%20app%20-%20Client%20Components%2C%20Server%20Components%2C%20Route%20Handlers%2C%20Server%20Actions%20and%20Middleware.&demo-url=https%3A%2F%2Fdemo-nextjs-with-supabase.vercel.app%2F&external-id=https%3A%2F%2Fgithub.com%2Fvercel%2Fnext.js%2Ftree%2Fcanary%2Fexamples%2Fwith-supabase&demo-image=https%3A%2F%2Fdemo-nextjs-with-supabase.vercel.app%2Fopengraph-image.png&integration-ids=oac_VqOgBHqhEoFTPzGkPd7L0iH6)
+2. Install dependencies:
 
-The above will also clone the Starter kit to your GitHub, you can clone that locally and develop locally.
+    ```bash
+    pnpm install
+    ```
 
-If you wish to just develop locally and not deploy to Vercel, [follow the steps below](#clone-and-run-locally).
+3. Set up environment variables. Create a `.env.local` file in the root directory and add the following:
 
-## Clone and run locally
+    ```env
+    NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+    NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+    ```
 
-1. You'll first need a Supabase project which can be made [via the Supabase dashboard](https://database.new)
+4. Run the development server:
 
-2. Create a Next.js app using the Supabase Starter template npx command
+    ```bash
+    npm run dev
+    ```
 
-   ```bash
-   npx create-next-app -e with-supabase
-   ```
+5. Open your browser and navigate to `http://localhost:3000`.
 
-3. Use `cd` to change into the app's directory
+## Usage
 
-   ```bash
-   cd name-of-new-app
-   ```
+- **Home Feed**: Browse the latest cat photos from users you follow.
+- **Upload**: Share your cat photos by clicking on the upload button.
+- **Profile**: View and edit your profile by clicking on your avatar.
+- **Search**: Use the search bar to find specific cat photos or users.
+- **Notifications**: Check your notifications for likes and comments on your posts.
+- **Messages**: Send and receive direct messages from other users.
 
-4. Rename `.env.local.example` to `.env.local` and update the following:
+## Contributing
 
-   ```
-   NEXT_PUBLIC_SUPABASE_URL=[INSERT SUPABASE PROJECT URL]
-   NEXT_PUBLIC_SUPABASE_ANON_KEY=[INSERT SUPABASE PROJECT API ANON KEY]
-   ```
+We welcome contributions! Please follow these steps to contribute:
 
-   Both `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` can be found in [your Supabase project's API settings](https://app.supabase.com/project/_/settings/api)
+1. Fork the repository.
+2. Create a new branch (`git checkout -b feature/your-feature`).
+3. Commit your changes (`git commit -m 'Add some feature'`).
+4. Push to the branch (`git push origin feature/your-feature`).
+5. Open a pull request.
 
-5. You can now run the Next.js local development server:
+## License
 
-   ```bash
-   npm run dev
-   ```
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
-   The starter kit should now be running on [localhost:3000](http://localhost:3000/).
+## Contact
 
-> Check out [the docs for Local Development](https://supabase.com/docs/guides/getting-started/local-development) to also run Supabase locally.
+For questions, comments, or suggestions, please contact:
 
-## Feedback and issues
+- Name: Your Name
+- Email: dfreys1236@gmail.com
+- GitHub: [Armive](https://github.com/Armive)
 
-Please file feedback and issues over on the [Supabase GitHub org](https://github.com/supabase/supabase/issues/new/choose).
-
-## More Supabase examples
-
-- [Next.js Subscription Payments Starter](https://github.com/vercel/nextjs-subscription-payments)
-- [Cookie-based Auth and the Next.js 13 App Router (free course)](https://youtube.com/playlist?list=PL5S4mPUpp4OtMhpnp93EFSo42iQ40XjbF)
-- [Supabase Auth and the Next.js App Router](https://github.com/supabase/supabase/tree/master/examples/auth/nextjs)

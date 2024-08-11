@@ -13,17 +13,20 @@ import { ReportComponent } from "../ReportBar";
 import { useState } from "react";
 import Link from "next/link";
 import { Button } from "../ui/button";
+import { Comment } from "../Comment";
 
 export function Post({
 	url,
 	description,
 	visualisations,
-	user,
 	place,
 	id,
 	hearts,
 	initialIsheartIconPressed,
 	initialIsBookMarkIconPressed,
+	comments,
+	user,
+	userdata,
 }: {
 	url: string;
 	user: { id: string; first_name: "text"; name: string; avatar_url: string };
@@ -35,6 +38,19 @@ export function Post({
 	initialIsheartIconPressed: boolean;
 	hearts?: string[];
 	initialIsBookMarkIconPressed: boolean;
+	comments?: {
+		comment_id: string;
+		post_id: string;
+		created_at: string;
+		author_id: string;
+		content: string;
+		subcomments?: string[];
+		profiles?: { name: string; avatar_url: string };
+	}[];
+	userdata?: {
+		name: string;
+		avatar_url: string;
+	};
 }) {
 	// Hearts
 	const [isHeartIconPressed, setIsHeartIconPressed] = useState(
@@ -139,7 +155,7 @@ export function Post({
 					</div>
 				</section>
 
-				<div className="flex flex-col px-3 py-2   ">
+				<div className="flex flex-col px-3 py-2  gap-4 ">
 					<div className="text-center">
 						<span>{description}</span>
 					</div>
@@ -169,27 +185,34 @@ export function Post({
 						/>
 					</div>
 
-					<div className="text-sm text-foreground flex justify-center gap-2 p-2">
-						<Link href="/about">View all comments</Link>
-					</div>
-					<div className="flex items-center space-x-2">
-						<Avatar>
-							<AvatarImage
-								alt="user"
-								src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQI_uZuVHhIqFs9dEA95zYSwA2k9lfEMCuANQiPpWNaQQ&s"
-								className="object-cover"
-							/>
-							<AvatarFallback>ML</AvatarFallback>
-						</Avatar>
-						<div className="border-border border flex items-center  h-9 rounded-md">
+					{/*//////////////////comentarios */}
+					<section className="flex gap-3 ">
+						<div>
+							<Avatar className="h-10 w-10">
+								<AvatarImage src={userdata?.avatar_url} alt="@shadcn" />
+								<AvatarFallback>{userdata?.name}</AvatarFallback>
+							</Avatar>
+						</div>
+						<div className="flex rounded-xl border border-white p-[3px] gap-4">
 							<Input
-								className="flex-grow text-sm border-none outline-none "
-								placeholder="Add a comment..."
+								type="text"
+								placeholder="Message..."
+								className="border-none focus-visible:ring-0 "
 							/>
-							<Button size="sm" variant="ghost">
+							<Button
+								variant="ghost"
+								size="icon"
+								className=" flex items-center justify-center"
+							>
 								<SendIcon />
+								<span className="sr-only">Send</span>
 							</Button>
 						</div>
+					</section>
+					<div>
+						{comments?.map((comment) => (
+							<Comment key={comment.comment_id} {...comment} />
+						))}
 					</div>
 				</div>
 			</div>

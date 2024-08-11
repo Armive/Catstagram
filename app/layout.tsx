@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
 import { GeistSans } from "geist/font/sans";
-import { SpeedInsights } from "@vercel/speed-insights/next"
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
-import { Navbar } from "@/components/Navbar";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ModeToggle } from "@/components/toggle";
-import { Toaster } from "@/components/ui/toaster"
+import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
   title: "Catstagram",
@@ -19,9 +18,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={GeistSans.className}>
-      <SpeedInsights/>
+      <SpeedInsights />
       <body>
-        <Toaster/>
+        <Toaster />
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

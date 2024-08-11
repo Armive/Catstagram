@@ -10,10 +10,11 @@ import {
 } from "../icons";
 import Image from "next/image";
 import { ReportComponent } from "../ReportBar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Button } from "../ui/button";
 import { Comment } from "../Comment";
+import { useIntesectionObserver } from "@/hooks/useIntesectionObserver";
 
 export function Post({
 	url,
@@ -118,8 +119,23 @@ export function Post({
 		setIsBookmarkLoading(false);
 	};
 
+	const { counter, elementRef } = useIntesectionObserver();
+
+	useEffect(() => {
+		if (counter === 1 && id) {
+			fetch("/api/posts/views", {
+				method: "POST",
+				body: JSON.stringify({
+					post_id: id,
+				}),
+			});
+		}
+	}, [counter, id]);
 	return (
-		<div className="max-w-sm md:mx-auto w-[350px] sm:w-[450px]  relative ">
+		<div
+			className="max-w-sm md:mx-auto w-[350px] sm:w-[450px]  relative "
+			ref={elementRef}
+		>
 			<div className="border rounded-lg flex justify-center items-center flex-col	  px-5 sm:px-10  py-3">
 				<div className="flex items-center justify-between px-3 py-2 ">
 					<div className="flex items-center space-x-2  gap-3 ">

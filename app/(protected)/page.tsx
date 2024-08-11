@@ -48,7 +48,6 @@ export default async function Home() {
 				const initialIsBookMarkIconPressed = saves?.some(
 					(save) => save.user_id === userdata.user?.id,
 				);
-				console.log(comments.data);
 
 				return (
 					<Post

@@ -1,5 +1,3 @@
-import { enUS } from "date-fns/locale";
-import { formatDistanceToNow } from "date-fns";
 import Link from "next/link";
 import Image from "next/image";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
@@ -11,8 +9,9 @@ import {
 	MessageCircleIcon,
 	ShareIcon,
 } from "lucide-react";
+import { useRelativeTimeFormat } from "@/hooks/useRelativeTimeFormat";
 
-export function Comment({
+export default function Comment({
 	comment_id,
 	post_id,
 	created_at,
@@ -29,15 +28,7 @@ export function Comment({
 	subcomments?: string[];
 	profiles?: { name: string; avatar_url: string };
 }) {
-	// Fecha objetivo
-	const targetDate = new Date(created_at);
-
-	// Formatear la diferencia de fechas en español
-	const relativeTime = formatDistanceToNow(targetDate, {
-		addSuffix: true,
-		locale: enUS,
-	});
-
+	const relativeTime = useRelativeTimeFormat(created_at);
 	return (
 		<>
 			<div className="flex items-start gap-3">
@@ -47,7 +38,7 @@ export function Comment({
 				</Avatar>
 				<div className="grid gap-1">
 					<div className="flex items-center gap-2">
-						<Link href="#" className="font-medium" prefetch={false}>
+						<Link href="#" className="font-medium text-nowrap" prefetch={false}>
 							{profiles?.name}
 						</Link>
 						<div className="text-xs text-muted-foreground">{relativeTime}</div>

@@ -22,7 +22,6 @@ export default async function Home() {
 		.select("avatar_url, name")
 		.eq("id", userdata.user?.id);
 
-	console.log();
 	return (
 		<div className=" flex flex-col gap-6  py-6 max-sm:items-center ">
 			{posts?.map(async (post) => {
@@ -64,7 +63,7 @@ export default async function Home() {
 						place={post.place}
 						id={post.id}
 						initialIsBookMarkIconPressed={initialIsBookMarkIconPressed || false}
-						comments={post?.comments || []}
+						initialComments={post?.comments || []}
 						userdata={userdataprofiles.data?.[0]}
 					/>
 				);

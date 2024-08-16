@@ -1,21 +1,16 @@
 "use client";
 import { AvatarImage, AvatarFallback, Avatar } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
-import {
-	BookMarkIcon,
-	FlagIcon,
-	HeartIcon,
-	LocationIcon,
-	SendIcon,
-} from "../icons";
+import { BookMarkIcon, HeartIcon, LocationIcon, SendIcon } from "../icons";
 import Image from "next/image";
 import { ReportComponent } from "../ReportBar";
-import { useEffect, useState } from "react";
-import Link from "next/link";
+import { type SyntheticEvent, useEffect, useState } from "react";
 import { Button } from "../ui/button";
-import { Comment } from "../Comment";
 import { useIntesectionObserver } from "@/hooks/useIntesectionObserver";
-
+import dynamic from "next/dynamic";
+const Comment = dynamic(() => import("../Comment"), {
+	ssr: false,
+});
 export function Post({
 	url,
 	description,
@@ -25,7 +20,7 @@ export function Post({
 	hearts,
 	initialIsheartIconPressed,
 	initialIsBookMarkIconPressed,
-	comments,
+	initialComments,
 	user,
 	userdata,
 }: {
@@ -39,15 +34,7 @@ export function Post({
 	initialIsheartIconPressed: boolean;
 	hearts?: string[];
 	initialIsBookMarkIconPressed: boolean;
-	comments?: {
-		comment_id: string;
-		post_id: string;
-		created_at: string;
-		author_id: string;
-		content: string;
-		subcomments?: string[];
-		profiles?: { name: string; avatar_url: string };
-	}[];
+	initialComments?: Comments[];
 	userdata?: {
 		name: string;
 		avatar_url: string;
@@ -59,7 +46,9 @@ export function Post({
 	);
 
 	const [isHeartLoading, setIsHeartLoading] = useState(false);
-
+	const [comments, setComments] = useState<Comments[] | undefined>(
+		initialComments,
+	);
 	const onHeartClick = async () => {
 		if (!id || isHeartLoading) return;
 		setIsHeartLoading(true);
@@ -86,10 +75,11 @@ export function Post({
 	};
 	// Save posts
 
-	const [isBookmarkLoading, setIsBookmarkLoading] = useState(false);
 	const [isBookMarkIconPressed, setIsBookMarkIconPressed] = useState(
 		initialIsBookMarkIconPressed,
 	);
+
+	const [isBookmarkLoading, setIsBookmarkLoading] = useState(false);
 
 	const onBookmarkClick = async () => {
 		if (!id || isBookmarkLoading) return;
@@ -119,6 +109,7 @@ export function Post({
 		setIsBookmarkLoading(false);
 	};
 
+	// Views
 	const { counter, elementRef } = useIntesectionObserver();
 
 	useEffect(() => {
@@ -131,33 +122,52 @@ export function Post({
 			});
 		}
 	}, [counter, id]);
+
+	//comments
+
+	const createComment = async (e: SyntheticEvent) => {
+		e.preventDefault();
+		if (!id) return;
+		const formData = new FormData(e.target as HTMLFormElement);
+		const content = formData.get("content") || "";
+
+		const response = await fetch("/api/posts/comments/create", {
+			method: "POST",
+			body: JSON.stringify({
+				post_id: id,
+				content,
+			}),
+		});
+		if (response.status !== 200) return;
+		const { data } = await response.json();
+		setComments((prevComments) => [data[0], ...(prevComments ?? [])]);
+	};
+	useEffect(() => {
+		console.log(comments);
+	}, [comments]);
 	return (
 		<div
-			className="max-w-sm md:mx-auto w-[350px] sm:w-[450px]  relative "
+			className="max-w-sm md:mx-auto w-[350px] sm:w-[450px] relative "
 			ref={elementRef}
 		>
-			<div className="border rounded-lg flex justify-center items-center flex-col	  px-5 sm:px-10  py-3">
-				<div className="flex items-center justify-between px-3 py-2 ">
-					<div className="flex items-center space-x-2  gap-3 ">
-						<Avatar>
-							<AvatarImage
-								alt="malteseloverclub"
-								src={user.avatar_url || ""}
-								className="object-cover"
-							/>
-							<AvatarFallback>
-								{user.name[0] || user.first_name[0]}
-							</AvatarFallback>
-						</Avatar>
-						<section className="flex justify-between gap-8">
-							<span className="font-semibold text-sm ">
-								{user.name || user.first_name}
-							</span>
-							<ReportComponent post_id={id} />
-						</section>
-					</div>
-				</div>
-				<section className="border border-gray-100 p-3 flex flex-col rounded-sm   gap-3">
+			<div className="border rounded-lg flex justify-center items-center flex-col px-5 sm:px-10 py-3">
+				<header className="flex items-center space-x-2  gap-3 mb-4">
+					<Avatar>
+						<AvatarImage
+							alt="malteseloverclub"
+							src={user.avatar_url || ""}
+							className="object-cover"
+						/>
+						<AvatarFallback>{user.name[0]}</AvatarFallback>
+					</Avatar>
+					<section className="flex justify-between gap-8">
+						<span className="font-semibold text-sm text-nowrap">
+							{user.name}
+						</span>
+						<ReportComponent post_id={id} />
+					</section>
+				</header>
+				<section className="border border-gray-100 p-3 flex flex-col rounded-sm gap-3">
 					<Image
 						src={url}
 						alt="Bichon maltes"
@@ -201,7 +211,7 @@ export function Post({
 						/>
 					</div>
 
-					{/*//////////////////comentarios */}
+					{/* comentarios */}
 					<section className="flex gap-3 ">
 						<div>
 							<Avatar className="h-10 w-10">
@@ -209,11 +219,15 @@ export function Post({
 								<AvatarFallback>{userdata?.name}</AvatarFallback>
 							</Avatar>
 						</div>
-						<div className="flex rounded-xl border border-white p-[3px] gap-4">
+						<form
+							className="flex rounded-xl border border-white p-[3px] gap-4"
+							onSubmit={createComment}
+						>
 							<Input
 								type="text"
 								placeholder="Message..."
 								className="border-none focus-visible:ring-0 "
+								name="content"
 							/>
 							<Button
 								variant="ghost"
@@ -223,7 +237,7 @@ export function Post({
 								<SendIcon />
 								<span className="sr-only">Send</span>
 							</Button>
-						</div>
+						</form>
 					</section>
 					<div>
 						{comments?.map((comment) => (

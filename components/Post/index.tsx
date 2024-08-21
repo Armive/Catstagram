@@ -124,10 +124,12 @@ export function Post({
 	}, [counter, id]);
 
 	//comments
-
+	const [commentCreateLoading, setCommentCreateLoading] = useState<boolean>(false)
 	const createComment = async (e: SyntheticEvent) => {
+
 		e.preventDefault();
-		if (!id) return;
+		if (!id || commentCreateLoading ) return;
+		setCommentCreateLoading(true);
 		const formData = new FormData(e.target as HTMLFormElement);
 		const content = formData.get("content") || "";
 
@@ -142,9 +144,7 @@ export function Post({
 		const { data } = await response.json();
 		setComments((prevComments) => [data[0], ...(prevComments ?? [])]);
 	};
-	useEffect(() => {
-		console.log(comments);
-	}, [comments]);
+	
 	return (
 		<div
 			className="max-w-sm md:mx-auto w-[350px] sm:w-[450px] relative "
@@ -216,7 +216,7 @@ export function Post({
 						<div>
 							<Avatar className="h-10 w-10">
 								<AvatarImage src={userdata?.avatar_url} alt="@shadcn" />
-								<AvatarFallback>{userdata?.name}</AvatarFallback>
+								<AvatarFallback > {userdata?.name?.[0]}</AvatarFallback>
 							</Avatar>
 						</div>
 						<form

@@ -12,5 +12,8 @@ export async function POST(req: Request) {
 	if (error) {
 		Response.json({ message: "Could not signup with github" }, { status: 500 });
 	}
-	return Response.json({ message: "Signup with github successfully" });
+	return Response.json(
+		{ message: "Signup with github successfully", url: data.url },
+		{ status: 200 },
+	);
 }

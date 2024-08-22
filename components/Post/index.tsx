@@ -255,7 +255,7 @@ export function Post({
 								if (response.status === 200) {
 									setComments((prevComments) =>
 										prevComments?.filter(
-											(c) => c.comment_id === comment.comment_id,
+											(c) => c.comment_id !== comment.comment_id,
 										),
 									);
 								}

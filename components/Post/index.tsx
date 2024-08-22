@@ -38,6 +38,7 @@ export function Post({
 	userdata?: {
 		name: string;
 		avatar_url: string;
+		id: string;
 	};
 }) {
 	// Hearts
@@ -124,11 +125,11 @@ export function Post({
 	}, [counter, id]);
 
 	//comments
-	const [commentCreateLoading, setCommentCreateLoading] = useState<boolean>(false)
+	const [commentCreateLoading, setCommentCreateLoading] =
+		useState<boolean>(false);
 	const createComment = async (e: SyntheticEvent) => {
-
 		e.preventDefault();
-		if (!id || commentCreateLoading ) return;
+		if (!id || commentCreateLoading) return;
 		setCommentCreateLoading(true);
 		const formData = new FormData(e.target as HTMLFormElement);
 		const content = formData.get("content") || "";
@@ -144,7 +145,7 @@ export function Post({
 		const { data } = await response.json();
 		setComments((prevComments) => [data[0], ...(prevComments ?? [])]);
 	};
-	
+
 	return (
 		<div
 			className="max-w-sm md:mx-auto w-[350px] sm:w-[450px] relative "
@@ -216,7 +217,7 @@ export function Post({
 						<div>
 							<Avatar className="h-10 w-10">
 								<AvatarImage src={userdata?.avatar_url} alt="@shadcn" />
-								<AvatarFallback > {userdata?.name?.[0]}</AvatarFallback>
+								<AvatarFallback> {userdata?.name?.[0]}</AvatarFallback>
 							</Avatar>
 						</div>
 						<form
@@ -228,6 +229,8 @@ export function Post({
 								placeholder="Message..."
 								className="border-none focus-visible:ring-0 "
 								name="content"
+								maxLength={90}
+								minLength={1}
 							/>
 							<Button
 								variant="ghost"
@@ -240,9 +243,32 @@ export function Post({
 						</form>
 					</section>
 					<div>
-						{comments?.map((comment) => (
-							<Comment key={comment.comment_id} {...comment} />
-						))}
+						{comments?.map((comment) => {
+							const handleDeleteComment = async () => {
+								const response = await fetch("/api/posts/comments/delete", {
+									method: "POST",
+									body: JSON.stringify({
+										comment_id: comment.comment_id,
+									}),
+								});
+
+								if (response.status === 200) {
+									setComments((prevComments) =>
+										prevComments?.filter(
+											(c) => c.comment_id === comment.comment_id,
+										),
+									);
+								}
+							};
+							return (
+								<Comment
+									key={comment.comment_id}
+									{...comment}
+									isSameUser={userdata?.id === comment?.author_id}
+									handleDeleteComment={handleDeleteComment}
+								/>
+							);
+						})}
 					</div>
 				</div>
 			</div>

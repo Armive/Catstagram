@@ -1,15 +1,10 @@
 import Link from "next/link";
-import Image from "next/image";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Button } from "../ui/button";
 import { HeartIcon } from "../icons";
-import {
-	Heart,
-	MessageCircle,
-	MessageCircleIcon,
-	ShareIcon,
-} from "lucide-react";
+import { Delete, Heart, MessageCircleIcon, Trash, Trash2 } from "lucide-react";
 import { useRelativeTimeFormat } from "@/hooks/useRelativeTimeFormat";
+import { useState } from "react";
 
 export default function Comment({
 	comment_id,
@@ -19,6 +14,8 @@ export default function Comment({
 	content,
 	subcomments,
 	profiles,
+	isSameUser,
+	handleDeleteComment,
 }: {
 	comment_id: string;
 	post_id: string;
@@ -27,7 +24,16 @@ export default function Comment({
 	content: string;
 	subcomments?: string[];
 	profiles?: { name: string; avatar_url: string };
+	isSameUser?: boolean;
+	handleDeleteComment: () => void;
 }) {
+	const [loading, setLoading] = useState(false);
+	const handleDeleteCommentClick = async () => {
+		if (loading) return;
+		setLoading(true);
+		handleDeleteComment();
+	};
+
 	const relativeTime = useRelativeTimeFormat(created_at);
 	return (
 		<>
@@ -43,7 +49,7 @@ export default function Comment({
 						</Link>
 						<div className="text-xs text-muted-foreground">{relativeTime}</div>
 					</div>
-					<p className="text-sm leading-relaxed">{content}</p>
+					<p className="text-sm leading-relaxed text-center">{content}</p>
 					<div className="flex items-center gap-4">
 						<Button variant="ghost" size="icon">
 							<HeartIcon className="h-4 w-4" />
@@ -53,10 +59,16 @@ export default function Comment({
 							<MessageCircleIcon className="h-4 w-4" />
 							<span className="sr-only">Reply</span>
 						</Button>
-						<Button variant="ghost" size="icon">
-							<ShareIcon className="h-4 w-4" />
-							<span className="sr-only">Share</span>
-						</Button>
+						{isSameUser && (
+							<Button
+								variant="ghost"
+								size="icon"
+								onClick={handleDeleteCommentClick}
+							>
+								<Trash2 className="h-4 w-4 stroke-red-400" />
+								<span className="sr-only">Delete</span>
+							</Button>
+						)}
 					</div>
 				</div>
 			</div>

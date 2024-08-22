@@ -19,7 +19,7 @@ export default async function Home() {
 	const { data: userdata } = await supabase.auth.getUser();
 	const userdataprofiles = await supabase
 		.from("profiles")
-		.select("avatar_url, name")
+		.select("avatar_url, name, id")
 		.eq("id", userdata.user?.id);
 
 	return (

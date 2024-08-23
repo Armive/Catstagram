@@ -56,7 +56,7 @@ export default function Comment({
 						</Link>
 						<div className="text-xs text-muted-foreground">{relativeTime}</div>
 					</div>
-					<p className="text-sm leading-relaxed break-words max-w-[230]">
+					<p className="text-sm leading-relaxed break-words max-w-[230px]">
 						{content}
 					</p>
 					<div className="flex items-center gap-4">

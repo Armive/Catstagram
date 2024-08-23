@@ -6,7 +6,7 @@ export function useRelativeTimeFormat(date: string) {
 	useEffect(() => {
 		const targetDate = new Date(date);
 		const relativeTime = formatDistanceToNow(targetDate, {
-			addSuffix: true,
+			addSuffix: false,
 			locale: enUS,
 		});
 		setTime(relativeTime);

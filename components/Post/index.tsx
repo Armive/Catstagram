@@ -143,7 +143,10 @@ export function Post({
 		});
 		if (response.status !== 200) return;
 		const { data } = await response.json();
+		const input = document.querySelector(".content") as HTMLInputElement;
+		input.value = "";
 		setComments((prevComments) => [data[0], ...(prevComments ?? [])]);
+		setCommentCreateLoading(false);
 	};
 
 	return (
@@ -190,7 +193,7 @@ export function Post({
 						<HeartIcon
 							ishearticonpressed={String(isHeartIconPressed)}
 							onClick={onHeartClick}
-							className={`cursor-pointer active:animate-heartbeat animate-duration-fast ${isHeartIconPressed ? "dark:text-white text-black" : "dark:text-white text-black"}`}
+							className={`cursor-pointer active:animate-heartbeat animate-duration-fast ${isHeartIconPressed ? "dark:text-white text-black" : "dark:text-white text-black"} ${isHeartLoading ? "blur-sm animate-pulse animate-duration-700" : ""}`}
 						/>
 						<span className="font-semibold text-sm">
 							{initialIsheartIconPressed
@@ -208,7 +211,7 @@ export function Post({
 						<BookMarkIcon
 							isbookmarkiconpressed={String(isBookMarkIconPressed)}
 							onClick={onBookmarkClick}
-							className={`cursor-pointer active:animate-heartbeat animate-duration-fast ${isBookMarkIconPressed ? "dark:text-white text-black" : "dark:text-white text-black"}`}
+							className={`cursor-pointer active:animate-heartbeat animate-duration-fast ${isBookMarkIconPressed ? "dark:text-white text-black" : "dark:text-white text-black"} ${isBookmarkLoading ? "blur-sm animate-pulse animate-duration-700" : ""}`}
 						/>
 					</div>
 
@@ -227,15 +230,16 @@ export function Post({
 							<Input
 								type="text"
 								placeholder="Message..."
-								className="border-none focus-visible:ring-0 "
+								className="border-none focus-visible:ring-0 content"
 								name="content"
 								maxLength={90}
 								minLength={1}
+								required
 							/>
 							<Button
 								variant="ghost"
 								size="icon"
-								className=" flex items-center justify-center"
+								className={`flex items-center justify-center ${commentCreateLoading ? "blur-sm animate-pulse" : ""}`}
 							>
 								<SendIcon />
 								<span className="sr-only">Send</span>

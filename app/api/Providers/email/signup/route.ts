@@ -30,6 +30,7 @@ export async function POST(req: Request) {
 		options: {
 			emailRedirectTo: `${headers().get("origin")}/api/callback`,
 			data: {
+				name: parsedData?.name,
 				day: parsedData?.day,
 				month: parsedData?.month,
 				year: parsedData?.year,

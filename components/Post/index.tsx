@@ -223,8 +223,8 @@ export function Post({
 				<div className="absolute top-0 left-0 right-0 bg-gradient-to-b from-black/50 to-transparent p-4 z-10">
 					<div className="flex items-center space-x-3">
 						<Avatar className="w-10 h-10 ring-2 ring-white">
-							<AvatarImage src={userdata?.avatar_url} alt="@shadcn" />
-							<AvatarFallback> {userdata?.name?.[0]}</AvatarFallback>
+							<AvatarImage src={user?.avatar_url} alt="@shadcn" />
+							<AvatarFallback> {user?.name?.[0]}</AvatarFallback>
 						</Avatar>
 						<div>
 							<p className="font-semibold text-sm">{user.name}</p>
@@ -263,16 +263,16 @@ export function Post({
 								<span className="font-semibold">{user.name}</span> {description}
 							</p>
 						</div>
-						<div className="flex flex-col items-center space-y-2">
+						<div className="flex flex-col items-center space-y-2 B">
 							<Button
 								variant="ghost"
 								size="icon"
-								className={`rounded-full bg-white/20  hover:bg-black backdrop-blur-sm transition-all ${isHeartLoading ? "bg-black" : null}`}
+								className={`rounded-full bg-white/20  hover:bg-black backdrop-blur-sm  ${isHeartLoading ? "bg-black" : null}`}
 							>
 								<HeartIcon
 									ishearticonpressed={String(isHeartIconPressed)}
 									onClick={onHeartClick}
-									className={`cursor-pointer active:animate-heartbeat animate-duration-normal ${isHeartIconPressed ? "text-white" : ""} ${isHeartLoading ? "animate-pulse" : ""}`}
+									className={`cursor-pointer active:animate-jump animate-duration-700 ${isHeartIconPressed ? "text-white" : ""} ${isHeartLoading ? "animate-jelly animate-iteration-count-infinite duration-1000" : ""}`}
 								/>
 							</Button>
 
@@ -293,12 +293,12 @@ export function Post({
 							<Button
 								variant="secondary"
 								size="icon"
-								className={`rounded-full  hover:bg-black bg-white/20  backdrop-blur-sm transition-all ${isBookmarkLoading ? "" : null}`}
+								className={`rounded-full  hover:bg-black bg-white/20  backdrop-blur-sm transition-all ${isBookmarkLoading ? "bg-black" : null}`}
 							>
 								<BookMarkIcon
 									isbookmarkiconpressed={String(isBookMarkIconPressed)}
 									onClick={onBookmarkClick}
-									className={`cursor-pointer active:animate-heartbeat animate-duration-normal ${isBookMarkIconPressed ? "text-white" : "text-white "} ${isBookmarkLoading ? "animate-pulse" : ""}`}
+									className={`cursor-pointer active:animate-blurred-fade-in animate-duration-1000 ${isBookMarkIconPressed ? "text-white" : ""} ${isBookmarkLoading ? "animate-fade-out animate-duration-[1000ms] animate-iteration-count-infinite" : ""}`}
 								/>
 							</Button>
 						</div>

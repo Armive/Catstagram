@@ -44,44 +44,11 @@ export default function Comment({
 	const relativeTime = useRelativeTimeFormat(created_at);
 	return (
 		<>
-			<div className="flex items-start gap-3 ">
-				<Avatar className="h-10 w-10 border">
-					<AvatarImage src={profiles?.avatar_url} alt={profiles?.name} />
-					<AvatarFallback>{profiles?.name}</AvatarFallback>
-				</Avatar>
-				<div className="grid gap-1 items-center">
-					<div className="flex items-center gap-2">
-						<Link href="#" className="font-medium text-nowrap" prefetch={false}>
-							{profiles?.name}
-						</Link>
-						<div className="text-xs text-muted-foreground">{relativeTime}</div>
-					</div>
-					<p className="text-sm leading-relaxed break-words max-w-[230px]">
-						{content}
-					</p>
-					<div className="flex items-center gap-4">
-						<Button variant="ghost" size="icon">
-							<HeartIcon className="h-4 w-4" />
-							<span className="sr-only">Like</span>
-						</Button>
-						<Button variant="ghost" size="icon">
-							<MessageCircleIcon className="h-4 w-4" />
-							<span className="sr-only">Reply</span>
-						</Button>
-
-						{isSameUser && (
-							<Button
-								variant="ghost"
-								size="icon"
-								onClick={handleDeleteCommentClick}
-							>
-								<Trash2 className="h-4 w-4 stroke-red-400" />
-								<span className="sr-only">Delete</span>
-							</Button>
-						)}
-					</div>
-				</div>
-			</div>
+			<p className="text-sm break-words gap-4">
+				<span className="font-semibold m">{profiles?.name}</span>{" "}
+				{content.slice(0, 170)}
+				{content.length > 170 ? "See more" : ""}
+			</p>
 		</>
 	);
 }

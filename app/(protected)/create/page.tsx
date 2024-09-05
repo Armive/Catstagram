@@ -1,5 +1,5 @@
 "use client";
-import { DragEvent, FormEvent, useEffect, useState } from "react";
+import { type DragEvent, type FormEvent, useEffect, useState } from "react";
 import { Progress } from "@/components/ui/progress";
 import { useToast } from "@/components/ui/use-toast";
 
@@ -44,13 +44,21 @@ export default function Create() {
     formdata.append("description", description);
     setLoading(true);
     const requestOptions = { method: "POST", body: formdata };
-    console.log(file);
-    requestOptions.body.forEach((data) => console.log(data));
+
     const response = await fetch(
       `${document.location.origin}/api/create`,
       requestOptions,
     );
-    const data = await response.json();
+
+    if (response.status === 500) {
+      toast({
+        title: "Internal Server Error",
+        description: "Please try again later.",
+      });
+      setLoading(false);
+      return;
+    }
+
     if (response.status === 200) {
       setView((view) => view + 1);
       setLoading(false);
@@ -94,11 +102,11 @@ export default function Create() {
         toast({
           description: `Failed to load  file with type .${image?.type.split("/")[1]}`,
           type: "foreground",
-          duration:7000
+          duration: 7000,
         });
       }
     }
-  }, [file]);
+  }, [file, toast]);
   return (
     <main className="flex justify-center ">
       <Card
@@ -238,7 +246,6 @@ export default function Create() {
                 <Label htmlFor="place">Place</Label>
                 <Input
                   id="place"
-                  required
                   type="text"
                   placeholder="Catsland"
                   name="place"

@@ -1,35 +1,19 @@
 "use client";
 import { Card, CardContent } from "@/components/ui/card";
 import {
-	MessageCircleIcon,
-	BookmarkIcon,
 	MapPinIcon,
-	Send,
-	SendHorizonal,
-	SendToBack,
-	SendHorizonalIcon,
-	Plus,
 	PlusCircleIcon,
 	FlagIcon,
 	DogIcon,
-	PocketKnife,
 	MoreVerticalIcon,
 	Trash2,
 	Pencil,
+	AlertTriangleIcon,
 } from "lucide-react";
 import { AvatarImage, AvatarFallback, Avatar } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
-import {
-	BookMarkIcon,
-	CommentIcon,
-	HeartIcon,
-	LocationIcon,
-	SendIcon,
-	SendToIcon,
-	ThreePointIcon,
-} from "../icons";
+import { BookMarkIcon, HeartIcon } from "../icons";
 import Image from "next/image";
-import { ReportComponent } from "../ReportBar";
 import { type SyntheticEvent, useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import { useIntesectionObserver } from "@/hooks/useIntesectionObserver";
@@ -49,6 +33,9 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
+import { Textarea } from "../ui/textarea";
+import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
+import { Label } from "../ui/label";
 const Comment = dynamic(() => import("../Comment"), {
 	ssr: false,
 });
@@ -56,7 +43,6 @@ const Comment = dynamic(() => import("../Comment"), {
 export function Post({
 	url,
 	description,
-	visualisations,
 	place,
 	id,
 	hearts,
@@ -64,20 +50,20 @@ export function Post({
 	initialIsBookMarkIconPressed,
 	initialComments,
 	user,
-	userdata,
+	userData,
 }: {
 	url: string;
 	user: { id: string; first_name: "text"; name: string; avatar_url: string };
 	title: string;
 	description: string;
 	id?: string;
-	visualisations: number;
+	views: number;
 	place: string;
 	initialIsheartIconPressed: boolean;
 	hearts?: string[];
 	initialIsBookMarkIconPressed: boolean;
 	initialComments?: Comments[];
-	userdata?: {
+	userData?: {
 		name: string;
 		avatar_url: string;
 		id: string;
@@ -164,19 +150,38 @@ export function Post({
 		}
 	}, [counter, id]);
 
-	//comments
-	const [commentCreateLoading, setCommentCreateLoading] =
-		useState<boolean>(false);
-	const [showInput, setShowInput] = useState(false);
-	const [deleteConfirmationId, setDeleteConfirmationId] = useState<
-		string | null
-	>(null);
+	//report
 
-	const [editingCommentId, setEditingCommentId] = useState<string | null>(null);
-	const [value, setValue] = useState("");
+	const [reportLoading, setReportLoading] = useState<boolean>(false);
+	const [reportSubmitted, setReportSubmitted] = useState<boolean>(false);
+	const handleReportSubmit = async (e: SyntheticEvent) => {
+		if (reportLoading && !id) return;
+		e.preventDefault();
+		setReportLoading(true);
+		// Submit the report to the server
+		const form = e.target as HTMLFormElement;
+		const formData = new FormData(form);
+		formData.append("post_id", id as string);
+		const response = await fetch("/api/posts/report", {
+			method: "POST",
+			body: formData,
+		});
+		if (response.status === 200) {
+			setReportSubmitted(true);
+		}
+		setReportLoading(false);
+	};
+
+	//comments
 	const [comments, setComments] = useState<Comments[] | undefined>(
 		initialComments,
 	);
+	// create
+	const [commentCreateLoading, setCommentCreateLoading] =
+		useState<boolean>(false);
+	const [showInput, setShowInput] = useState(false);
+
+	const [value, setValue] = useState("");
 	const createComment = async (e: SyntheticEvent) => {
 		if (!id || commentCreateLoading) return;
 		setCommentCreateLoading(true);
@@ -198,6 +203,10 @@ export function Post({
 		setCommentCreateLoading(false);
 		setShowInput(false);
 	};
+	// delete
+	const [deleteConfirmationId, setDeleteConfirmationId] = useState<
+		string | null
+	>(null);
 	const handleDeleteComment = async (id: string) => {
 		const response = await fetch("/api/posts/comments/delete", {
 			method: "POST",
@@ -213,6 +222,7 @@ export function Post({
 		}
 		setDeleteConfirmationId(null);
 	};
+	const [editingCommentId, setEditingCommentId] = useState<string | null>(null);
 
 	return (
 		<Card
@@ -222,21 +232,23 @@ export function Post({
 			<CardContent className="p-0 relative">
 				<div className="absolute top-0 left-0 right-0 bg-gradient-to-b from-black/50 to-transparent p-4 z-10">
 					<div className="flex items-center space-x-3">
-						<Avatar className="w-10 h-10 ring-2 ring-white">
-							<AvatarImage src={user?.avatar_url} alt="@shadcn" />
+						<Avatar className="w-10 h-10 ring-2 ">
+							<AvatarImage src={user?.avatar_url} alt="user image" />
 							<AvatarFallback> {user?.name?.[0]}</AvatarFallback>
 						</Avatar>
 						<div>
 							<p className="font-semibold text-sm">{user.name}</p>
-							<p className="text-xs flex items-center">
-								<MapPinIcon className="h-3 w-3 mr-1" />
-								<span>{place}</span>
-							</p>
+							{place ? (
+								<p className="text-xs flex items-center">
+									<MapPinIcon className="h-3 w-3 mr-1" />
+									<span>{place}</span>
+								</p>
+							) : null}
 						</div>
 					</div>
 				</div>
 				<Image
-					alt="Imagen del post"
+					alt="Post image"
 					className="w-full h-auto"
 					height="440"
 					src={url}
@@ -283,13 +295,64 @@ export function Post({
 							>
 								<DogIcon className="text-white" />
 							</Button>
-							<Button
-								variant="ghost"
-								size="icon"
-								className="rounded-full hover:bg-black bg-white/20 backdrop-blur-sm"
-							>
-								<FlagIcon className="text-white" />
-							</Button>
+							<Dialog>
+								<DialogTrigger asChild>
+									<Button
+										variant="ghost"
+										size="icon"
+										className="rounded-full hover:bg-black bg-white/20 backdrop-blur-sm"
+									>
+										<FlagIcon className="text-white" />
+									</Button>
+								</DialogTrigger>
+								<DialogContent className="sm:max-w-[425px] ">
+									<DialogHeader>
+										<DialogTitle>Report post</DialogTitle>
+									</DialogHeader>
+									{!reportSubmitted ? (
+										<form onSubmit={handleReportSubmit} className="space-y-4">
+											<RadioGroup name="type">
+												<div className="flex items-center space-x-2">
+													<RadioGroupItem value="spam" id="post-spam" />
+													<Label htmlFor="post-spam">Spam</Label>
+												</div>
+												<div className="flex items-center space-x-2">
+													<RadioGroupItem
+														value="inappropriate"
+														id="post-inappropriate"
+													/>
+													<Label htmlFor="no-animals">
+														It has nothing to do with animals
+													</Label>
+												</div>
+												<div className="flex items-center space-x-2">
+													<RadioGroupItem value="violence" id="post-violence" />
+													<Label htmlFor="abuse">Violence or abuse</Label>
+												</div>
+												<div className="flex items-center space-x-2">
+													<RadioGroupItem value="other" id="post-other" />
+													<Label htmlFor="other">Other</Label>
+												</div>
+											</RadioGroup>
+											<Textarea
+												placeholder="Additional details"
+												name="description"
+											/>
+											<Button type="submit" className="w-full">
+												Submit report
+											</Button>
+										</form>
+									) : (
+										<div className="text-center space-y-4">
+											<AlertTriangleIcon className="h-12 w-12 mx-auto text-yellow-500" />
+											<p>
+												Thanks for your report. We will see it as soon as
+												possible.
+											</p>
+										</div>
+									)}
+								</DialogContent>
+							</Dialog>
 							<Button
 								variant="secondary"
 								size="icon"
@@ -298,7 +361,7 @@ export function Post({
 								<BookMarkIcon
 									isbookmarkiconpressed={String(isBookMarkIconPressed)}
 									onClick={onBookmarkClick}
-									className={`cursor-pointer active:animate-blurred-fade-in animate-duration-1000 ${isBookMarkIconPressed ? "text-white" : ""} ${isBookmarkLoading ? "animate-fade-out animate-duration-[1000ms] animate-iteration-count-infinite" : ""}`}
+									className={`cursor-pointer active:animate-blurred-fade-in animate-duration-100 text-white ${isBookmarkLoading ? "animate-fade-out animate-duration-[1000ms] animate-iteration-count-infinite" : ""}`}
 								/>
 							</Button>
 						</div>
@@ -310,31 +373,7 @@ export function Post({
 				className={`backdrop-blur-sm p-3  overflow-y-auto bg-white/10 ${(comments?.length || 0) === 0 ? "hidden" : ""} `}
 			>
 				{comments?.slice(0, 2)?.map((comment) => {
-					const handleDeleteComment = async () => {
-						const response = await fetch("/api/posts/comments/delete", {
-							method: "POST",
-							body: JSON.stringify({
-								comment_id: comment.comment_id,
-							}),
-						});
-
-						if (response.status === 200) {
-							setComments((prevComments) =>
-								prevComments?.filter(
-									(c) => c.comment_id !== comment.comment_id,
-								),
-							);
-						}
-					};
-
-					return (
-						<Comment
-							key={comment.comment_id}
-							{...comment}
-							isSameUser={userdata?.id === comment?.author_id}
-							handleDeleteComment={handleDeleteComment}
-						/>
-					);
+					return <Comment key={comment.comment_id} {...comment} />;
 				})}
 				{(comments?.length || 0) > 2 && (
 					<Dialog>
@@ -345,7 +384,7 @@ export function Post({
 						</DialogTrigger>
 						<DialogContent className="sm:max-w-[425px] bg-gradient-to-br from-purple-500 to-pink-500 text-white">
 							<DialogHeader>
-								<DialogTitle>Comentarios</DialogTitle>
+								<DialogTitle>Comments</DialogTitle>
 							</DialogHeader>
 							<ScrollArea className="mt-4 max-h-[60vh] pr-4">
 								{comments?.map((comment) => (
@@ -370,13 +409,13 @@ export function Post({
 												<form
 													onSubmit={(e) => {
 														e.preventDefault();
-														const formdata = new FormData(
+														const formData = new FormData(
 															e.target as HTMLFormElement,
 														);
 														fetch("/api/posts/comments/edit", {
 															method: "POST",
 															body: JSON.stringify({
-																content: formdata.get("content"),
+																content: formData.get("content"),
 																comment_id: comment?.comment_id,
 															}),
 														});
@@ -386,7 +425,7 @@ export function Post({
 																return prevComments.map((e) => {
 																	if (e.comment_id === comment?.comment_id) {
 																		const newComment = e;
-																		newComment.content = formdata.get(
+																		newComment.content = formData.get(
 																			"content",
 																		) as string;
 																		return newComment;
@@ -429,14 +468,11 @@ export function Post({
 												</p>
 											)}
 										</div>
-										{comment?.author_id === userdata?.id ? (
+										{comment?.author_id === userData?.id ? (
 											<DropdownMenu>
 												<DropdownMenuTrigger asChild>
 													<Button variant="ghost" size="sm">
 														<MoreVerticalIcon className="h-4 w-4" />
-														<span className="sr-only">
-															Acciones de comentario
-														</span>
 													</Button>
 												</DropdownMenuTrigger>
 												<DropdownMenuContent align="end">
@@ -446,7 +482,7 @@ export function Post({
 														}}
 													>
 														<Pencil className="mr-2 h-4 w-4" />
-														<span>Editar</span>
+														<span>Edit</span>
 													</DropdownMenuItem>
 													<DropdownMenuItem
 														onSelect={() =>
@@ -454,7 +490,7 @@ export function Post({
 														}
 													>
 														<Trash2 className="mr-2 h-4 w-4" />
-														<span>Borrar</span>
+														<span>Delete</span>
 													</DropdownMenuItem>
 												</DropdownMenuContent>
 											</DropdownMenu>
@@ -506,21 +542,21 @@ export function Post({
 					className="w-full p-3 text-white hover:bg-white/10 flex items-center justify-center"
 				>
 					<PlusCircleIcon className="h-5 w-5 mr-2" />
-					Añadir comentario
+					Add comment
 				</Button>
 			)}
 			<Dialog open={deleteConfirmationId !== null}>
 				<DialogContent>
 					<DialogHeader>
-						<DialogTitle>Confirmar eliminación</DialogTitle>
+						<DialogTitle>Confirm delete</DialogTitle>
 					</DialogHeader>
-					<p>¿Estás seguro de que quieres eliminar este comentario?</p>
+					<p>¿Are you sure you wanna delete this comment?</p>
 					<DialogFooter>
 						<Button
 							variant="secondary"
 							onClick={() => setDeleteConfirmationId(null)}
 						>
-							Cancelar
+							Cancel
 						</Button>
 						<Button
 							variant="destructive"
@@ -529,7 +565,7 @@ export function Post({
 								handleDeleteComment(deleteConfirmationId)
 							}
 						>
-							Eliminar
+							Delete
 						</Button>
 					</DialogFooter>
 				</DialogContent>

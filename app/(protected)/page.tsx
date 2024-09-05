@@ -2,7 +2,7 @@ import { Post } from "@/components/Post";
 import { createClient } from "@/utils/supabase/server";
 export default async function Home() {
 	const supabase = createClient();
-	const { data: posts, error } = await supabase
+	const { data: posts } = await supabase
 		.from("posts")
 		.select(`*,
 			profiles(name, avatar_url),
@@ -16,11 +16,11 @@ export default async function Home() {
 		.order("created_at", {
 			ascending: false,
 		});
-	const { data: userdata } = await supabase.auth.getUser();
-	const userdataprofiles = await supabase
+	const { data: userData } = await supabase.auth.getUser();
+	const userDataProfiles = await supabase
 		.from("profiles")
 		.select("avatar_url, name, id")
-		.eq("id", userdata.user?.id);
+		.eq("id", userData.user?.id);
 
 	return (
 		<div className=" flex flex-col gap-6  py-6 max-sm:items-center ">
@@ -31,7 +31,7 @@ export default async function Home() {
 					(d: { user_id: string; name: string }) => d.user_id as string,
 				);
 				const initialIsheartIconPressed = hearts?.includes(
-					userdata.user?.id as string,
+					userData.user?.id as string,
 				);
 
 				const { data: saves } = await supabase
@@ -40,7 +40,7 @@ export default async function Home() {
 					.eq("post_id", post.id);
 
 				const initialIsBookMarkIconPressed = saves?.some(
-					(save) => save.user_id === userdata.user?.id,
+					(save) => save.user_id === userData.user?.id,
 				);
 
 				return (
@@ -59,12 +59,12 @@ export default async function Home() {
 						url={url.data.publicUrl}
 						title={post.title}
 						key={post.id}
-						visualisations={post.views}
+						views={post.views}
 						place={post.place}
 						id={post.id}
 						initialIsBookMarkIconPressed={initialIsBookMarkIconPressed || false}
 						initialComments={post?.comments || []}
-						userdata={userdataprofiles.data?.[0]}
+						userData={userDataProfiles.data?.[0]}
 					/>
 				);
 			})}

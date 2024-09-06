@@ -12,8 +12,9 @@ export const metadata: Metadata = {
 	openGraph: {
 		type: "website",
 		title: "Catstagram",
-		url: "catstagram-seven.vercel.app",
+		url: "https://catstagram-seven.vercel.app/",
 		description: "Instagram for pets",
+		siteName: "Catstagram",
 	},
 };
 

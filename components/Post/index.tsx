@@ -17,7 +17,6 @@ import Image from "next/image";
 import { type SyntheticEvent, useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import { useIntesectionObserver } from "@/hooks/useIntesectionObserver";
-import dynamic from "next/dynamic";
 import {
 	Dialog,
 	DialogContent,
@@ -36,10 +35,11 @@ import {
 import { Textarea } from "../ui/textarea";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { Label } from "../ui/label";
-const Comment = dynamic(() => import("../Comment"), {
-	ssr: false,
-});
+import Comment from "../Comment";
 
+import dynamic from "next/dynamic";
+
+const EmojiPostBar = dynamic(() => import("../EmojiPostBar"), { ssr: false });
 export function Post({
 	url,
 	description,
@@ -227,7 +227,7 @@ export function Post({
 	return (
 		<Card
 			ref={elementRef}
-			className="max-w-[400px] mx-auto overflow-hidden bg-gradient-to-br from-purple-500 to-pink-500 text-white"
+			className="max-w-[400px] mx-auto  bg-gradient-to-br from-purple-500 to-pink-500 text-white overflow-hidden"
 		>
 			<CardContent className="p-0 relative">
 				<div className="absolute top-0 left-0 right-0 bg-gradient-to-b from-black/50 to-transparent p-4 z-10">
@@ -249,7 +249,6 @@ export function Post({
 				</div>
 				<Image
 					alt="Post image"
-					className="w-full h-auto"
 					height="440"
 					src={url}
 					style={{
@@ -288,13 +287,7 @@ export function Post({
 								/>
 							</Button>
 
-							<Button
-								variant="ghost"
-								size="icon"
-								className="rounded-full hover:bg-black bg-white/20 backdrop-blur-sm"
-							>
-								<DogIcon className="text-white" />
-							</Button>
+							<EmojiPostBar />
 							<Dialog>
 								<DialogTrigger asChild>
 									<Button

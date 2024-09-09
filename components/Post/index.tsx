@@ -401,7 +401,7 @@ export function Post({
 												{comment?.profiles?.name[0]}
 											</AvatarFallback>
 										</Avatar>
-										<div>
+										<div className="flex-auto">
 											<p className="font-semibold text-sm">
 												{comment?.profiles?.name}
 											</p>
@@ -463,7 +463,7 @@ export function Post({
 													</div>
 												</form>
 											) : (
-												<p className="text-sm break-words w-[250px] max-w-[250px]	">
+												<p className="text-sm break-words 	">
 													{comment?.content}
 												</p>
 											)}

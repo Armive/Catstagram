@@ -6,6 +6,7 @@ interface SignUpData {
 	month?: number;
 	year?: number;
 	gender?: "male" | "female" | "none";
+	handle?: string;
 }
 
 interface Comments {

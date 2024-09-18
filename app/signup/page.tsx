@@ -104,38 +104,35 @@ export default function SignUp() {
 			handle,
 		});
 		if (!validatedData.success) return;
+		const signUpUser = async (data: SignUpData) => {
+			if (!isHandleAvailable) return;
+			setLoading(true);
+			const response = await fetch(
+				`${document.location.origin}/api/Providers/email/signup`,
+				{
+					body: JSON.stringify(data),
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+				},
+			);
+			if (response.status === 200) {
+				setLoading(false);
+				setView(2);
+				if (data?.email?.includes("gmail")) {
+					setEmailVerificationHelpLink("https://mail.google.com/mail/u/0/");
+				} else if (
+					data?.email?.includes("outlook") ||
+					data?.email?.includes("hotmail")
+				) {
+					setEmailVerificationHelpLink("https://outlook.live.com/mail/0/");
+				}
+			}
+		};
 
 		signUpUser(validatedData.data);
-	}, [userData]);
-
-	const signUpUser = async (data: SignUpData) => {
-		console.log(isHandleAvailable);
-		if (!isHandleAvailable) return;
-		setLoading(true);
-		const response = await fetch(
-			`${document.location.origin}/api/Providers/email/signup`,
-			{
-				body: JSON.stringify(data),
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-			},
-		);
-		const responsedata = await response.json();
-		if (response.status === 200) {
-			setLoading(false);
-			setView(2);
-			if (data?.email?.includes("gmail")) {
-				setEmailVerificationHelpLink("https://mail.google.com/mail/u/0/");
-			} else if (
-				data?.email?.includes("outlook") ||
-				data?.email?.includes("hotmail")
-			) {
-				setEmailVerificationHelpLink("https://outlook.live.com/mail/0/");
-			}
-		}
-	};
+	}, [userData, isHandleAvailable]);
 
 	// handle  check
 
@@ -173,7 +170,7 @@ export default function SignUp() {
 						<CardHeader className="flex items-center">
 							<Image
 								src="/catstagram.png"
-								alt="catslogo"
+								alt="catsLogo"
 								className=" hidden xl:flex dark:invert self-center"
 								width={159}
 								height={38}
@@ -264,7 +261,7 @@ export default function SignUp() {
 						<CardHeader className="flex items-center">
 							<Image
 								src="/catstagram.png"
-								alt="catslogo"
+								alt="catsLogo"
 								className=" hidden xl:flex dark:invert self-center"
 								width={159}
 								height={38}
@@ -390,7 +387,7 @@ export default function SignUp() {
 						<CardHeader className="flex items-center">
 							<Image
 								src="/catstagram.png"
-								alt="catslogo"
+								alt="catsLogo"
 								className=" hidden xl:flex dark:invert self-center"
 								width={159}
 								height={38}

@@ -197,8 +197,7 @@ export function Post({
 		});
 		if (response.status !== 200) return;
 		const { data } = await response.json();
-		const input = document.querySelector(".content") as HTMLInputElement;
-		input.value = "";
+		setValue("");
 		setComments((prevComments) => [data[0], ...(prevComments ?? [])]);
 		setCommentCreateLoading(false);
 		setShowInput(false);

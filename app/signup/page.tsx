@@ -31,6 +31,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
+import clsx from "clsx";
 
 const User = z.object({
 	name: z.string(),
@@ -161,7 +162,9 @@ export default function SignUp() {
 	return (
 		<main className="flex justify-center w-full p-4  lg:w-[50vw]">
 			<Card
-				className={`w-[350px] p-2 h-fit duration-1000  ${loading ? "animate-pulse" : ""}`}
+				className={clsx("w-[350px] p-2 h-fit duration-1000", {
+					"animate-pulse": loading,
+				})}
 			>
 				<Progress value={33.3 * (view + 1)} />
 

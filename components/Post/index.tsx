@@ -38,6 +38,7 @@ import { Label } from "../ui/label";
 import Comment from "../Comment";
 
 import dynamic from "next/dynamic";
+import clsx from "clsx";
 
 const EmojiPostBar = dynamic(() => import("../EmojiPostBar"), { ssr: false });
 export function Post({
@@ -277,12 +278,22 @@ export function Post({
 							<Button
 								variant="ghost"
 								size="icon"
-								className={`rounded-full bg-white/20  hover:bg-black backdrop-blur-sm  ${isHeartLoading ? "bg-black" : null}`}
+								className={clsx(
+									"rounded-full bg-white/20  hover:bg-black backdrop-blur-sm",
+									{ "bg-black": isHeartIconPressed },
+								)}
 							>
 								<HeartIcon
 									ishearticonpressed={String(isHeartIconPressed)}
 									onClick={onHeartClick}
-									className={`cursor-pointer active:animate-jump animate-duration-700 ${isHeartIconPressed ? "text-white" : ""} ${isHeartLoading ? "animate-jelly animate-iteration-count-infinite duration-1000" : ""}`}
+									className={clsx(
+										"cursor-pointer active:animate-jump animate-duration-700",
+										{
+											"text-white": isHeartIconPressed,
+											"animate-jelly animate-iteration-count-infinite duration-1000":
+												isHeartLoading,
+										},
+									)}
 								/>
 							</Button>
 
@@ -348,12 +359,21 @@ export function Post({
 							<Button
 								variant="secondary"
 								size="icon"
-								className={`rounded-full  hover:bg-black bg-white/20  backdrop-blur-sm transition-all ${isBookmarkLoading ? "bg-black" : null}`}
+								className={clsx(
+									"rounded-full  hover:bg-black bg-white/20  backdrop-blur-sm transition-all",
+									{ "bg-black": isBookMarkIconPressed },
+								)}
 							>
 								<BookMarkIcon
 									isbookmarkiconpressed={String(isBookMarkIconPressed)}
 									onClick={onBookmarkClick}
-									className={`cursor-pointer active:animate-blurred-fade-in animate-duration-100 text-white ${isBookmarkLoading ? "animate-fade-out animate-duration-[1000ms] animate-iteration-count-infinite" : ""}`}
+									className={clsx(
+										"cursor-pointer active:animate-blurred-fade-in animate-duration-100 text-white",
+										{
+											"animate-fade-out animate-duration-[1000ms] animate-iteration-count-infinite":
+												isBookmarkLoading,
+										},
+									)}
 								/>
 							</Button>
 						</div>
@@ -362,7 +382,9 @@ export function Post({
 			</CardContent>
 
 			<div
-				className={`backdrop-blur-sm p-3  overflow-y-auto bg-white/10 ${(comments?.length || 0) === 0 ? "hidden" : ""} `}
+				className={clsx("backdrop-blur-sm p-3  overflow-y-auto bg-white/10", {
+					hidden: (comments?.length || 0) === 0,
+				})}
 			>
 				{comments?.slice(0, 2)?.map((comment) => {
 					return <Comment key={comment.comment_id} {...comment} />;

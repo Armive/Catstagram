@@ -1,5 +1,7 @@
 "use server";
 import { createClient } from "@/utils/supabase/server";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 import sharp from "sharp";
 
 export const createPostAction = async (
@@ -27,4 +29,30 @@ export const createPostAction = async (
 		return { status: "error" };
 	}
 	return { status: "ok" };
+};
+
+export const login = async (formData: FormData) => {
+	const supabase = createClient();
+	const password = formData.get("password") as string;
+	const email = formData.get("email") as string;
+
+	const { error } = await supabase.auth.signInWithPassword({
+		email,
+		password,
+	});
+	if (!error) {
+		redirect(`${headers().get("origin")}/`);
+	}
+	redirect(`${headers().get("origin")}/login?message=credentialErrors`);
+};
+
+export const onGithubLogin = async () => {
+	const supabase = createClient();
+	const { data, error } = await supabase.auth.signInWithOAuth({
+		provider: "github",
+		options: {
+			redirectTo: `${headers().get("origin")}/api/callback`,
+		},
+	});
+	redirect(data.url || "");
 };

@@ -1,12 +1,5 @@
-import { useState } from "react";
-
 export default function Comment({
-	comment_id,
-	post_id,
-	created_at,
-	author_id,
 	content,
-	subComments,
 	profiles,
 }: {
 	comment_id: string;

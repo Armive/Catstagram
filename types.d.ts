@@ -1,14 +1,3 @@
-interface SignUpData {
-	email?: string;
-	name?: string;
-	password?: string;
-	day?: number;
-	month?: number;
-	year?: number;
-	gender?: "male" | "female" | "none";
-	handle?: string;
-}
-
 interface Comments {
 	comment_id: string;
 	post_id: string;

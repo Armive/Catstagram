@@ -50,7 +50,7 @@ export function GradientTweetComposer({
 	}, [content, description, image]);
 
 	return (
-		<Card className="w-full max-w-2xl mx-auto bg-gradient-to-br from-blue-50 to-purple-50 dark:from-gray-900 dark:to-gray-800 shadow-lg">
+		<Card className="w-full max-w-2xl mx-auto bg-gradient-to-br from-purple-500 to-pink-500 dark:from-gray-900 dark:to-gray-800 shadow-lg">
 			<CardContent className="p-6">
 				<form onSubmit={handleSubmit} className="space-y-4">
 					<div className="flex items-start space-x-4">

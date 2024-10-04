@@ -672,25 +672,25 @@ function SmileIcon() {
 				strokeWidth="2"
 			>
 				<path
-					stroke-dasharray="60"
-					stroke-dashoffset="60"
+					strokeDasharray="60"
+					strokeDashoffset="60"
 					d="M12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3Z"
 				>
 					<animate
 						fill="freeze"
-						attributeName="stroke-dashoffset"
+						attributeName="strokeDashoffset"
 						dur="0.5s"
 						values="60;0"
 					/>
 				</path>
 				<path
-					stroke-dasharray="14"
-					stroke-dashoffset="14"
+					strokeDasharray="14"
+					strokeDashoffset="14"
 					d="M8 14C8.5 15.5 9.79086 17 12 17C14.2091 17 15.5 15.5 16 14"
 				>
 					<animate
 						fill="freeze"
-						attributeName="stroke-dashoffset"
+						attributeName="strokeDashoffset"
 						begin="1s"
 						dur="0.2s"
 						values="14;0"

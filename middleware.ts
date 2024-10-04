@@ -11,6 +11,7 @@ export async function middleware(request: NextRequest) {
 		"/login",
 		"/signup",
 		"/api/Providers/email/signup",
+		"/api/Providers/email/checkHandle",
 		"/api/Providers/github",
 		"/api/callback",
 	];

@@ -40,6 +40,7 @@ const User = z.object({
 	month: z.number().lt(12).gt(0),
 	year: z.number().gt(1950).lt(2014),
 	gender: z.enum(["male", "female", "none"]),
+	handle: z.string().min(5).max(30),
 });
 
 export default function SignUp() {
@@ -50,6 +51,9 @@ export default function SignUp() {
 
 	const [view, setView] = useState(0);
 	const [loading, setLoading] = useState(false);
+	const [handle, setHandle] = useState("");
+	const [handleMessage, setHandleMessage] = useState("");
+	const [isHandleAvailable, setIsHandleAvailable] = useState(false);
 
 	const onGoBack = () => {
 		setView((view) => view - 1);
@@ -86,7 +90,8 @@ export default function SignUp() {
 	};
 
 	useEffect(() => {
-		const { name, email, password, day, month, year, gender } = userData;
+		const { name, email, password, day, month, year, gender, handle } =
+			userData;
 
 		const validatedData = User.safeParse({
 			name,
@@ -96,38 +101,62 @@ export default function SignUp() {
 			month: Number(month),
 			year: Number(year),
 			gender,
+			handle,
 		});
 		if (!validatedData.success) return;
+		const signUpUser = async (data: SignUpData) => {
+			if (!isHandleAvailable) return;
+			setLoading(true);
+			const response = await fetch(
+				`${document.location.origin}/api/Providers/email/signup`,
+				{
+					body: JSON.stringify(data),
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+				},
+			);
+			if (response.status === 200) {
+				setLoading(false);
+				setView(2);
+				if (data?.email?.includes("gmail")) {
+					setEmailVerificationHelpLink("https://mail.google.com/mail/u/0/");
+				} else if (
+					data?.email?.includes("outlook") ||
+					data?.email?.includes("hotmail")
+				) {
+					setEmailVerificationHelpLink("https://outlook.live.com/mail/0/");
+				}
+			}
+		};
 
 		signUpUser(validatedData.data);
-	}, [userData]);
+	}, [userData, isHandleAvailable]);
 
-	const signUpUser = async (data: SignUpData) => {
-		setLoading(true);
-		const response = await fetch(
-			`${document.location.origin}/api/Providers/email/signup`,
-			{
-				body: JSON.stringify(data),
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-			},
-		);
-		const responsedata = await response.json();
-		if (response.status === 200) {
-			setLoading(false);
-			setView(2);
-			if (data?.email?.includes("gmail")) {
-				setEmailVerificationHelpLink("https://mail.google.com/mail/u/0/");
-			} else if (
-				data?.email?.includes("outlook") ||
-				data?.email?.includes("hotmail")
-			) {
-				setEmailVerificationHelpLink("https://outlook.live.com/mail/0/");
-			}
+	// handle  check
+
+	useEffect(() => {
+		setHandle(handle.replace(" ", ""));
+		if (handle.length < 5 || handle.length > 30) {
+			setIsHandleAvailable(false);
+			setHandleMessage("Handle should have more than 5 characters.");
+			return;
 		}
-	};
+
+		fetch("/api/Providers/email/checkHandle", {
+			method: "POST",
+			body: JSON.stringify({ handle }),
+		})
+			.then((response) => response.json())
+			.then((data) => setIsHandleAvailable(data.isAvailable));
+
+		if (!isHandleAvailable) {
+			setHandleMessage("Handle is already taken.");
+			return;
+		}
+		setHandleMessage("");
+	}, [handle, isHandleAvailable]);
 
 	return (
 		<main className="flex justify-center w-full p-4  lg:w-[50vw]">
@@ -141,7 +170,7 @@ export default function SignUp() {
 						<CardHeader className="flex items-center">
 							<Image
 								src="/catstagram.png"
-								alt="catslogo"
+								alt="catsLogo"
 								className=" hidden xl:flex dark:invert self-center"
 								width={159}
 								height={38}
@@ -232,7 +261,7 @@ export default function SignUp() {
 						<CardHeader className="flex items-center">
 							<Image
 								src="/catstagram.png"
-								alt="catslogo"
+								alt="catsLogo"
 								className=" hidden xl:flex dark:invert self-center"
 								width={159}
 								height={38}
@@ -304,6 +333,27 @@ export default function SignUp() {
 										</SelectContent>
 									</Select>
 								</section>
+								<div className="flex flex-col space-y-1.5 items-center">
+									<Label htmlFor="year">Handle</Label>
+									<div className="relative w-full">
+										<Input
+											id="handle"
+											name="handle"
+											placeholder="guaudev"
+											required
+											type="text"
+											disabled={loading}
+											minLength={5}
+											maxLength={30}
+											value={handle}
+											onChange={(e) => setHandle(e.target.value)}
+										/>
+										{isHandleAvailable ? "✔" : "❌"}
+										<p className="text-red-500 font-medium text-sm">
+											{handle.length === 0 ? "" : handleMessage}
+										</p>
+									</div>
+								</div>
 								<section className="flex justify-center items-center gap-3 mt-4">
 									<Button
 										type="button"
@@ -337,7 +387,7 @@ export default function SignUp() {
 						<CardHeader className="flex items-center">
 							<Image
 								src="/catstagram.png"
-								alt="catslogo"
+								alt="catsLogo"
 								className=" hidden xl:flex dark:invert self-center"
 								width={159}
 								height={38}

@@ -1,7 +1,7 @@
 "use client";
 
-import { ReloadIcon } from "@/components/icons";
-import { Button } from "@/components/ui/button";
+import { ReloadIcon } from "@/components/shared/icons";
+import { Button } from "@/components/shared/ui/button";
 
 export default function ErrorPage({
 	reset,

@@ -3,11 +3,11 @@ import { createClient } from "@/utils/supabase/server";
 export async function POST(req: Request) {
 	const supabase = createClient();
 	const body = await req.json();
-	const { data, error: viewserror } = await supabase
+	const { data, error: viewError } = await supabase
 		.from("posts")
 		.select("views")
 		.eq("id", body.post_id);
-	if (viewserror?.message)
+	if (viewError?.message)
 		Response.json({ message: "post not exits" }, { status: 400 });
 	const { error } = await supabase
 		.from("posts")

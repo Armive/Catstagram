@@ -3,16 +3,16 @@ import { type FormEvent, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-import { Progress } from "@/components/ui/progress";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/shared/ui/progress";
+import { Input } from "@/components/shared/ui/input";
+import { Button } from "@/components/shared/ui/button";
 import {
 	EmailIcon,
 	GithubIcon,
 	LeftArrow,
 	RightArrow,
-} from "@/components/icons";
-import { Label } from "@/components/ui/label";
+} from "@/components/shared/icons";
+import { Label } from "@/components/shared/ui/label";
 import {
 	Card,
 	CardContent,
@@ -20,20 +20,20 @@ import {
 	CardFooter,
 	CardHeader,
 	CardTitle,
-} from "@/components/ui/card";
+} from "@/components/shared/ui/card";
 import {
 	Select,
 	SelectContent,
 	SelectItem,
 	SelectTrigger,
 	SelectValue,
-} from "@/components/ui/select";
+} from "@/components/shared/ui/select";
 import clsx from "clsx";
 import { onGithubLogin, SignUp } from "@/lib/actions";
 import { type SignUpType, User } from "@/lib/schemas";
 import { motion, AnimatePresence } from "framer-motion";
 import { Check, X } from "lucide-react";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/components/shared/ui/use-toast";
 import { useDebouncedCallback } from "use-debounce";
 
 export default function SignUpPage() {

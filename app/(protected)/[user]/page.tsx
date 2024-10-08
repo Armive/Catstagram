@@ -1,48 +1,28 @@
-import { Button } from "@/components/ui/button";
-import { AvatarImage, Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
-	BellIcon,
-	BlockIcon,
-	EllipsisVerticalIcon,
-	FlagIcon,
-	RestrictIcon,
-	ReturnIcon,
-	SendToIcon,
-} from "@/components/icons";
-import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuGroup,
-	DropdownMenuItem,
-	DropdownMenuLabel,
-	DropdownMenuPortal,
-	DropdownMenuSeparator,
-	DropdownMenuShortcut,
-	DropdownMenuSub,
-	DropdownMenuSubContent,
-	DropdownMenuSubTrigger,
-	DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+	AvatarImage,
+	Avatar,
+	AvatarFallback,
+} from "@/components/shared/ui/avatar";
+
 import { createClient } from "@/utils/supabase/server";
 import { notFound } from "next/navigation";
-import { FollowButton } from "@/components/followButton";
-import { Post } from "@/components/Post";
+import { FollowButton } from "@/components/user/followButton";
 import Image from "next/image";
 import {
-	BookOpen,
 	CameraIcon,
 	Cat,
 	Eye,
-	FilmIcon,
 	Heart,
 	LinkIcon,
 	MapPinIcon,
-	MoreHorizontalIcon,
 	Pin,
-	StickyNote,
-	UserIcon,
 } from "lucide-react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+	Tabs,
+	TabsContent,
+	TabsList,
+	TabsTrigger,
+} from "@/components/shared/ui/tabs";
 
 export default async function About({ params }: { params: { user: string } }) {
 	const supabase = createClient();
@@ -68,12 +48,7 @@ export default async function About({ params }: { params: { user: string } }) {
 
 	const { data: user } = await supabase.auth.getUser();
 
-	const { data: userData } = await supabase.auth.getUser();
-	const userDataProfiles = await supabase
-		.from("profiles")
-		.select("avatar_url, name, id")
-		.eq("id", userData.user?.id);
-	const posts = data[0].posts?.map((post) => {
+	const posts = data[0].posts?.map((post: PostType) => {
 		const url = supabase.storage.from("Posts").getPublicUrl(post.url);
 		return { ...post, imageUrl: url.data.publicUrl };
 	});
@@ -144,12 +119,12 @@ export default async function About({ params }: { params: { user: string } }) {
 				</TabsList>
 				<TabsContent value="posts" className="mt-6">
 					<div className="grid grid-cols-3 gap-1">
-						{posts.map(async (post) => {
+						{posts.map(async (post: PostType) => {
 							const hearts = post?.post_likes?.map(
-								(d: { user_id: string; name: string }) => d.user_id as string,
+								(d: Like) => d.user_id as string,
 							);
 							const initialIsheartIconPressed = hearts?.includes(
-								userData.user?.id as string,
+								user.user?.id as string,
 							);
 
 							const { data: saves } = await supabase
@@ -158,7 +133,7 @@ export default async function About({ params }: { params: { user: string } }) {
 								.eq("post_id", post.id);
 
 							const initialIsBookMarkIconPressed = saves?.some(
-								(save) => save.user_id === userData.user?.id,
+								(save) => save.user_id === user.user?.id,
 							);
 
 							return (
@@ -167,7 +142,7 @@ export default async function About({ params }: { params: { user: string } }) {
 									className="aspect-square bg-gray-800 overflow-hidden relative group "
 								>
 									<Image
-										src={post.imageUrl}
+										src={post.imageUrl || ""}
 										alt="Try to reload"
 										className="w-full h-full object-cover"
 										width={400}

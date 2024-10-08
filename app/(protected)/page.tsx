@@ -1,4 +1,4 @@
-import { Post } from "@/components/Post";
+import { Post } from "@/components/home/Post";
 import { createClient } from "@/utils/supabase/server";
 export default async function Home() {
 	const supabase = createClient();

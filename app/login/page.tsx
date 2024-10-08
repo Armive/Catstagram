@@ -1,12 +1,10 @@
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { Input } from "@/components/shared/ui/input";
+import { Button } from "@/components/shared/ui/button";
 import Link from "next/link";
-import { GithubIcon } from "@/components/icons";
+import { GithubIcon } from "@/components/shared/icons";
 import Image from "next/image";
-import { Label } from "@/components/ui/label";
-import { redirect } from "next/navigation";
-import { createClient } from "@/utils/supabase/server";
-import { headers } from "next/headers";
+import { Label } from "@/components/shared/ui/label";
+
 import { login, onGithubLogin } from "@/lib/actions";
 
 export default function Login({

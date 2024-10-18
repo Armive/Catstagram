@@ -9,18 +9,19 @@ import { Input } from "@/components/shared/ui/input";
 import { BookmarkIcon, HeartIcon } from "lucide-react";
 import Image from "next/image";
 import { ScrollArea } from "../../shared/ui/scroll-area";
+import { DialogTitle } from "@radix-ui/react-dialog";
 
-export default function Aguis() {
+export default function PostView({ data }: { data: PostType }) {
 	return (
-		<main className="flex items-center justify-center p-4">
+		<main className="flex items-center justify-center ">
 			<article className="w-full max-w-4xl overflow-hidden shadow-xl rounded-lg">
 				<section className="flex flex-col md:flex-row ">
 					<figure className="md:w-1/2 relative ">
 						<Image
-							alt="Person holding a white dog"
+							alt={data.description}
 							className="w-full h-full object-cover"
 							height="600"
-							src="/cato.jpg"
+							src={data.imageUrl || ""}
 							style={{
 								aspectRatio: "600/600",
 								objectFit: "cover",
@@ -28,72 +29,60 @@ export default function Aguis() {
 							width="600"
 						/>
 						<figcaption className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black to-transparent text-white">
-							<h2 className="text-[1.5rem] font-semibold">
-								This cat is the best in the world
-							</h2>
+							<DialogTitle className="text-[1.5rem] font-semibold max-w-[350px] break-words">
+								{data.description}
+							</DialogTitle>
 							<div className="flex items-center gap-2">
 								<Avatar>
-									<AvatarImage alt="@taco.westie" src="/cato.jpg" />
-									<AvatarFallback>TW</AvatarFallback>
+									<AvatarImage
+										alt="@taco.westie"
+										src={data.profiles.avatar_url || ""}
+									/>
+									<AvatarFallback>{data.profiles.name[0]}</AvatarFallback>
 								</Avatar>
-								<p className="font-semibold">Armive 🍁</p>
+								<p className="font-semibold">{data?.profiles.name}</p>
 							</div>
 						</figcaption>
 					</figure>
 					<section className="md:w-1/2 flex flex-col bg-black text-white pr">
 						<CardContent className="flex flex-col flex-grow overflow-auto">
-							<ScrollArea className=" h-72 w-96 p-2 ">
+							<ScrollArea className=" h-72 w-full p-2 ">
 								<div className="flex flex-col gap-5">
-									<ul className="space-y-4">
-										<li className="flex gap-3 space-x-3">
-											<Avatar className="w-8 h-8 object-cover">
-												<AvatarImage alt="@Aguis" src="/cato.jpg" />
-												<AvatarFallback>TN</AvatarFallback>
-											</Avatar>
-											<div>
-												<p className="font-medium">Armive</p>
-												<p className="text-sm">
-													I think my fellow cat is the best in the world look at
-													his paws and i think tribi is gonna it her so i mush
-													hide her. #coolcat #ihatedogs #ilikecats
-													#thebestcatever #thebestcat
-												</p>
-											</div>
-										</li>
-									</ul>
-									<ul className="space-y-4">
-										<li className="flex gap-3 space-x-3">
-											<Avatar className="w-8 h-8 object-cover">
-												<AvatarImage alt="@Aguis" src="/images.jpg" />
-												<AvatarFallback>TN</AvatarFallback>
-											</Avatar>
-											<div>
-												<p className="font-medium">Tribilin</p>
-												<p className="text-sm">
-													Wut???? ahhhh that cat is the best to eat
-												</p>
-											</div>
-										</li>
-									</ul>
-									<ul className="space-y-4">
-										<li className="flex gap-3 space-x-3">
-											<Avatar className="w-8 h-8 object-cover">
-												<AvatarImage alt="@Aguis" src="/images.jpg" />
-												<AvatarFallback>TN</AvatarFallback>
-											</Avatar>
-											<div className="flex flex-col gap-1">
-												<p className="font-medium">Kira Osica</p>
-												<p className="text-sm">Guys, how do i look today ???</p>
-												<Image
-													src="https://i.pinimg.com/236x/0f/d3/a7/0fd3a743ad2b0454e0e9431a80f266b7.jpg"
-													alt="Influencer photo"
-													width={200}
-													height={150}
-													className="object-cover duration-300 rounded-xl "
-												/>
-											</div>
-										</li>
-									</ul>
+									<p className="self-center font-medium ">Comments</p>
+									{data.comments.map((comment) => (
+										<ul className="space-y-4" key={comment.comment_id}>
+											<li className="flex gap-3 space-x-3">
+												<Avatar className="w-8 h-8 object-cover">
+													<AvatarImage
+														alt={`${comment.profiles?.name} photo`}
+														src={comment.profiles?.avatar_url || ""}
+													/>
+													<AvatarFallback>
+														{comment.profiles?.name[0]}
+													</AvatarFallback>
+												</Avatar>
+												<div className="flex flex-col gap-1">
+													<p className="font-medium">
+														{comment.profiles?.name}
+													</p>
+													<p className="text-sm">{comment.content}</p>
+												</div>
+											</li>
+										</ul>
+									))}
+									{data.comments.length === 0 ? (
+										<div className="bg-muted p-4 rounded-lg text-center">
+											<p className="text-sm font-medium mb-2">
+												No comments yet
+											</p>
+											<p className="text-xs text-muted-foreground mb-4">
+												Be the first to share your thoughts!
+											</p>
+											<Button variant="secondary" className="w-full">
+												Write a comment
+											</Button>
+										</div>
+									) : null}
 								</div>
 							</ScrollArea>
 						</CardContent>

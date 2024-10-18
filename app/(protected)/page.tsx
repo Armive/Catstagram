@@ -5,12 +5,12 @@ export default async function Home() {
 	const { data: posts } = await supabase
 		.from("posts")
 		.select(`*,
-			profiles(name, avatar_url),
+			profiles(name, avatar_url,handle),
 			post_likes(user_id),
 			saved_posts(user_id),
 			comments(*
 			,
-			profiles(name, avatar_url)
+			profiles(name, avatar_url,handle)
 			)
 			`)
 		.order("created_at", {
@@ -27,44 +27,11 @@ export default async function Home() {
 			{posts?.map(async (post) => {
 				const url = supabase.storage.from("Posts").getPublicUrl(post.url);
 
-				const hearts = post?.post_likes?.map(
-					(d: { user_id: string; name: string }) => d.user_id as string,
-				);
-				const initialIsheartIconPressed = hearts?.includes(
-					userData.user?.id as string,
-				);
-
-				const { data: saves } = await supabase
-					.from("saved_posts")
-					.select("user_id")
-					.eq("post_id", post.id);
-
-				const initialIsBookMarkIconPressed = saves?.some(
-					(save) => save.user_id === userData.user?.id,
-				);
-
 				return (
 					<Post
-						initialIsheartIconPressed={initialIsheartIconPressed || false}
-						hearts={hearts}
-						user={
-							(post?.profiles as {
-								id: string;
-								first_name: "text";
-								name: string;
-								avatar_url: string;
-							}) || { id: "", name: "", first_name: "", avatar_url: "" }
-						}
-						description={post.description}
-						url={url.data.publicUrl}
-						title={post.title}
+						data={{ ...post, imageUrl: url.data.publicUrl }}
+						userId={userData?.user?.id || ""}
 						key={post.id}
-						views={post.views}
-						place={post.place}
-						id={post.id}
-						initialIsBookMarkIconPressed={initialIsBookMarkIconPressed || false}
-						initialComments={post?.comments || []}
-						userData={userDataProfiles.data?.[0]}
 					/>
 				);
 			})}

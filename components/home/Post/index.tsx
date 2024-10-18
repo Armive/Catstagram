@@ -42,37 +42,16 @@ import Comment from "../Comment";
 
 import dynamic from "next/dynamic";
 import clsx from "clsx";
+import Link from "next/link";
 
 const EmojiPostBar = dynamic(() => import("../EmojiPostBar"), { ssr: false });
-export function Post({
-	url,
-	description,
-	place,
-	id,
-	hearts,
-	initialIsheartIconPressed,
-	initialIsBookMarkIconPressed,
-	initialComments,
-	user,
-	userData,
-}: {
-	url: string;
-	user: { id: string; first_name: "text"; name: string; avatar_url: string };
-	title: string;
-	description: string;
-	id?: string;
-	views: number;
-	place: string;
-	initialIsheartIconPressed: boolean;
-	hearts?: string[];
-	initialIsBookMarkIconPressed: boolean;
-	initialComments?: Comments[];
-	userData?: {
-		name: string;
-		avatar_url: string;
-		id: string;
-	};
-}) {
+export function Post({ data, userId }: { data: PostType; userId: string }) {
+	const initialIsheartIconPressed = data.post_likes?.some(
+		(e) => e.user_id === userId,
+	);
+	const initialIsBookMarkIconPressed = data.saved_posts?.some(
+		(e) => e.user_id === userId,
+	);
 	// Hearts
 	const [isHeartIconPressed, setIsHeartIconPressed] = useState(
 		initialIsheartIconPressed,
@@ -81,14 +60,14 @@ export function Post({
 	const [isHeartLoading, setIsHeartLoading] = useState(false);
 
 	const onHeartClick = async () => {
-		if (!id || isHeartLoading) return;
+		if (!data.id || isHeartLoading) return;
 		setIsHeartLoading(true);
 		if (isHeartIconPressed) {
 			const response = await fetch(
 				`${document.location.origin}/api/posts/hearts`,
 				{
 					method: "DELETE",
-					body: JSON.stringify({ post_id: id }),
+					body: JSON.stringify({ post_id: data.id }),
 				},
 			);
 			if (response.status === 200) setIsHeartIconPressed(!isHeartIconPressed);
@@ -97,7 +76,7 @@ export function Post({
 				`${document.location.origin}/api/posts/hearts`,
 				{
 					method: "POST",
-					body: JSON.stringify({ post_id: id }),
+					body: JSON.stringify({ post_id: data.id }),
 				},
 			);
 			if (response.status === 200) setIsHeartIconPressed(!isHeartIconPressed);
@@ -113,7 +92,7 @@ export function Post({
 	const [isBookmarkLoading, setIsBookmarkLoading] = useState(false);
 
 	const onBookmarkClick = async () => {
-		if (!id || isBookmarkLoading) return;
+		if (!data.id || isBookmarkLoading) return;
 
 		setIsBookmarkLoading(true);
 		if (isBookMarkIconPressed) {
@@ -121,7 +100,7 @@ export function Post({
 				`${document.location.origin}/api/posts/saved`,
 				{
 					method: "DELETE",
-					body: JSON.stringify({ post_id: id }),
+					body: JSON.stringify({ post_id: data.id }),
 				},
 			);
 			if (response.status === 200)
@@ -131,7 +110,7 @@ export function Post({
 				`${document.location.origin}/api/posts/saved`,
 				{
 					method: "POST",
-					body: JSON.stringify({ post_id: id }),
+					body: JSON.stringify({ post_id: data.id }),
 				},
 			);
 			if (response.status === 200)
@@ -144,28 +123,28 @@ export function Post({
 	const { counter, elementRef } = useIntesectionObserver();
 
 	useEffect(() => {
-		if (counter === 1 && id) {
+		if (counter === 1 && data.id) {
 			fetch("/api/posts/views", {
 				method: "POST",
 				body: JSON.stringify({
-					post_id: id,
+					post_id: data.id,
 				}),
 			});
 		}
-	}, [counter, id]);
+	}, [counter, data.id]);
 
 	//report
 
 	const [reportLoading, setReportLoading] = useState<boolean>(false);
 	const [reportSubmitted, setReportSubmitted] = useState<boolean>(false);
 	const handleReportSubmit = async (e: SyntheticEvent) => {
-		if (reportLoading && !id) return;
+		if (reportLoading && !data.id) return;
 		e.preventDefault();
 		setReportLoading(true);
 		// Submit the report to the server
 		const form = e.target as HTMLFormElement;
 		const formData = new FormData(form);
-		formData.append("post_id", id as string);
+		formData.append("post_id", data.id as string);
 		const response = await fetch("/api/posts/report", {
 			method: "POST",
 			body: formData,
@@ -178,7 +157,7 @@ export function Post({
 
 	//comments
 	const [comments, setComments] = useState<Comments[] | undefined>(
-		initialComments,
+		data.comments,
 	);
 	// create
 	const [commentCreateLoading, setCommentCreateLoading] =
@@ -187,7 +166,7 @@ export function Post({
 
 	const [value, setValue] = useState("");
 	const createComment = async (e: SyntheticEvent) => {
-		if (!id || commentCreateLoading) return;
+		if (!data.id || commentCreateLoading) return;
 		setCommentCreateLoading(true);
 		const formData = new FormData(e.target as HTMLFormElement);
 		const content = formData.get("content") || "";
@@ -195,14 +174,14 @@ export function Post({
 		const response = await fetch("/api/posts/comments", {
 			method: "POST",
 			body: JSON.stringify({
-				post_id: id,
+				post_id: data.id,
 				content,
 			}),
 		});
 		if (response.status !== 200) return;
-		const { data } = await response.json();
+		const { data: newComments } = await response.json();
 		setValue("");
-		setComments((prevComments) => [data[0], ...(prevComments ?? [])]);
+		setComments((prevComments) => [newComments[0], ...(prevComments ?? [])]);
 		setCommentCreateLoading(false);
 		setShowInput(false);
 	};
@@ -235,16 +214,23 @@ export function Post({
 			<CardContent className="p-0 relative">
 				<div className="absolute top-0 left-0 right-0 bg-gradient-to-b from-black/50 to-transparent p-4 z-10">
 					<div className="flex items-center space-x-3">
-						<Avatar className="w-10 h-10 ring-2 ">
-							<AvatarImage src={user?.avatar_url} alt="user image" />
-							<AvatarFallback> {user?.name?.[0]}</AvatarFallback>
-						</Avatar>
+						<Link href={`/${data.profiles.handle}`}>
+							<Avatar className="w-10 h-10 ring-2 ">
+								<AvatarImage
+									src={data.profiles?.avatar_url || ""}
+									alt="user image"
+								/>
+								<AvatarFallback>{data.profiles?.name?.[0]}</AvatarFallback>
+							</Avatar>
+						</Link>
 						<div>
-							<p className="font-semibold text-sm">{user.name}</p>
-							{place ? (
+							<Link href={`/${data.profiles.handle}`}>
+								<p className="font-semibold text-sm">{data.profiles?.name}</p>
+							</Link>
+							{data.place ? (
 								<p className="text-xs flex items-center">
 									<MapPinIcon className="h-3 w-3 mr-1" />
-									<span>{place}</span>
+									<span>{data.place}</span>
 								</p>
 							) : null}
 						</div>
@@ -253,7 +239,7 @@ export function Post({
 				<Image
 					alt="Post image"
 					height="440"
-					src={url}
+					src={data.imageUrl || ""}
 					style={{
 						aspectRatio: "10/11",
 						objectFit: "cover",
@@ -266,15 +252,16 @@ export function Post({
 							<p className="font-bold text-lg">
 								{initialIsheartIconPressed
 									? isHeartIconPressed
-										? hearts?.length
-										: (hearts?.length || 0) - 1
+										? data.post_likes?.length
+										: (data.post_likes?.length || 0) - 1
 									: isHeartIconPressed
-										? (hearts?.length || 0) + 1
-										: hearts?.length}{" "}
+										? (data.post_likes?.length || 0) + 1
+										: data.post_likes?.length}{" "}
 								Hearts
 							</p>
 							<p className="text-sm line-clamp-2">
-								<span className="font-semibold">{user.name}</span> {description}
+								<span className="font-semibold">{data.profiles?.name}</span>{" "}
+								{data.description}
 							</p>
 						</div>
 						<div className="flex flex-col items-center space-y-2 B">
@@ -489,7 +476,7 @@ export function Post({
 												</p>
 											)}
 										</div>
-										{comment?.author_id === userData?.id ? (
+										{comment?.author_id === userId ? (
 											<DropdownMenu>
 												<DropdownMenuTrigger asChild>
 													<Button variant="ghost" size="sm">

@@ -52,7 +52,6 @@ const reactions: Reaction[] = [
 	{ emoji: "😂" },
 	{ emoji: "🥰" },
 	{ emoji: "😻" },
-	{ emoji: "🐾" },
 	{ emoji: "🐕" },
 	{ emoji: "🐩" },
 	{ emoji: "🦮" },

@@ -1,6 +1,7 @@
 interface Profile {
 	name: string;
 	avatar_url: string | null;
+	handle: string;
 }
 interface Comments {
 	comment_id: string;

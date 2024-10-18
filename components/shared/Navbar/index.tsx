@@ -19,15 +19,15 @@ function Navbar() {
 				<Image
 					src="/catstagramLogo.png"
 					alt="catslogo"
-					className="hidden md:flex xl:hidden"
+					className="hidden md:flex xl:hidden w-auto h-auto"
 					width={32}
 					height={32}
 				/>
 
 				<Image
 					src="/catstagram.png"
-					alt="catslogo"
-					className=" hidden xl:flex dark:invert"
+					alt="catsLogo"
+					className=" hidden xl:flex dark:invert w-auto h-auto"
 					width={119}
 					height={28}
 				/>

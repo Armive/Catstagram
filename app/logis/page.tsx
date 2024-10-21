@@ -1,10 +1,10 @@
 "use client"
 
 import { useState } from 'react'
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+import { Button } from "@/components/shared/ui/button"
+import { Input } from "@/components/shared/ui/input"
 
-import { GithubIcon } from '@/components/icons'
+import { GithubIcon } from '@/components/shared/icons'
 import { Cat } from 'lucide-react'
 
 export default function Logis() {
@@ -17,10 +17,12 @@ export default function Logis() {
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-background text-foreground p-4">
-            <Cat className="w-10 h-10 mb-8" />
-            <h1 className="text-5xl font-bold text-center mb-8 max-w-[500px]">
-                Log in for endless furry content
-            </h1>
+            <div className="flex flex-col items-center mb-8">
+                <Cat className="w-16 h-16 mb-4" />
+                <h1 className="text-3xl font-bold text-center">
+                    Log in to see<br />furry animals.
+                </h1>
+            </div>
             <form onSubmit={handleSubmit} className="w-full max-w-[324px] space-y-4">
                 <div>
                     <label htmlFor="email" className="block text-sm mb-2">Email address</label>
@@ -30,7 +32,7 @@ export default function Logis() {
                         placeholder="Example: furry.pet@gmail.com"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        className="w-full bg-background border-gray-700 rounded text-foreground placeholder-gray-500"
+
                     />
                 </div>
                 <div>
@@ -41,7 +43,6 @@ export default function Logis() {
                         placeholder='Enter your secret paw-sword'
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        className="w-full bg-background border-gray-700 rounded text-foreground placeholder-gray-500"
                     />
                 </div>
                 <a href="22" className="block text-foreground  text-sm hover:underline">
@@ -49,7 +50,7 @@ export default function Logis() {
                 </a>
                 <Button
                     type="submit"
-                    className="w-full bg-[#FF4081]  text-white font-semibold py-3 rounded-full transition duration-300"
+                    className='w-full'
                 >
                     Log in
                 </Button>

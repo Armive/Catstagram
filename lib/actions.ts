@@ -8,7 +8,7 @@ import { type SignUpType, User } from "./schemas";
 export const createPostAction = async (
 	formData: FormData,
 ): Promise<{ status: "error" | "ok" }> => {
-	const supabase = createClient();
+	const supabase = await createClient();
 	const file = formData.get("file") as File;
 	const place = formData.get("place");
 	const description = formData.get("description");
@@ -33,26 +33,27 @@ export const createPostAction = async (
 };
 
 export const login = async (formData: FormData) => {
-	const supabase = createClient();
+	const supabase = await createClient();
 	const password = formData.get("password") as string;
 	const email = formData.get("email") as string;
-
+	const { get } = await headers();
 	const { error } = await supabase.auth.signInWithPassword({
 		email,
 		password,
 	});
 	if (!error) {
-		redirect(`${headers().get("origin")}/`);
+		redirect(`${get("origin")}/`);
 	}
-	redirect(`${headers().get("origin")}/login?message=credentialErrors`);
+	redirect(`${get("origin")}/login?message=credentialErrors`);
 };
 
 export const onGithubLogin = async () => {
-	const supabase = createClient();
+	const supabase = await createClient();
+	const { get } = await headers();
 	const { data } = await supabase.auth.signInWithOAuth({
 		provider: "github",
 		options: {
-			redirectTo: `${headers().get("origin")}/api/callback`,
+			redirectTo: `${get("origin")}/api/callback`,
 		},
 	});
 	redirect(data.url || "");
@@ -61,7 +62,7 @@ export const onGithubLogin = async () => {
 export const SignUp = async (
 	userData: SignUpType,
 ): Promise<{ status: "error" | "ok" }> => {
-	const supabase = createClient();
+	const supabase = await createClient();
 
 	const { data: parsedData } = User.safeParse({
 		email: userData.email,
@@ -73,6 +74,7 @@ export const SignUp = async (
 		gender: userData.gender,
 		handle: userData.handle,
 	});
+	const { get } = await headers();
 
 	const { data } = await supabase
 		.from("profiles")
@@ -87,7 +89,7 @@ export const SignUp = async (
 		password: parsedData?.password as string,
 		email: parsedData?.email as string,
 		options: {
-			emailRedirectTo: `${headers().get("origin")}/api/callback`,
+			emailRedirectTo: `${get("origin")}/api/callback`,
 			data: {
 				name: parsedData?.name,
 				day: parsedData?.day,

@@ -2,7 +2,7 @@ import { createClient } from "@/utils/supabase/server";
 export const runtime = "edge";
 export async function POST(req: Request) {
 	const body = await req.json();
-	const supabase = createClient();
+	const supabase = await createClient();
 	const { data } = await supabase.auth.getUser();
 	const { error } = await supabase
 		.from("saved_posts")
@@ -14,7 +14,7 @@ export async function POST(req: Request) {
 
 export async function DELETE(req: Request) {
 	const body = await req.json();
-	const supabase = createClient();
+	const supabase = await createClient();
 	const { data } = await supabase.auth.getUser();
 	const { error } = await supabase
 		.from("saved_posts")

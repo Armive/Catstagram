@@ -5,7 +5,8 @@ import { createClient } from "./utils/supabase/server";
 export async function middleware(request: NextRequest) {
 	const { pathname, origin } = request.nextUrl;
 	await updateSession(request);
-	const supabase = createClient();
+	const supabase = await createClient();
+
 	const { data } = await supabase.auth.getUser();
 	const allowedPages = [
 		"/login",
@@ -21,6 +22,14 @@ export async function middleware(request: NextRequest) {
 		origin !== "https://wwmqajtqreqlejynvabz.supabase.co"
 	) {
 		return NextResponse.redirect(new URL("/login", request.url));
+	}
+
+	if (
+		allowedPages.some((page) => page === pathname) &&
+		data.user &&
+		origin !== "https://wwmqajtqreqlejynvabz.supabase.co"
+	) {
+		return NextResponse.redirect(new URL("/", request.url));
 	}
 	return NextResponse.next();
 }

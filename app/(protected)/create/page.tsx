@@ -2,7 +2,7 @@ import { createClient } from "@/utils/supabase/server";
 import { GradientTweetComposer } from "./form";
 
 export default async function Page() {
-	const supabase = createClient();
+	const supabase = await createClient();
 	const { data: user } = await supabase.auth.getUser();
 	const { data } = await supabase
 		.from("profiles")

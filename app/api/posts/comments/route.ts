@@ -1,6 +1,6 @@
 import { createClient } from "@/utils/supabase/server";
 export async function POST(req: Request) {
-	const supabase = createClient();
+	const supabase = await createClient();
 	const body = await req.json();
 	const { data: userData } = await supabase.auth.getUser();
 	const user_id = userData?.user?.id;
@@ -25,7 +25,7 @@ export async function POST(req: Request) {
 }
 
 export async function DELETE(req: Request) {
-	const supabase = createClient();
+	const supabase = await createClient();
 	const body = await req.json();
 	const { error } = await supabase
 		.from("comments")
@@ -38,7 +38,7 @@ export async function DELETE(req: Request) {
 }
 
 export async function PATCH(req: Request) {
-	const supabase = createClient();
+	const supabase = await createClient();
 	const body = await req.json();
 
 	const { error, data } = await supabase

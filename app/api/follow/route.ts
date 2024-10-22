@@ -1,7 +1,7 @@
 import { createClient } from "@/utils/supabase/server";
 
 export async function POST(req: Request) {
-	const supabase = createClient();
+	const supabase = await createClient();
 	const body = await req.json();
 	const { data: user } = await supabase.auth.getUser();
 	const follower_id = user?.user?.id;
@@ -21,7 +21,7 @@ export async function POST(req: Request) {
 		: Response.json({ message: "followed successfully" }, { status: 200 });
 }
 export async function DELETE(req: Request) {
-	const supabase = createClient();
+	const supabase = await createClient();
 	const body = await req.json();
 	const { data: user } = await supabase.auth.getUser();
 	const follower_id = user?.user?.id;

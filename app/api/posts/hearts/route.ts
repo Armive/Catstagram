@@ -3,7 +3,7 @@ export const runtime = "edge";
 
 export async function POST(request: Request) {
 	const { post_id } = await request.json();
-	const supabase = createClient();
+	const supabase = await createClient();
 	const { data: userData } = await supabase.auth.getUser();
 	const user_id = userData.user?.id;
 	const { error } = await supabase
@@ -17,7 +17,7 @@ export async function POST(request: Request) {
 
 export async function DELETE(request: Request) {
 	const { post_id } = await request.json();
-	const supabase = createClient();
+	const supabase = await createClient();
 	const { data: userData } = await supabase.auth.getUser();
 	const user_id = userData.user?.id;
 	const { error } = await supabase

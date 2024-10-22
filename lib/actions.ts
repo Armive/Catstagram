@@ -42,15 +42,9 @@ export const login = async (formData: FormData) => {
 		password,
 	});
 	if (!error) {
-<<<<<<< HEAD
-		redirect(`${get("origin")}/`);
-	}
-	redirect(`${get("origin")}/login?message=credentialErrors`);
-=======
 		redirect(`${(await headers()).get("origin")}/`);
 	}
 	redirect(`${(await headers()).get("origin")}/login?message=credentialErrors`);
->>>>>>> b8674c8 (Upgrade to Next.js to 15.0.0 and fixed some issues)
 };
 
 export const onGithubLogin = async () => {
@@ -59,11 +53,7 @@ export const onGithubLogin = async () => {
 	const { data } = await supabase.auth.signInWithOAuth({
 		provider: "github",
 		options: {
-<<<<<<< HEAD
-			redirectTo: `${get("origin")}/api/callback`,
-=======
 			redirectTo: `${(await headers()).get("origin")}/api/callback`,
->>>>>>> b8674c8 (Upgrade to Next.js to 15.0.0 and fixed some issues)
 		},
 	});
 	redirect(data.url || "");
@@ -99,11 +89,7 @@ export const SignUp = async (
 		password: parsedData?.password as string,
 		email: parsedData?.email as string,
 		options: {
-<<<<<<< HEAD
-			emailRedirectTo: `${get("origin")}/api/callback`,
-=======
 			emailRedirectTo: `${(await headers()).get("origin")}/api/callback`,
->>>>>>> b8674c8 (Upgrade to Next.js to 15.0.0 and fixed some issues)
 			data: {
 				name: parsedData?.name,
 				day: parsedData?.day,

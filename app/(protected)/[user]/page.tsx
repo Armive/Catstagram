@@ -18,11 +18,7 @@ import { PostGallery } from "@/components/user/PostsGallery";
 
 export default async function About(props: { params: Promise<{ user: string }> }) {
     const params = await props.params;
-<<<<<<< HEAD
     const supabase = await createClient();
-=======
-    const supabase = createClient();
->>>>>>> b8674c8 (Upgrade to Next.js to 15.0.0 and fixed some issues)
     const { data } = await supabase
 		.from("profiles")
 		.select(`*,

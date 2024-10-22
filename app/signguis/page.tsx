@@ -152,7 +152,7 @@ export default function SignUp() {
                                 <SelectContent>
                                     <SelectItem value="male">Male</SelectItem>
                                     <SelectItem value="female">Female</SelectItem>
-                                    <SelectItem value="none">Don't want to say</SelectItem>
+                                    <SelectItem value="none">Don&apos;t want to say</SelectItem>
                                 </SelectContent>
                             </Select>
                             <Button
@@ -175,7 +175,7 @@ export default function SignUp() {
                     {step === 4 && (
                         <div>
                             <h1 className='text-bold'>Check your inbox</h1>
-                            <h2>We've sent you an email with a link to activate your account. Please check your inbox and click the link.</h2>
+                            <h2>We&apos;ve sent you an email with a link to activate your account. Please check your inbox and click the link.</h2>
                             {emailVerificationHelpLink ? (
 
                                 <Link href={emailVerificationHelpLink}><Button variant="link">Go to mail</Button></Link>
@@ -202,9 +202,9 @@ export default function SignUp() {
                     Log in with Github
                 </Button>
             </div>
-            <a href="/login" className="mt-8 text-foreground text-sm hover:underline">
+            <Link href="/login" className="mt-8 text-foreground text-sm hover:underline">
                 Already have an account? Log in
-            </a>
+            </Link>
         </div >
     )
 }

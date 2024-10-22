@@ -46,7 +46,7 @@ export default function Logis() {
                     />
                 </div>
                 <a href="22" className="block text-foreground  text-sm hover:underline">
-                    Haven't created your account yet? Sign up
+                    Haven&apos;t created your account yet? Sign up
                 </a>
                 <Button
                     type="submit"

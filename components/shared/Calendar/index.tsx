@@ -38,7 +38,7 @@ export function Calendar() {
                 setDay("")
             }
         }
-    }, [month, year, currentYear])
+    }, [month, year, currentYear, day])
 
     return (
         <div className="w-full max-w-sm space-y-4">

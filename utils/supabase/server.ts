@@ -1,8 +1,13 @@
 import { createServerClient, type CookieOptions } from "@supabase/ssr";
-import { cookies } from "next/headers";
+import { cookies, type UnsafeUnwrappedCookies } from "next/headers";
 
+<<<<<<< HEAD
 export const createClient = async () => {
 	const cookieStore = await cookies();
+=======
+export const createClient = () => {
+	const cookieStore = (cookies() as unknown as UnsafeUnwrappedCookies);
+>>>>>>> b8674c8 (Upgrade to Next.js to 15.0.0 and fixed some issues)
 
 	return createServerClient(
 		process.env.NEXT_PUBLIC_SUPABASE_URL as string,

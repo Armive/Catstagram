@@ -16,10 +16,12 @@ import {
 } from "@/components/shared/ui/tabs";
 import { PostGallery } from "@/components/user/PostsGallery";
 
-export default async function About(props: { params: Promise<{ user: string }> }) {
-    const params = await props.params;
-    const supabase = await createClient();
-    const { data } = await supabase
+export default async function About(props: {
+	params: Promise<{ user: string }>;
+}) {
+	const params = await props.params;
+	const supabase = await createClient();
+	const { data } = await supabase
 		.from("profiles")
 		.select(`*,
 			posts(*,
@@ -35,18 +37,18 @@ export default async function About(props: { params: Promise<{ user: string }> }
 			`)
 		.eq("handle", params.user);
 
-    if (!data) {
+	if (!data) {
 		return notFound();
 	}
 
-    const { data: user } = await supabase.auth.getUser();
+	const { data: user } = await supabase.auth.getUser();
 
-    const posts = data[0].posts?.map((post: PostType) => {
+	const posts = data[0].posts?.map((post: PostType) => {
 		const url = supabase.storage.from("Posts").getPublicUrl(post.url);
 		return { ...post, imageUrl: url.data.publicUrl };
 	});
 
-    return (
+	return (
 		<div className="max-w-4xl mx-auto space-y-6">
 			<div className="flex items-start space-x-8 justify-between">
 				<div>

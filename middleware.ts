@@ -21,7 +21,7 @@ export async function middleware(request: NextRequest) {
 		!data.user &&
 		origin !== "https://wwmqajtqreqlejynvabz.supabase.co"
 	) {
-		return NextResponse.redirect(new URL("/login", request.url));
+		return NextResponse.rewrite(new URL("/login", request.url));
 	}
 
 	if (

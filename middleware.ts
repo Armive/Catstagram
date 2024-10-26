@@ -1,13 +1,12 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { updateSession } from "@/utils/supabase/middleware";
-import { createClient } from "./utils/supabase/server";
+import { getUserId } from "./lib/getUserId";
 
 export async function middleware(request: NextRequest) {
 	const { pathname, origin } = request.nextUrl;
 	await updateSession(request);
-	const supabase = await createClient();
 
-	const { data } = await supabase.auth.getUser();
+	const id = await getUserId();
 	const allowedPages = [
 		"/login",
 		"/signup",
@@ -18,7 +17,7 @@ export async function middleware(request: NextRequest) {
 	];
 	if (
 		!allowedPages.some((page) => page === pathname) &&
-		!data.user &&
+		!id &&
 		origin !== "https://wwmqajtqreqlejynvabz.supabase.co"
 	) {
 		return NextResponse.rewrite(new URL("/login", request.url));
@@ -26,7 +25,7 @@ export async function middleware(request: NextRequest) {
 
 	if (
 		allowedPages.some((page) => page === pathname) &&
-		data.user &&
+		id &&
 		origin !== "https://wwmqajtqreqlejynvabz.supabase.co"
 	) {
 		return NextResponse.redirect(new URL("/", request.url));

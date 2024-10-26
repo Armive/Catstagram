@@ -37,3 +37,8 @@ interface SavedPost {
 	post_id: string;
 	user_id: string;
 }
+
+interface Follower {
+	follower_id: string;
+	followed_id: string;
+}

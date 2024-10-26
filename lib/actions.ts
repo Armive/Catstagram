@@ -3,7 +3,7 @@ import { createClient } from "@/utils/supabase/server";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import sharp from "sharp";
-import { type SignUpType, User } from "./schemas";
+import { LoginUser, type SignUpType, User } from "./schemas";
 
 export const createPostAction = async (
 	formData: FormData,
@@ -34,13 +34,21 @@ export const createPostAction = async (
 
 export const login = async (formData: FormData) => {
 	const supabase = await createClient();
-	const password = formData.get("password") as string;
 	const email = formData.get("email") as string;
-	const { get } = await headers();
-	const { error } = await supabase.auth.signInWithPassword({
+	const password = formData.get("password") as string;
+
+	const { data, success } = LoginUser.safeParse({
 		email,
 		password,
 	});
+
+	if (!success)
+		redirect(
+			`${(await headers()).get("origin")}/login?message=credentialErrors`,
+		);
+
+	const { error } = await supabase.auth.signInWithPassword(data);
+
 	if (!error) {
 		redirect(`${(await headers()).get("origin")}/`);
 	}
@@ -49,7 +57,6 @@ export const login = async (formData: FormData) => {
 
 export const onGithubLogin = async () => {
 	const supabase = await createClient();
-	const { get } = await headers();
 	const { data } = await supabase.auth.signInWithOAuth({
 		provider: "github",
 		options: {
@@ -74,7 +81,6 @@ export const SignUp = async (
 		gender: userData.gender,
 		handle: userData.handle,
 	});
-	const { get } = await headers();
 
 	const { data } = await supabase
 		.from("profiles")

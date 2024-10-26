@@ -1,91 +1,70 @@
-import { Input } from "@/components/shared/ui/input";
-import { Button } from "@/components/shared/ui/button";
-import Link from "next/link";
-import { GithubIcon } from "@/components/shared/icons";
-import Image from "next/image";
-import { Label } from "@/components/shared/ui/label";
+"use client"
 
-import { login, onGithubLogin } from "@/lib/actions";
+import { Button } from "@/components/shared/ui/button"
+import { Input } from "@/components/shared/ui/input"
 
-export default async function Login(
-    props: {
-        searchParams: Promise<{ message?: string }>;
-    }
-) {
-    const searchParams = await props.searchParams;
+import { GithubIcon } from '@/components/shared/icons'
+import { Cat } from 'lucide-react'
+import { login, onGithubLogin } from '@/lib/actions'
+
+export default function Logis() {
+
+
+
     return (
-		<div className="w-full lg:grid lg:min-h-screen lg:grid-cols-2 xl:min-h-screen ">
-			<div className="flex items-center justify-center py-12">
-				<div className="mx-auto grid w-[350px] gap-6">
-					<div className="grid gap-2 text-center">
-						<h1 className="text-3xl font-bold">Login</h1>
-						<p className="text-balance text-muted-foreground">
-							Enter your email below to login to your account
-						</p>
-					</div>
-					<form className="grid gap-4" action={login}>
-						<div className="grid gap-2">
-							<Label htmlFor="email">Email</Label>
-							<Input
-								id="email"
-								type="email"
-								placeholder="m@example.com"
-								required
-								name="email"
-							/>
-						</div>
-						<div className="grid gap-2">
-							<div className="flex items-center">
-								<Label htmlFor="password">Password</Label>
-								<Link
-									href="/forgot-password"
-									className="ml-auto inline-block text-sm underline"
-								>
-									Forgot your password?
-								</Link>
-							</div>
-							<Input
-								id="password"
-								type="password"
-								required
-								minLength={6}
-								maxLength={30}
-								name="password"
-							/>
-						</div>
-						<Button type="submit" className="w-full">
-							Login
-						</Button>
-						{searchParams.message === "credentialErrors" ? (
-							<p className="font-medium">Login failed. Check credentials.</p>
-						) : null}
-					</form>
-					<form
-						className="text-center flex gap-4 flex-col"
-						action={onGithubLogin}
-					>
-						<Button variant="outline" className="w-full flex gap-3">
-							<GithubIcon /> Login with Github
-						</Button>
-					</form>
+        <div className="flex flex-col items-center justify-center min-h-screen bg-background text-foreground p-4">
+            <div className="flex flex-col items-center mb-8">
+                <Cat className="w-16 h-16 mb-4" />
+                <h1 className="text-3xl font-bold text-center">
+                    Log in to see<br />furry animals.
+                </h1>
+            </div>
+            <form action={login} className="w-full max-w-[324px] space-y-4 ">
+                <div>
+                    <label htmlFor="email" className="block text-sm mb-2">Email address</label>
+                    <Input
+                        id="email"
+                        type="email"
+                        placeholder="Example: furry.pet@gmail.com"
 
-					<div className="mt-4 text-center text-sm">
-						Don&apos;t have an account?{" "}
-						<Link href="/signup" className="underline">
-							Sign up
-						</Link>
-					</div>
-				</div>
-			</div>
-			<div className="hidden bg-muted lg:block">
-				<Image
-					src="/dogLogin.png"
-					alt="Image"
-					width="1920"
-					height="1080"
-					className="h-full w-full object-cover"
-				/>
-			</div>
-		</div>
-	);
+
+                    />
+                </div>
+                <div>
+                    <label htmlFor="email" className="block text-sm mb-2">Password</label>
+                    <Input
+                        id="password"
+                        type="password"
+                        placeholder='Enter your secret paw-sword'
+
+                    />
+                </div>
+                <a href="22" className="block text-foreground  text-sm hover:underline">
+                    Haven&apos;t created your account yet? Sign up
+                </a>
+                <Button
+                    type="submit"
+                    className='w-full'
+                >
+                    Log in
+                </Button>
+            </form>
+            <div className="w-full max-w-[324px] mt-4">
+                <div className="relative">
+                    <hr className="border-gray-700 my-8" />
+                    <span className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-background px-4 text-sm text-secondary-foreground">
+                        o
+                    </span>
+                </div>
+                <Button
+                    className="w-full bg-transparent hover:bg-secondary text-foreground font-bold py-3 px-4 rounded-full border border-gray-700 mb-4 gap-2"
+                    onClick={() => onGithubLogin()}
+                >
+                    <GithubIcon />
+                    Log in with Github
+                </Button>
+
+            </div>
+        </div>
+    )
 }

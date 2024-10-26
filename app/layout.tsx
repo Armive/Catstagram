@@ -7,7 +7,7 @@ import { ModeToggle } from "@/components/shared/toggle";
 import { Toaster } from "@/components/shared/ui/toaster";
 
 export const metadata: Metadata = {
-	title: "Catstagram",
+	title: "Catstagram ~ Make pets social",
 	description: "Instagram for pets",
 	openGraph: {
 		type: "website",

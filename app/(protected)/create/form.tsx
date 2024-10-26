@@ -128,7 +128,6 @@ export function GradientTweetComposer({
 										opacity: isExpanded ? 1 : 0,
 									}}
 									transition={{ duration: 0.3 }}
-									className="space-y-4 overflow-hidden"
 								>
 									<div className="relative mt-4">
 										<FileText className="absolute left-3 top-3 w-4 h-4 text-blue-500" />
@@ -142,7 +141,7 @@ export function GradientTweetComposer({
 											name="description"
 										/>
 									</div>
-									<div className="relative">
+									<div className="relative mt-4">
 										<MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-purple-500" />
 										<Input
 											placeholder="Add location (optional)"

@@ -18,7 +18,7 @@ import { PostGallery } from "@/components/user/PostsGallery";
 import { getUserProfile } from "@/lib/getUserProfile";
 import { getUserId } from "@/lib/getUserId";
 
-export default async function About(props: {
+export default async function UserPage(props: {
 	params: Promise<{ user: string }>;
 }) {
 	const params = await props.params;
@@ -94,8 +94,8 @@ export default async function About(props: {
 						<Pin className="w-4 h-4 mr-2" /> PINED
 					</TabsTrigger>
 				</TabsList>
-				<TabsContent value="posts" className="mt-6">
-					<PostGallery data={data.posts} />
+				<TabsContent value="posts" className="mt-6 ">
+					<PostGallery data={data.posts} userId={id} />
 				</TabsContent>
 			</Tabs>
 		</div>

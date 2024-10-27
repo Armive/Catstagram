@@ -6,12 +6,89 @@ import {
 import { Button } from "@/components/shared/ui/button";
 import { CardContent, CardFooter } from "@/components/shared/ui/card";
 import { Input } from "@/components/shared/ui/input";
-import { BookmarkIcon, HeartIcon } from "lucide-react";
+import { BookMarkIcon, HeartIcon } from "@/components/shared/icons";
 import Image from "next/image";
 import { ScrollArea } from "../../shared/ui/scroll-area";
 import { DialogTitle } from "@radix-ui/react-dialog";
+import { useState } from "react";
+import clsx from "clsx";
 
-export default function PostView({ data }: { data: PostType }) {
+export default function PostView({
+	data,
+	userId,
+}: { data: PostType; userId: string }) {
+	const initialIsheartIconPressed = data.post_likes?.some(
+		(e) => e.user_id === userId,
+	);
+	const initialIsBookMarkIconPressed = data.saved_posts?.some(
+		(e) => e.user_id === userId,
+	);
+	// Hearts
+	const [isHeartIconPressed, setIsHeartIconPressed] = useState(
+		initialIsheartIconPressed,
+	);
+
+	const [isHeartLoading, setIsHeartLoading] = useState(false);
+
+	const onHeartClick = async () => {
+		if (!data.id || isHeartLoading) return;
+		setIsHeartLoading(true);
+		if (isHeartIconPressed) {
+			const response = await fetch(
+				`${document.location.origin}/api/posts/hearts`,
+				{
+					method: "DELETE",
+					body: JSON.stringify({ post_id: data.id }),
+				},
+			);
+			if (response.status === 200) setIsHeartIconPressed(!isHeartIconPressed);
+		} else {
+			const response = await fetch(
+				`${document.location.origin}/api/posts/hearts`,
+				{
+					method: "POST",
+					body: JSON.stringify({ post_id: data.id }),
+				},
+			);
+			if (response.status === 200) setIsHeartIconPressed(!isHeartIconPressed);
+		}
+		setIsHeartLoading(false);
+	};
+	// Save posts
+
+	const [isBookMarkIconPressed, setIsBookMarkIconPressed] = useState(
+		initialIsBookMarkIconPressed,
+	);
+
+	const [isBookmarkLoading, setIsBookmarkLoading] = useState(false);
+
+	const onBookmarkClick = async () => {
+		if (!data.id || isBookmarkLoading) return;
+
+		setIsBookmarkLoading(true);
+		if (isBookMarkIconPressed) {
+			const response = await fetch(
+				`${document.location.origin}/api/posts/saved`,
+				{
+					method: "DELETE",
+					body: JSON.stringify({ post_id: data.id }),
+				},
+			);
+			if (response.status === 200)
+				setIsBookMarkIconPressed(!isBookMarkIconPressed);
+		} else {
+			const response = await fetch(
+				`${document.location.origin}/api/posts/saved`,
+				{
+					method: "POST",
+					body: JSON.stringify({ post_id: data.id }),
+				},
+			);
+			if (response.status === 200)
+				setIsBookMarkIconPressed(!isBookMarkIconPressed);
+		}
+		setIsBookmarkLoading(false);
+	};
 	return (
 		<main className="flex items-center justify-center ">
 			<article className="w-full max-w-4xl overflow-hidden shadow-xl rounded-lg">
@@ -94,7 +171,18 @@ export default function PostView({ data }: { data: PostType }) {
 										variant="ghost"
 										className="text-white hover:text-gray-300"
 									>
-										<HeartIcon className="h-4 w-4" />
+										<HeartIcon
+											ishearticonpressed={String(isHeartIconPressed)}
+											onClick={onHeartClick}
+											className={clsx(
+												"cursor-pointer active:animate-jump animate-duration-700",
+												{
+													"text-white": isHeartIconPressed,
+													"animate-jelly animate-iteration-count-infinite duration-1000":
+														isHeartLoading,
+												},
+											)}
+										/>
 										<span className="sr-only">Like</span>
 									</Button>
 
@@ -103,7 +191,17 @@ export default function PostView({ data }: { data: PostType }) {
 										variant="ghost"
 										className="text-white hover:text-gray-300"
 									>
-										<BookmarkIcon className="h-4 w-4" />
+										<BookMarkIcon
+											isbookmarkiconpressed={String(isBookMarkIconPressed)}
+											onClick={onBookmarkClick}
+											className={clsx(
+												"cursor-pointer active:animate-blurred-fade-in animate-duration-100 text-white",
+												{
+													"animate-fade-out animate-duration-[1000ms] animate-iteration-count-infinite":
+														isBookmarkLoading,
+												},
+											)}
+										/>
 										<span className="sr-only">Bookmark</span>
 									</Button>
 								</div>

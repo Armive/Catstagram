@@ -5,7 +5,10 @@ import Image from "next/image";
 import { useState } from "react";
 import PostView from "../PostView";
 
-export function PostGallery({ data }: { data: PostType[] }) {
+export function PostGallery({
+	data,
+	userId,
+}: { data: PostType[]; userId: string }) {
 	const [postViewId, setPostViewId] = useState("");
 	return (
 		<>
@@ -52,6 +55,7 @@ export function PostGallery({ data }: { data: PostType[] }) {
 									(post) => post.id === postViewId,
 								) as unknown as PostType
 							}
+							userId={userId}
 						/>
 					) : null}
 				</DialogContent>

@@ -32,7 +32,7 @@ export const createPostAction = async (
 	return { status: "ok" };
 };
 
-export const login = async (formData: FormData) => {
+export const loginAction = async (formData: FormData) => {
 	const supabase = await createClient();
 	const email = formData.get("email") as string;
 	const password = formData.get("password") as string;
@@ -55,7 +55,7 @@ export const login = async (formData: FormData) => {
 	redirect(`${(await headers()).get("origin")}/login?message=credentialErrors`);
 };
 
-export const onGithubLogin = async () => {
+export const githubLoginAction = async () => {
 	const supabase = await createClient();
 	const { data } = await supabase.auth.signInWithOAuth({
 		provider: "github",
@@ -66,7 +66,7 @@ export const onGithubLogin = async () => {
 	redirect(data.url || "");
 };
 
-export const SignUp = async (
+export const signUpAction = async (
 	userData: SignUpType,
 ): Promise<{ status: "error" | "ok" }> => {
 	const supabase = await createClient();

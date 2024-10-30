@@ -10,7 +10,7 @@ import { BookMarkIcon, HeartIcon } from "@/components/shared/icons";
 import Image from "next/image";
 import { ScrollArea } from "../../shared/ui/scroll-area";
 import { DialogTitle } from "@radix-ui/react-dialog";
-import { useState } from "react";
+import { useState, type FormEventHandler } from "react";
 import clsx from "clsx";
 
 export default function PostView({
@@ -89,9 +89,33 @@ export default function PostView({
 		}
 		setIsBookmarkLoading(false);
 	};
+
+	//Comments
+	const [comments, setComments] = useState<Comments[]>(
+		data.comments,
+	);
+	const [inputValue, setInputValue] = useState('')
+	const createComment: FormEventHandler<HTMLFormElement> = async (e) => {
+		e.preventDefault()
+		const formData = new FormData(e.target as HTMLFormElement)
+		const content = formData.get('content')
+		const response = await fetch('/api/posts/comments', {
+			method: 'POST',
+			body: JSON.stringify({
+				content,
+				post_id: data.id
+			})
+		})
+		if (response.status !== 200) return;
+		const { data: newComments } = await response.json();
+		setComments((prevComments) => [newComments[0], ...(prevComments ?? [])]);
+		setInputValue('')
+
+	}
+
 	return (
 		<main className="flex items-center justify-center ">
-			<article className="w-full max-w-4xl overflow-hidden shadow-xl rounded-lg">
+			<article className="w-full max-w-4xl overflow-hidden shadow-xl rounded-lg border-none">
 				<section className="flex flex-col md:flex-row ">
 					<figure className="md:w-1/2 relative ">
 						<Image
@@ -121,12 +145,11 @@ export default function PostView({
 							</div>
 						</figcaption>
 					</figure>
-					<section className="md:w-1/2 flex flex-col bg-black text-white pr">
-						<CardContent className="flex flex-col flex-grow overflow-auto">
-							<ScrollArea className=" h-72 w-full p-2 ">
+					<section className="md:w-1/2 flex flex-col bg-black text-white ">
+						<CardContent className="flex flex-col flex-grow overflow-auto ">
+							<ScrollArea className=" h-72 w-[] p-2 ">
 								<div className="flex flex-col gap-5">
-									<p className="self-center font-medium ">Comments</p>
-									{data.comments.map((comment) => (
+									{comments.map((comment) => (
 										<ul className="space-y-4" key={comment.comment_id}>
 											<li className="flex gap-3 space-x-3">
 												<Avatar className="w-8 h-8 object-cover">
@@ -206,10 +229,15 @@ export default function PostView({
 									</Button>
 								</div>
 							</nav>
-							<form className="flex w-full items-center space-x-2">
+							<form className="flex w-full items-center space-x-2" onSubmit={createComment}>
 								<Input
 									className="flex-grow border-none bg-gradient-to-br from-purple-500 to-pink-500 placeholder:text-white "
 									placeholder="Add a new comment..."
+									name="content"
+									value={inputValue}
+									onChange={(e) => {
+										setInputValue(e.target.value)
+									}}
 								/>
 								<Button
 									size="sm"

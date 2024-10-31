@@ -17,7 +17,12 @@ import {
 import { Input } from "@/components/shared/ui/input";
 import { BookMarkIcon, HeartIcon } from "../../shared/icons";
 import Image from "next/image";
-import { type SyntheticEvent, useEffect, useState } from "react";
+import {
+	type FormEvent,
+	type SyntheticEvent,
+	useEffect,
+	useState,
+} from "react";
 import { Button } from "../../shared/ui/button";
 import { useIntesectionObserver } from "@/hooks/useIntesectionObserver";
 import {
@@ -206,12 +211,42 @@ export function Post({ data, userId }: { data: PostType; userId: string }) {
 	};
 	const [editingCommentId, setEditingCommentId] = useState<string | null>(null);
 
+	const editComment = async (
+		e: FormEvent<HTMLFormElement>,
+		commentId: string,
+	) => {
+		const formData = new FormData(e.target as HTMLFormElement);
+		const response = await fetch("/api/posts/comments", {
+			method: "PATCH",
+			body: JSON.stringify({
+				content: formData.get("content"),
+				comment_id: commentId,
+			}),
+		});
+		if (response.status === 500) return;
+		setEditingCommentId(null);
+		setComments((prevComments) => {
+			if (prevComments) {
+				return prevComments.map((e) => {
+					if (e.comment_id === commentId) {
+						const newComment = e;
+						newComment.content = formData.get("content") as string;
+						return newComment;
+					}
+					return e;
+				});
+			}
+			return prevComments;
+		});
+	};
+
 	return (
 		<Card
 			ref={elementRef}
 			className="max-w-[400px] mx-auto  bg-gradient-to-br from-purple-500 to-pink-500 text-white overflow-hidden"
 		>
 			<CardContent className="p-0 relative">
+				{/*head */}
 				<div className="absolute top-0 left-0 right-0 bg-gradient-to-b from-black/50 to-transparent p-4 z-10">
 					<div className="flex items-center space-x-3">
 						<Link href={`/${data.profiles.handle}`}>
@@ -236,6 +271,7 @@ export function Post({ data, userId }: { data: PostType; userId: string }) {
 						</div>
 					</div>
 				</div>
+				{/*head */}
 				<Image
 					alt="Post image"
 					height="440"
@@ -370,7 +406,7 @@ export function Post({ data, userId }: { data: PostType; userId: string }) {
 					</div>
 				</div>
 			</CardContent>
-
+			{/*Comments*/}
 			<div
 				className={clsx("backdrop-blur-sm p-3  overflow-y-auto bg-white/10", {
 					hidden: (comments?.length || 0) === 0,
@@ -411,38 +447,9 @@ export function Post({ data, userId }: { data: PostType; userId: string }) {
 											</p>
 											{editingCommentId === comment?.comment_id ? (
 												<form
-													onSubmit={async (e) => {
+													onSubmit={(e) => {
 														e.preventDefault();
-														const formData = new FormData(
-															e.target as HTMLFormElement,
-														);
-														const response = await fetch(
-															"/api/posts/comments",
-															{
-																method: "PATCH",
-																body: JSON.stringify({
-																	content: formData.get("content"),
-																	comment_id: comment?.comment_id,
-																}),
-															},
-														);
-														if (response.status === 500) return;
-														setEditingCommentId(null);
-														setComments((prevComments) => {
-															if (prevComments) {
-																return prevComments.map((e) => {
-																	if (e.comment_id === comment?.comment_id) {
-																		const newComment = e;
-																		newComment.content = formData.get(
-																			"content",
-																		) as string;
-																		return newComment;
-																	}
-																	return e;
-																});
-															}
-															return prevComments;
-														});
+														editComment(e, comment.comment_id);
 													}}
 												>
 													<Input
@@ -476,6 +483,7 @@ export function Post({ data, userId }: { data: PostType; userId: string }) {
 												</p>
 											)}
 										</div>
+
 										{comment?.author_id === userId ? (
 											<DropdownMenu>
 												<DropdownMenuTrigger asChild>
@@ -550,7 +558,7 @@ export function Post({ data, userId }: { data: PostType; userId: string }) {
 					className="w-full p-3 text-white hover:bg-white/10 flex items-center justify-center"
 				>
 					<PlusCircleIcon className="h-5 w-5 mr-2" />
-					Add comment
+					Add a comment
 				</Button>
 			)}
 			<Dialog open={deleteConfirmationId !== null}>

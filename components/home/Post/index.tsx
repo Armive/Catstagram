@@ -282,6 +282,7 @@ export function Post({ data, userId }: { data: PostType; userId: string }) {
 					}}
 					width="400"
 				/>
+
 				<div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/50 to-transparent p-4">
 					<div className="flex justify-between items-end">
 						<div className="space-y-1">

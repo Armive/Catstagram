@@ -18,13 +18,23 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from "@/components/shared/ui/dropdown-menu";
-import { MoreVerticalIcon, Pencil, Trash2 } from "lucide-react";
+import {
+	AlertTriangleIcon,
+	FlagIcon,
+	MoreVerticalIcon,
+	Pencil,
+	Trash2,
+} from "lucide-react";
 import {
 	Dialog,
 	DialogContent,
 	DialogFooter,
 	DialogHeader,
+	DialogTrigger,
 } from "@/components/shared/ui/dialog";
+import { RadioGroup, RadioGroupItem } from "@/components/shared/ui/radio-group";
+import { Label } from "@/components/shared/ui/label";
+import { Textarea } from "@/components/shared/ui/textarea";
 
 export default function PostView({
 	data,
@@ -170,8 +180,30 @@ export default function PostView({
 			return prevComments;
 		});
 	};
+
+	//report
+
+	const [reportLoading, setReportLoading] = useState<boolean>(false);
+	const [reportSubmitted, setReportSubmitted] = useState<boolean>(false);
+	const handleReportSubmit = async (e: FormEvent<HTMLFormElement>) => {
+		if (reportLoading && !data.id) return;
+		e.preventDefault();
+		setReportLoading(true);
+		// Submit the report to the server
+		const form = e.target as HTMLFormElement;
+		const formData = new FormData(form);
+		formData.append("post_id", data.id as string);
+		const response = await fetch("/api/posts/report", {
+			method: "POST",
+			body: formData,
+		});
+		if (response.status === 200) {
+			setReportSubmitted(true);
+		}
+		setReportLoading(false);
+	};
 	return (
-		<main className="flex items-center justify-center ">
+		<main className="flex items-center justify-center relative">
 			<article className="w-full max-w-4xl overflow-hidden shadow-xl rounded-lg border-none">
 				<section className="flex flex-col md:flex-row ">
 					<figure className="md:w-1/2 relative ">
@@ -186,6 +218,60 @@ export default function PostView({
 							}}
 							width="600"
 						/>
+						{/*Report */}
+						<Dialog>
+							<DialogTrigger asChild>
+								
+									<FlagIcon className="absolute text-white top-5 left-5 p-2 rounded-full  h-auto w-auto hover:bg-white hover:text hover:text-black duration-100" />
+							</DialogTrigger>
+							<DialogContent className="sm:max-w-[425px] ">
+								<DialogHeader>
+									<DialogTitle>Report post</DialogTitle>
+								</DialogHeader>
+								{!reportSubmitted ? (
+									<form onSubmit={handleReportSubmit} className="space-y-4">
+										<RadioGroup name="type">
+											<div className="flex items-center space-x-2">
+												<RadioGroupItem value="spam" id="post-spam" />
+												<Label htmlFor="post-spam">Spam</Label>
+											</div>
+											<div className="flex items-center space-x-2">
+												<RadioGroupItem
+													value="inappropriate"
+													id="post-inappropriate"
+												/>
+												<Label htmlFor="no-animals">
+													It has nothing to do with animals
+												</Label>
+											</div>
+											<div className="flex items-center space-x-2">
+												<RadioGroupItem value="violence" id="post-violence" />
+												<Label htmlFor="abuse">Violence or abuse</Label>
+											</div>
+											<div className="flex items-center space-x-2">
+												<RadioGroupItem value="other" id="post-other" />
+												<Label htmlFor="other">Other</Label>
+											</div>
+										</RadioGroup>
+										<Textarea
+											placeholder="Additional details"
+											name="description"
+										/>
+										<Button type="submit" className="w-full">
+											Submit report
+										</Button>
+									</form>
+								) : (
+									<div className="text-center space-y-4">
+										<AlertTriangleIcon className="h-12 w-12 mx-auto text-yellow-500" />
+										<p>
+											Thanks for your report. We will see it as soon as
+											possible.
+										</p>
+									</div>
+								)}
+							</DialogContent>
+						</Dialog>
 						<figcaption className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black to-transparent text-white">
 							<DialogTitle className="text-[1.5rem] font-semibold max-w-[350px] break-words">
 								{data.description}

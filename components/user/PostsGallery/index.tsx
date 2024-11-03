@@ -10,6 +10,15 @@ export function PostGallery({
 	userId,
 }: { data: PostType[]; userId: string }) {
 	const [postViewId, setPostViewId] = useState("");
+	const addView = (post_id: string) => {
+		fetch("/api/posts/views", {
+			method: "POST",
+			body: JSON.stringify({
+				post_id: post_id,
+			}),
+		});
+	};
+
 	return (
 		<>
 			<div className="grid grid-cols-3 gap-1 w-full">
@@ -20,6 +29,7 @@ export function PostGallery({
 							className="aspect-square bg-gray-800 overflow-hidden relative group "
 							onClick={() => {
 								setPostViewId(post.id);
+								addView(post.id);
 							}}
 						>
 							<Image

@@ -10,9 +10,7 @@ export async function middleware(request: NextRequest) {
 	const allowedPages = [
 		"/login",
 		"/signup",
-		"/api/Providers/email/signup",
-		"/api/Providers/email/checkHandle",
-		"/api/Providers/github",
+		"/api/checkHandle",
 		"/api/callback",
 	];
 	if (

@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/shared/ui/button";
 import { Input } from "@/components/shared/ui/input";
 import { EmailIcon } from "@/components/shared/icons";
-import { Cat, ArrowLeft, Github } from "lucide-react";
+import { Cat, ArrowLeft, Github, CheckCircle, XCircle } from "lucide-react";
 import {
 	Select,
 	SelectContent,
@@ -77,6 +77,27 @@ export default function SignUp() {
 		}
 	};
 
+	//handle
+	const [handle, setHandle] = useState("");
+	const [isAvailable, setIsAvailable] = useState<boolean | null>(null);
+	const [isChecking, setIsChecking] = useState(false);
+
+	useEffect(() => {
+		const isValid = /^[a-zA-Z0-9_]{3,15}$/.test(handle);
+		if (!isValid) return setIsAvailable(false);
+		setIsChecking(true);
+		fetch("api/checkHandle", {
+			method: "POST",
+			body: JSON.stringify({ handle }),
+		})
+			.then((res) => res.json())
+			.then((data) => {
+				setIsAvailable(data.isAvailable);
+				setIsChecking(false);
+				console.log(data);
+			});
+	}, [handle]);
+
 	return (
 		<div className="flex flex-col items-center justify-center h-screen bg-background text-black p-4">
 			<Cat className="w-16 h-16 mb-8 text-foreground" />
@@ -106,7 +127,7 @@ export default function SignUp() {
 								<Input
 									type="email"
 									placeholder="Example: furry.pet@gmail.com"
-									className="w-full  rounded  dark:text-white   "
+									className="w-full rounded dark:text-white text-foreground"
 									required
 									name="email"
 									minLength={5}
@@ -126,7 +147,7 @@ export default function SignUp() {
 									type="password"
 									placeholder="Don't forget pas-sword"
 									name="password"
-									className="w-full border-border rounded dark:text-white"
+									className="w-full border-border rounded dark:text-white text-foreground"
 									required
 									minLength={6}
 									maxLength={30}
@@ -154,35 +175,72 @@ export default function SignUp() {
 								<Input
 									type="text"
 									placeholder="Write down your name"
-									className="w-full border-gray-300 rounded"
+									className="w-full border-gray-300 rounded text-foreground"
 									required
 									name="name"
 									minLength={2}
 									defaultValue={userData.name}
 								/>
 							</div>
-							<div>
+							<div className="max-w-md mx-auto w-full">
 								<label
 									htmlFor="username"
-									className="block text-sm mb-2 dark:text-white"
+									className="block text-sm mb-2 dark:text-white "
 								>
 									Your Username
 								</label>
-
-								<Input
-									type="text"
-									placeholder="Choose the furry little paw username"
-									className="w-full border-gray-300 rounded"
-									required
-									id="username"
-									name="handle"
-									defaultValue={userData.handle}
-								/>
+								<div className="relative flex flex-col">
+									<Input
+										type="text"
+										value={handle}
+										onChange={(e) =>
+											setHandle(e.target.value.replace(/\s/g, ""))
+										}
+										aria-label="Handle input"
+										placeholder="Choose the furry little paw username"
+										className="w-full border-gray-300 rounded pr-10 text-foreground "
+										required
+										id="username"
+										name="handle"
+										defaultValue={userData.handle}
+										autoComplete="off"
+									/>
+									{handle.length > 0 && (
+										<div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+											{isChecking ? (
+												<div className="w-5 h-5 border-t-2 border-blue-500 rounded-full animate-rotate-360 animate-iteration-count-infinite" />
+											) : isAvailable ? (
+												<CheckCircle
+													className="w-5 h-5 text-green-500"
+													aria-label="Handle is available"
+												/>
+											) : (
+												<XCircle
+													className="w-5 h-5 text-red-500"
+													aria-label="Handle is not available or invalid"
+												/>
+											)}
+										</div>
+									)}
+								</div>
+								{handle.length > 0 && !isChecking && (
+									<p
+										className={`text-sm ${isAvailable ? "text-green-600" : "text-red-600"}`}
+									>
+										{isAvailable
+											? "This user name is available!"
+											: "This user name is not available or invalid."}
+									</p>
+								)}
+								<p className="text-sm text-gray-600 dark:text-gray-400">
+									3-15 characters, use A-Z, 0-9, or _ only.
+								</p>
 							</div>
+
 							<div>
 								<label
 									htmlFor="gender"
-									className="block text-sm mb-2 dark:text-white"
+									className="block text-sm mb-2 dark:text-white text-foreground"
 								>
 									Your Gender
 								</label>
@@ -194,13 +252,20 @@ export default function SignUp() {
 										<SelectValue placeholder="Choose the furry little paw gender" />
 									</SelectTrigger>
 									<SelectContent>
-										<SelectItem value="male">Male</SelectItem>
-										<SelectItem value="female">Female</SelectItem>
-										<SelectItem value="none">Don&apos;t want to say</SelectItem>
+										<SelectItem value="male" className="text-foreground">
+											Male
+										</SelectItem>
+										<SelectItem value="female" className="text-foreground">
+											Female
+										</SelectItem>
+										<SelectItem value="none" className="text-foreground">
+											Don&apos;t want to say
+										</SelectItem>
 									</SelectContent>
 								</Select>
 							</div>
 							<Button
+								disabled={!isAvailable}
 								type="submit"
 								className="dark:text-black dark:bg-white hover:dark:bg-black  hover:dark:text-white bg-black hover:bg-white hover:text-black "
 							>

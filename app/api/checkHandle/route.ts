@@ -2,12 +2,20 @@ import { createClient } from "@/utils/supabase/server";
 
 export async function POST(req: Request) {
 	const supabase = await createClient();
-	const body = await req.json();
+	const { handle } = await req.json();
+
+	const isValid = /^[a-zA-Z0-9_]{3,15}$/.test(handle);
+	if (!isValid) {
+		return Response.json(
+			{ message: "Handle already taken", isAvailable: false },
+			{ status: 200 },
+		);
+	}
 
 	const { data } = await supabase
 		.from("profiles")
 		.select("handle")
-		.eq("handle", String(body.handle).toLocaleLowerCase());
+		.eq("handle", String(handle).toLocaleLowerCase());
 
 	if (data?.length === 0) {
 		return Response.json(

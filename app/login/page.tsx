@@ -6,6 +6,7 @@ import { Input } from "@/components/shared/ui/input";
 import { GithubIcon } from "@/components/shared/icons";
 import { Cat } from "lucide-react";
 import { githubLoginAction, loginAction } from "@/lib/actions";
+import Link from "next/link";
 
 export default function Login() {
 	return (
@@ -39,9 +40,12 @@ export default function Login() {
 						placeholder="Enter your secret paw-sword"
 					/>
 				</div>
-				<a href="22" className="block text-foreground  text-sm hover:underline">
+				<Link
+					href="/signup"
+					className="block text-foreground  text-sm hover:underline"
+				>
 					Haven&apos;t created your account yet? Sign up
-				</a>
+				</Link>
 				<Button type="submit" className="w-full">
 					Log in
 				</Button>

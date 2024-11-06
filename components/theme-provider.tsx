@@ -1,5 +1,5 @@
 "use client";
-import type { ThemeProviderProps } from "next-themes/dist/types";
+import type { ThemeProviderProps } from "next-themes";
 import dynamic from "next/dynamic";
 const NextThemesProvider = dynamic(
 	() => import("next-themes").then((e) => e.ThemeProvider),

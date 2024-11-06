@@ -3,15 +3,19 @@
 import type React from "react";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/shared/ui/button";
+import { Input } from "@/components/shared/ui/input";
+import { Textarea } from "@/components/shared/ui/textarea";
+import { Card, CardContent, CardFooter } from "@/components/shared/ui/card";
+import {
+	Avatar,
+	AvatarFallback,
+	AvatarImage,
+} from "@/components/shared/ui/avatar";
 import { ImagePlus, MapPin, FileText, Send, X } from "lucide-react";
 import { createPostAction } from "@/lib/actions";
-import { useToast } from "@/components/ui/use-toast";
-import { ToastAction } from "@/components/ui/toast";
+import { useToast } from "@/components/shared/ui/use-toast";
+import { ToastAction } from "@/components/shared/ui/toast";
 import { useRouter } from "next/navigation";
 
 export function GradientTweetComposer({
@@ -124,7 +128,6 @@ export function GradientTweetComposer({
 										opacity: isExpanded ? 1 : 0,
 									}}
 									transition={{ duration: 0.3 }}
-									className="space-y-4 overflow-hidden"
 								>
 									<div className="relative mt-4">
 										<FileText className="absolute left-3 top-3 w-4 h-4 text-blue-500" />
@@ -138,7 +141,7 @@ export function GradientTweetComposer({
 											name="description"
 										/>
 									</div>
-									<div className="relative">
+									<div className="relative mt-4">
 										<MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-purple-500" />
 										<Input
 											placeholder="Add location (optional)"

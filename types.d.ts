@@ -1,3 +1,8 @@
+interface Profile {
+	name: string;
+	avatar_url: string | null;
+	handle: string;
+}
 interface Comments {
 	comment_id: string;
 	post_id: string;
@@ -5,5 +10,35 @@ interface Comments {
 	author_id: string;
 	content: string;
 	subcomments?: string[];
-	profiles?: { name: string; avatar_url: string };
+	profiles?: Profile;
+}
+
+interface PostType {
+	id: string;
+	url: string;
+	place: string | null;
+	views: number;
+	user_id: string;
+	comments: Comments[];
+	profiles: Profile;
+	created_at: string;
+	post_likes: Like[];
+	description: string;
+	saved_posts: SavedPost[];
+	imageUrl?: string;
+}
+
+interface Like {
+	post_id: string;
+	user_id: string;
+}
+
+interface SavedPost {
+	post_id: string;
+	user_id: string;
+}
+
+interface Follower {
+	follower_id: string;
+	followed_id: string;
 }

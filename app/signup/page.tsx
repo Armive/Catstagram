@@ -1,45 +1,27 @@
 "use client";
-import { type FormEvent, useState } from "react";
-import Image from "next/image";
-import Link from "next/link";
 
-import { Progress } from "@/components/ui/progress";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import {
-	EmailIcon,
-	GithubIcon,
-	LeftArrow,
-	RightArrow,
-} from "@/components/icons";
-import { Label } from "@/components/ui/label";
-import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardFooter,
-	CardHeader,
-	CardTitle,
-} from "@/components/ui/card";
+import { useEffect, useState } from "react";
+import { Button } from "@/components/shared/ui/button";
+import { Input } from "@/components/shared/ui/input";
+import { EmailIcon } from "@/components/shared/icons";
+import { Cat, ArrowLeft, Github, CheckCircle, XCircle } from "lucide-react";
 import {
 	Select,
 	SelectContent,
 	SelectItem,
 	SelectTrigger,
 	SelectValue,
-} from "@/components/ui/select";
-import clsx from "clsx";
-import { onGithubLogin, SignUp } from "@/lib/actions";
+} from "@/components/shared/ui/select";
+import { Calendar } from "@/components/shared/Calendar";
+import { CardContent, CardHeader } from "@/components/shared/ui/card";
+import Link from "next/link";
 import { type SignUpType, User } from "@/lib/schemas";
-import { motion, AnimatePresence } from "framer-motion";
-import { Check, X } from "lucide-react";
-import { useToast } from "@/components/ui/use-toast";
-import { useDebouncedCallback } from "use-debounce";
+import { githubLoginAction, signUpAction } from "@/lib/actions";
 
-export default function SignUpPage() {
-	const { toast } = useToast();
-	const [emailVerificationHelpLink, setEmailVerificationHelpLink] =
-		useState<string>("");
+export default function SignUp() {
+	const [emailVerificationHelpLink, setEmailVerificationHelpLink] = useState<
+		string | null
+	>(null);
 	const [userData, setUserData] = useState<SignUpType>({
 		name: "",
 		email: "",
@@ -47,44 +29,42 @@ export default function SignUpPage() {
 		day: 0,
 		month: 0,
 		year: 0,
-		gender: "none",
+		gender: null,
 		handle: "",
 	});
-	const [view, setView] = useState(0);
-	const [loading, setLoading] = useState(false);
-	const [handle, setHandle] = useState("");
-	const [handleMessage, setHandleMessage] = useState("");
-	const [isHandleAvailable, setIsHandleAvailable] = useState(false);
-	const checkUser = () => {
-		const { name, email, password, day, month, year, gender, handle } =
-			userData;
+	const [step, setStep] = useState(1);
 
-		const validatedData = User.safeParse({
-			name,
-			email,
-			password,
-			day: Number(day),
-			month: Number(month),
-			year: Number(year),
-			gender,
-			handle,
-		});
-		return validatedData.success;
+	const handleNext = () => {
+		if (step < 4) setStep(step + 1);
 	};
-	const submit = async (e: FormEvent<HTMLFormElement>) => {
+
+	const handleBack = () => {
+		if (step > 1) setStep(step - 1);
+	};
+
+	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
 		const formData = Object.fromEntries(
-			new FormData(e.target as unknown as HTMLFormElement).entries(),
+			new FormData(e.target as HTMLFormElement).entries(),
 		) as unknown as SignUpType;
 		setUserData((data) => ({ ...data, ...formData }));
-		const success = checkUser();
-		if (!success || !isHandleAvailable || Boolean(handleMessage)) return;
-		setLoading(true);
-		const { status } = await SignUp(userData);
+		if (step < 3) {
+			handleNext();
+		} else {
+			const { data, success } = User.safeParse({
+				email: userData.email,
+				password: userData.password,
+				name: userData.name,
+				day: Number(userData.day),
+				month: Number(userData.month),
+				year: Number(userData.year),
+				gender: userData.gender,
+				handle: userData.handle,
+			});
+			if (!success) return;
+			signUpAction(data);
 
-		if (status === "ok") {
-			setLoading(false);
-			setView(2);
+			setStep(4);
 			if (userData?.email?.includes("gmail")) {
 				setEmailVerificationHelpLink("https://mail.google.com/mail/u/0/");
 			} else if (
@@ -93,332 +73,278 @@ export default function SignUpPage() {
 			) {
 				setEmailVerificationHelpLink("https://outlook.live.com/mail/0/");
 			}
-		} else {
-			setLoading(false);
-			toast({ title: "Internal server error" });
+			// Here you would typically send the data to your backend
 		}
 	};
 
-	// handle  check
+	//handle
+	const [handle, setHandle] = useState("");
+	const [isAvailable, setIsAvailable] = useState<boolean | null>(null);
+	const [isChecking, setIsChecking] = useState(false);
 
-	const callback = useDebouncedCallback(async () => {
-		const response = await fetch("/api/Providers/email/checkHandle", {
+	useEffect(() => {
+		const isValid = /^[a-zA-Z0-9_]{5,30}$/.test(handle);
+		if (!isValid) return setIsAvailable(false);
+		setIsChecking(true);
+		fetch("api/checkHandle", {
 			method: "POST",
 			body: JSON.stringify({ handle }),
-		});
-
-		const data = await response.json();
-		setIsHandleAvailable(data.isAvailable);
-
-		if (!isHandleAvailable) {
-			setHandleMessage("Handle is already taken.");
-			return;
-		}
-		setHandleMessage("");
-	}, 1000);
-	const onHandleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		setHandle(e.target.value.replace(" ", ""));
-		if (handle.length < 5 || handle.length > 30) {
-			setIsHandleAvailable(false);
-			setHandleMessage("Handle should have more than 5 characters.");
-			return;
-		}
-		callback();
-	};
+		})
+			.then((res) => res.json())
+			.then((data) => {
+				setIsAvailable(data.isAvailable);
+				setIsChecking(false);
+				console.log(data);
+			});
+	}, [handle]);
 
 	return (
-		<div className="flex justify-between h-screen">
-			<main className="flex justify-center w-full p-4  lg:w-[50vw]">
-				<Card
-					className={clsx("w-[350px] p-2 h-fit duration-1000", {
-						"animate-pulse": loading,
-					})}
-				>
-					<Progress value={33.3 * (view + 1)} />
-
-					{view === 0 && (
-						<>
-							<CardHeader className="flex items-center">
-								<Image
-									src="/catstagram.png"
-									alt="catsLogo"
-									className=" hidden xl:flex dark:invert self-center"
-									width={159}
-									height={38}
-								/>
-								<CardTitle>Create Your Account</CardTitle>
-								<CardDescription className="text-center">
-									Write your details in the below form
-								</CardDescription>
-							</CardHeader>
-							<CardContent>
-								<form
-									onSubmit={(e) => {
-										submit(e);
-										setView((view) => view + 1);
-									}}
+		<div className="flex flex-col items-center justify-center h-screen bg-background text-black p-4">
+			<Cat className="w-16 h-16 mb-8 text-foreground" />
+			<h1 className="text-4xl text-foreground font-bold text-center mb-8 max-w-[300px]">
+				Sign up to see furry animals.
+			</h1>
+			<div className="w-full max-w-[300px] space-y-4">
+				{step < 4 && (
+					<Button
+						onClick={handleBack}
+						className=" dark:text-foreground"
+						variant="link"
+					>
+						<ArrowLeft className="mr-2 h-4 w-4" /> Back
+					</Button>
+				)}
+				<div className="space-y-4">
+					{step === 1 && (
+						<form className="flex flex-col gap-3" onSubmit={handleSubmit}>
+							<div>
+								<label
+									htmlFor="email"
+									className="block text-foreground text-sm mb-2"
 								>
-									<div className="grid w-full items-center gap-4">
-										<div className="flex flex-col space-y-1.5">
-											<Label htmlFor="name">Your Name</Label>
-											<Input
-												id="Name"
-												name="name"
-												placeholder="Tomy.cat"
-												required
-												disabled={loading}
-												maxLength={20}
-												autoComplete="off"
-												defaultValue={userData.name}
-											/>
+									Email Address
+								</label>
+								<Input
+									type="email"
+									placeholder="Example: furry.pet@gmail.com"
+									className="w-full rounded dark:text-white text-foreground"
+									required
+									name="email"
+									minLength={5}
+									maxLength={60}
+									defaultValue={userData.email}
+									autoComplete="off"
+								/>
+							</div>
+							<div>
+								<label
+									htmlFor="email"
+									className="block text-foreground text-sm mb-2"
+								>
+									Password
+								</label>
+
+								<Input
+									type="password"
+									placeholder="Don't forget pas-sword"
+									name="password"
+									className="w-full border-border rounded dark:text-white text-foreground"
+									required
+									minLength={6}
+									maxLength={30}
+									defaultValue={userData.password}
+									autoComplete="off"
+								/>
+							</div>
+							<Button
+								type="submit"
+								className="dark:text-black dark:bg-white hover:dark:bg-black  hover:dark:text-white bg-black hover:bg-white hover:text-black "
+							>
+								Next Step
+							</Button>
+						</form>
+					)}
+					{step === 2 && (
+						<form className="flex flex-col gap-3" onSubmit={handleSubmit}>
+							<div>
+								<label
+									htmlFor="name"
+									className="block text-sm mb-2 dark:text-white"
+								>
+									Your Name
+								</label>
+
+								<Input
+									type="text"
+									placeholder="Write down your name"
+									className="w-full border-gray-300 rounded text-foreground"
+									required
+									name="name"
+									minLength={2}
+									defaultValue={userData.name}
+									autoComplete="off"
+								/>
+							</div>
+							<div className="max-w-md mx-auto w-full">
+								<label
+									htmlFor="username"
+									className="block text-sm mb-2 dark:text-white "
+								>
+									Your Username
+								</label>
+								<div className="relative flex flex-col">
+									<Input
+										type="text"
+										value={handle}
+										onChange={(e) =>
+											setHandle(e.target.value.replace(/\s/g, ""))
+										}
+										aria-label="Handle input"
+										placeholder="Choose the furry little paw username"
+										className="w-full border-gray-300 rounded pr-10 text-foreground "
+										required
+										id="username"
+										name="handle"
+										autoComplete="off"
+										minLength={5}
+										maxLength={30}
+									/>
+									{handle.length > 0 && (
+										<div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+											{isChecking ? (
+												<div className="w-5 h-5 border-t-2 border-blue-500 rounded-full animate-rotate-360 animate-iteration-count-infinite" />
+											) : isAvailable ? (
+												<CheckCircle
+													className="w-5 h-5 text-green-500"
+													aria-label="Handle is available"
+												/>
+											) : (
+												<XCircle
+													className="w-5 h-5 text-red-500"
+													aria-label="Handle is not available or invalid"
+												/>
+											)}
 										</div>
-										<div className="flex flex-col space-y-1.5">
-											<Label htmlFor="email">Your Email</Label>
-											<Input
-												type="email"
-												id="email"
-												placeholder="johndoe@gmail.com"
-												name="email"
-												required
-												disabled={loading}
-												maxLength={50}
-												autoComplete="off"
-												defaultValue={userData.email}
-											/>
-										</div>
-										<div className="flex flex-col space-y-1.5 w-full">
-											<Label htmlFor="password">Your Password</Label>
-											<Input
-												type="password"
-												id="password"
-												placeholder="*******"
-												defaultValue={userData.password}
-												name="password"
-												required
-												disabled={loading}
-												maxLength={30}
-												minLength={6}
-												autoComplete="off"
-											/>
-										</div>
-									</div>
-									<Button
-										type="submit"
-										className="mt-4 w-full"
-										disabled={loading}
-									>
-										<span>Next step</span>
-										<RightArrow />
-									</Button>
-								</form>
-								<div className="flex items-center my-4">
-									<div className="flex-grow border-t " />
-									<span className="mx-4 text-sm ">OR</span>
-									<div className="flex-grow border-t " />
+									)}
 								</div>
-								<Button
-									onClick={() => onGithubLogin()}
-									className="flex items-center justify-center space-x-2 w-full"
-									disabled={loading}
+								{handle.length > 0 && !isChecking && (
+									<p
+										className={`text-sm ${isAvailable ? "text-green-600" : "text-red-600"}`}
+									>
+										{isAvailable
+											? "This user name is available!"
+											: handle.length >= 5
+												? "This user name is not available or invalid."
+												: "This user name is too short."}
+									</p>
+								)}
+								<p className="text-sm text-gray-600 dark:text-gray-400">
+									5-30 characters, use A-Z, 0-9, or _ only.
+								</p>
+							</div>
+
+							<div>
+								<label
+									htmlFor="gender"
+									className="block text-sm mb-2 dark:text-white text-foreground"
 								>
-									<GithubIcon />
-									<span>Sign up with Github</span>
-								</Button>
-							</CardContent>
-							<CardFooter className="flex justify-center">
-								<Link href="/login" className="text-center">
-									Have An Account? Log In
-								</Link>
-							</CardFooter>
-						</>
+									Your Gender
+								</label>
+								<Select
+									name="gender"
+									defaultValue={userData.gender || ""}
+									autoComplete="off"
+								>
+									<SelectTrigger
+										id="gender"
+										className="w-full max-w-xs h-[38px] px-3 bg-background border dark:border-white rounded-[4px] shadow-sm text-muted-foreground text-[14px] focus:outline-none focus:ring-0 focus:border-[#D1D5DB]"
+									>
+										<SelectValue placeholder="Choose the furry little paw gender" />
+									</SelectTrigger>
+									<SelectContent>
+										<SelectItem value="male" className="text-foreground">
+											Male
+										</SelectItem>
+										<SelectItem value="female" className="text-foreground">
+											Female
+										</SelectItem>
+										<SelectItem value="none" className="text-foreground">
+											Don&apos;t want to say
+										</SelectItem>
+									</SelectContent>
+								</Select>
+							</div>
+							<Button
+								disabled={!isAvailable}
+								type="submit"
+								className="dark:text-black dark:bg-white hover:dark:bg-black  hover:dark:text-white bg-black hover:bg-white hover:text-black "
+							>
+								Next Step
+							</Button>
+						</form>
 					)}
-					{view === 1 && (
-						<>
-							<CardHeader className="flex items-center">
-								<Image
-									src="/catstagram.png"
-									alt="catsLogo"
-									className=" hidden xl:flex dark:invert self-center"
-									width={159}
-									height={38}
-								/>
-
-								<CardTitle>Date of birth and gender</CardTitle>
-								<CardDescription>
-									Write your details in the below form
-								</CardDescription>
-							</CardHeader>
-							<CardContent>
-								<form onSubmit={submit} className="flex gap-4 flex-col">
-									<section className="flex w-full items-center justify-center gap-4">
-										<div className="flex flex-col space-y-1.5 items-center">
-											<Label htmlFor="day">Day</Label>
-											<Input
-												id="day"
-												name="day"
-												placeholder="8"
-												required
-												type="number"
-												min="1"
-												max="31"
-												disabled={loading}
-												maxLength={2}
-											/>
-										</div>
-										<div className="flex flex-col space-y-1.5 items-center">
-											<Label htmlFor="month">Month</Label>
-											<Input
-												id="month"
-												name="month"
-												placeholder="11"
-												required
-												type="number"
-												min="1"
-												max="12"
-												disabled={loading}
-												maxLength={2}
-											/>
-										</div>
-										<div className="flex flex-col space-y-1.5 items-center">
-											<Label htmlFor="year">Year</Label>
-											<Input
-												id="year"
-												name="year"
-												placeholder="2012"
-												required
-												type="number"
-												min="1950"
-												max="2014"
-												disabled={loading}
-												minLength={4}
-												maxLength={4}
-											/>
-										</div>
-									</section>
-
-									<section className="flex items-center gap-3 flex-col">
-										<Label htmlFor="gender">Gender</Label>
-										<Select name="gender" required disabled={loading}>
-											<SelectTrigger id="gender">
-												<SelectValue placeholder="Select your gender" />
-											</SelectTrigger>
-											<SelectContent position="popper">
-												<SelectItem value="female">Female</SelectItem>
-												<SelectItem value="male">Male</SelectItem>
-												<SelectItem value="none">Better not to say</SelectItem>
-											</SelectContent>
-										</Select>
-									</section>
-									<div className="flex flex-col space-y-1.5 items-center">
-										<Label htmlFor="year">Handle</Label>
-										<div className="relative w-full">
-											<Input
-												id="handle"
-												name="handle"
-												placeholder="guaudev"
-												required
-												type="text"
-												disabled={loading}
-												minLength={5}
-												maxLength={30}
-												value={handle}
-												onChange={onHandleChange}
-												autoComplete="off"
-											/>
-											<AnimatePresence>
-												{handle.length >= 5 && (
-													<motion.div
-														initial={{ opacity: 0 }}
-														animate={{ opacity: 1 }}
-														exit={{ opacity: 0 }}
-														transition={{ duration: 0.3 }}
-														className="w-7 h-7 rounded-full bg-secondary flex items-center justify-center absolute right-1 top-1"
-													>
-														{isHandleAvailable ? (
-															<Check strokeWidth={3} color="#448112" />
-														) : (
-															<X color="#a71616" strokeWidth={3} />
-														)}
-													</motion.div>
-												)}
-											</AnimatePresence>
-											<p className="text-red-500 font-medium text-sm">
-												{handle.length === 0 ? "" : handleMessage}
-											</p>
-										</div>
-									</div>
-									<section className="flex justify-center items-center gap-3 mt-4">
-										<Button
-											type="button"
-											className="mt-4"
-											onClick={() => setView((v) => v - 1)}
-											disabled={loading}
-										>
-											<LeftArrow />
-											<span>Go Back</span>
-										</Button>
-										<Button
-											type="submit"
-											className="mt-4 w-32"
-											disabled={loading}
-										>
-											<span>{loading ? "Loading" : "Next step"}</span>
-											<RightArrow />
-										</Button>
-									</section>
-								</form>
-							</CardContent>
-							<CardFooter className="flex justify-center">
-								<Link href="/login" className="text-center">
-									Have An Account? Log In
-								</Link>
-							</CardFooter>
-						</>
+					{step === 3 && (
+						<form onSubmit={handleSubmit} className="flex flex-col gap-3">
+							<Calendar />
+							<Button
+								type="submit"
+								className="dark:text-black dark:bg-white hover:dark:bg-black  hover:dark:text-white bg-black hover:bg-white hover:text-black "
+							>
+								Next Step
+							</Button>
+						</form>
 					)}
-					{view === 2 && (
-						<>
+					{step === 4 && (
+						<div>
 							<CardHeader className="flex items-center">
-								<Image
-									src="/catstagram.png"
-									alt="catsLogo"
-									className=" hidden xl:flex dark:invert self-center"
-									width={159}
-									height={38}
-								/>
-								<CardTitle>Verify your email</CardTitle>
 								<EmailIcon />
 							</CardHeader>
-							<CardContent className="flex justify-center flex-col">
-								<p className="text-center">
-									To enter to Catstagram go to your Email to verify the Email
-									address.
+							<CardContent className="flex justify-center flex-col items-center gap-4 ">
+								<p className="text-center ">
+									We have sent an account verification email to {userData.email}
 								</p>
-								{emailVerificationHelpLink && (
-									<div className="flex justify-center items-center gap-3 mt-4">
-										<a
-											href={emailVerificationHelpLink}
-											target="_blank"
-											rel="noopener noreferrer"
-											className="text-black/80 hover:text-gray-500 dark:text-white duration-200 text-center"
+
+								{emailVerificationHelpLink ? (
+									<Link href={emailVerificationHelpLink}>
+										{" "}
+										<Button
+											type="submit"
+											className="dark:text-black dark:bg-white hover:dark:bg-black  hover:dark:text-white bg-black hover:bg-white hover:text-black "
 										>
-											Verify your email here
-										</a>
-									</div>
-								)}
+											Go to your email
+										</Button>
+									</Link>
+								) : null}
 							</CardContent>
-						</>
+						</div>
 					)}
-				</Card>
-			</main>
-			<div className="hidden bg-muted lg:block w-[50vw]">
-				<Image
-					src="/catSignup.png"
-					alt="Image"
-					width="1920"
-					height="1080"
-					className="h-full w-full object-cover"
-				/>
+					{step === 1 ? (
+						<>
+							<div className="relative">
+								<hr className="border-gray-300 my-6" />
+								<span className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-background px-2 text-sm text-gray-500">
+									or
+								</span>
+							</div>
+							<Button
+								className="w-full border-black text-black hover:bg-black hover:text-white rounded-full border dark:border-white bg-transparent hover:dark:bg-white dark:text-white gap-3 hover:dark:text-black"
+								onClick={() => githubLoginAction()}
+							>
+								<Github className="w-5 h-5" />
+								Log in with Github
+							</Button>
+						</>
+					) : null}
+				</div>
 			</div>
+			{step < 4 ? (
+				<Link
+					href="/login"
+					className="mt-8 text-foreground text-sm hover:underline"
+				>
+					Already have an account? Log in
+				</Link>
+			) : null}
 		</div>
 	);
 }

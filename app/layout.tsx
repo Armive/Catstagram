@@ -3,11 +3,11 @@ import { GeistSans } from "geist/font/sans";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
-import { ModeToggle } from "@/components/toggle";
-import { Toaster } from "@/components/ui/toaster";
+import { ModeToggle } from "@/components/shared/toggle";
+import { Toaster } from "@/components/shared/ui/toaster";
 
 export const metadata: Metadata = {
-	title: "Catstagram",
+	title: "Catstagram ~ Make pets social",
 	description: "Instagram for pets",
 	openGraph: {
 		type: "website",

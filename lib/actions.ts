@@ -3,12 +3,12 @@ import { createClient } from "@/utils/supabase/server";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import sharp from "sharp";
-import { type SignUpType, User } from "./schemas";
+import { LoginUser, type SignUpType, User } from "./schemas";
 
 export const createPostAction = async (
 	formData: FormData,
 ): Promise<{ status: "error" | "ok" }> => {
-	const supabase = createClient();
+	const supabase = await createClient();
 	const file = formData.get("file") as File;
 	const place = formData.get("place");
 	const description = formData.get("description");
@@ -32,36 +32,44 @@ export const createPostAction = async (
 	return { status: "ok" };
 };
 
-export const login = async (formData: FormData) => {
-	const supabase = createClient();
-	const password = formData.get("password") as string;
+export const loginAction = async (formData: FormData) => {
+	const supabase = await createClient();
 	const email = formData.get("email") as string;
+	const password = formData.get("password") as string;
 
-	const { error } = await supabase.auth.signInWithPassword({
+	const { data, success } = LoginUser.safeParse({
 		email,
 		password,
 	});
+
+	if (!success)
+		redirect(
+			`${(await headers()).get("origin")}/login?message=credentialErrors`,
+		);
+
+	const { error } = await supabase.auth.signInWithPassword(data);
+
 	if (!error) {
-		redirect(`${headers().get("origin")}/`);
+		redirect(`${(await headers()).get("origin")}/`);
 	}
-	redirect(`${headers().get("origin")}/login?message=credentialErrors`);
+	redirect(`${(await headers()).get("origin")}/login?message=credentialErrors`);
 };
 
-export const onGithubLogin = async () => {
-	const supabase = createClient();
+export const githubLoginAction = async () => {
+	const supabase = await createClient();
 	const { data } = await supabase.auth.signInWithOAuth({
 		provider: "github",
 		options: {
-			redirectTo: `${headers().get("origin")}/api/callback`,
+			redirectTo: `${(await headers()).get("origin")}/api/callback`,
 		},
 	});
 	redirect(data.url || "");
 };
 
-export const SignUp = async (
+export const signUpAction = async (
 	userData: SignUpType,
 ): Promise<{ status: "error" | "ok" }> => {
-	const supabase = createClient();
+	const supabase = await createClient();
 
 	const { data: parsedData } = User.safeParse({
 		email: userData.email,
@@ -87,7 +95,7 @@ export const SignUp = async (
 		password: parsedData?.password as string,
 		email: parsedData?.email as string,
 		options: {
-			emailRedirectTo: `${headers().get("origin")}/api/callback`,
+			emailRedirectTo: `${(await headers()).get("origin")}/api/callback`,
 			data: {
 				name: parsedData?.name,
 				day: parsedData?.day,

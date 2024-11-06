@@ -1,9 +1,13 @@
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Button } from "@/components/shared/ui/button";
+import { Input } from "@/components/shared/ui/input";
 import Link from "next/link";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import {
+	Avatar,
+	AvatarImage,
+	AvatarFallback,
+} from "@/components/shared/ui/avatar";
 import Image from "next/image";
-import { SendIcon } from "@/components/icons";
+import { SendIcon } from "@/components/shared/icons";
 
 export default function Component() {
 	return (

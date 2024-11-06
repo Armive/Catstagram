@@ -83,7 +83,7 @@ export default function SignUp() {
 	const [isChecking, setIsChecking] = useState(false);
 
 	useEffect(() => {
-		const isValid = /^[a-zA-Z0-9_]{3,15}$/.test(handle);
+		const isValid = /^[a-zA-Z0-9_]{5,30}$/.test(handle);
 		if (!isValid) return setIsAvailable(false);
 		setIsChecking(true);
 		fetch("api/checkHandle", {
@@ -133,6 +133,7 @@ export default function SignUp() {
 									minLength={5}
 									maxLength={60}
 									defaultValue={userData.email}
+									autoComplete="off"
 								/>
 							</div>
 							<div>
@@ -152,6 +153,7 @@ export default function SignUp() {
 									minLength={6}
 									maxLength={30}
 									defaultValue={userData.password}
+									autoComplete="off"
 								/>
 							</div>
 							<Button
@@ -180,6 +182,7 @@ export default function SignUp() {
 									name="name"
 									minLength={2}
 									defaultValue={userData.name}
+									autoComplete="off"
 								/>
 							</div>
 							<div className="max-w-md mx-auto w-full">
@@ -202,8 +205,9 @@ export default function SignUp() {
 										required
 										id="username"
 										name="handle"
-										defaultValue={userData.handle}
 										autoComplete="off"
+										minLength={5}
+										maxLength={30}
 									/>
 									{handle.length > 0 && (
 										<div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
@@ -229,11 +233,13 @@ export default function SignUp() {
 									>
 										{isAvailable
 											? "This user name is available!"
-											: "This user name is not available or invalid."}
+											: handle.length >= 5
+												? "This user name is not available or invalid."
+												: "This user name is too short."}
 									</p>
 								)}
 								<p className="text-sm text-gray-600 dark:text-gray-400">
-									3-15 characters, use A-Z, 0-9, or _ only.
+									5-30 characters, use A-Z, 0-9, or _ only.
 								</p>
 							</div>
 
@@ -244,7 +250,11 @@ export default function SignUp() {
 								>
 									Your Gender
 								</label>
-								<Select name="gender" defaultValue={userData.gender || ""}>
+								<Select
+									name="gender"
+									defaultValue={userData.gender || ""}
+									autoComplete="off"
+								>
 									<SelectTrigger
 										id="gender"
 										className="w-full max-w-xs h-[38px] px-3 bg-background border dark:border-white rounded-[4px] shadow-sm text-muted-foreground text-[14px] focus:outline-none focus:ring-0 focus:border-[#D1D5DB]"

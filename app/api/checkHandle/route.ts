@@ -4,7 +4,7 @@ export async function POST(req: Request) {
 	const supabase = await createClient();
 	const { handle } = await req.json();
 
-	const isValid = /^[a-zA-Z0-9_]{3,15}$/.test(handle);
+	const isValid = /^[a-zA-Z0-9_]{5,30}$/.test(handle);
 	if (!isValid) {
 		return Response.json(
 			{ message: "Handle already taken", isAvailable: false },

@@ -113,14 +113,22 @@ export const signUpAction = async (
 export const reportPostAction = async (
 	formData: FormData,
 	post_id: string,
-): Promise<{ status: "error" | "ok" }> => {
+): Promise<{ status: "error" | "ok"; message?: string }> => {
 	const supabase = await createClient();
 	const id = await getUserId();
 	const description = formData.get("description");
 	const type = formData.get("type");
 	const { error } = await supabase
 		.from("report")
-		.insert({ description, type, post_id, id });
+		.insert({
+			description,
+			type,
+			post_id,
+			user_id: id,
+			id: crypto.randomUUID(),
+		});
 
-	return error?.message ? { status: "error" } : { status: "ok" };
+	return error?.message
+		? { status: "error", message: error?.message }
+		: { status: "ok" };
 };

@@ -35,6 +35,7 @@ import {
 import { RadioGroup, RadioGroupItem } from "@/components/shared/ui/radio-group";
 import { Label } from "@/components/shared/ui/label";
 import { Textarea } from "@/components/shared/ui/textarea";
+import { reportPostAction } from "@/lib/actions";
 
 export default function PostView({
 	data,
@@ -192,12 +193,9 @@ export default function PostView({
 		// Submit the report to the server
 		const form = e.target as HTMLFormElement;
 		const formData = new FormData(form);
-		formData.append("post_id", data.id as string);
-		const response = await fetch("/api/posts/report", {
-			method: "POST",
-			body: formData,
-		});
-		if (response.status === 200) {
+		const response = await reportPostAction(formData, data.id);
+
+		if (response.status === "ok") {
 			setReportSubmitted(true);
 		}
 		setReportLoading(false);
@@ -221,8 +219,7 @@ export default function PostView({
 						{/*Report */}
 						<Dialog>
 							<DialogTrigger asChild>
-								
-									<FlagIcon className="absolute text-white top-5 left-5 p-2 rounded-full  h-auto w-auto hover:bg-white hover:text hover:text-black duration-100" />
+								<FlagIcon className="absolute text-white top-5 left-5 p-2 rounded-full  h-auto w-auto hover:bg-white hover:text hover:text-black duration-100" />
 							</DialogTrigger>
 							<DialogContent className="sm:max-w-[425px] ">
 								<DialogHeader>

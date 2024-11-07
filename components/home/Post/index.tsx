@@ -48,6 +48,7 @@ import Comment from "../Comment";
 import dynamic from "next/dynamic";
 import clsx from "clsx";
 import Link from "next/link";
+import { reportPostAction } from "@/lib/actions";
 
 const EmojiPostBar = dynamic(() => import("../EmojiPostBar"), { ssr: false });
 export function Post({ data, userId }: { data: PostType; userId: string }) {
@@ -142,24 +143,20 @@ export function Post({ data, userId }: { data: PostType; userId: string }) {
 
 	const [reportLoading, setReportLoading] = useState<boolean>(false);
 	const [reportSubmitted, setReportSubmitted] = useState<boolean>(false);
-	const handleReportSubmit = async (e: SyntheticEvent) => {
+	const handleReportSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		if (reportLoading && !data.id) return;
 		e.preventDefault();
 		setReportLoading(true);
 		// Submit the report to the server
 		const form = e.target as HTMLFormElement;
 		const formData = new FormData(form);
-		formData.append("post_id", data.id as string);
-		const response = await fetch("/api/posts/report", {
-			method: "POST",
-			body: formData,
-		});
-		if (response.status === 200) {
+		const response = await reportPostAction(formData, data.id);
+
+		if (response.status === "ok") {
 			setReportSubmitted(true);
 		}
 		setReportLoading(false);
 	};
-
 	//comments
 	const [comments, setComments] = useState<Comments[] | undefined>(
 		data.comments,

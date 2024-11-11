@@ -11,10 +11,11 @@ import {
 import { BarItem } from "../NavItem";
 import Link from "next/link";
 import { MoreBar } from "../MoreBar";
+import { House } from "lucide-react";
 
 function Navbar() {
 	return (
-		<section className="flex h-[50px] fixed bottom-0 items-center justify-between w-full  p-3 xl:p-7  px-7 md:px-0  border-t border-gray-300/15 md:flex-col md:w-[72px] md:h-full md:border-r md:border-t-0 xl:w-[244px] xl:items-start md:py-7 z-10">
+		<section className="flex h-[50px] fixed bottom-0 items-center justify-between w-full  p-3 xl:p-7  px-7 md:px-0  border-t border-gray-300/15 md:flex-col md:w-[72px] md:h-full md:border-r md:border-t-0 xl:w-[244px] xl:items-start md:py-7 z-50 bg-background">
 			<Link href="/">
 				<Image
 					src="/catstagramLogo.png"
@@ -33,9 +34,10 @@ function Navbar() {
 				/>
 			</Link>
 			<div className="flex-1 md:py-20 flex md:flex-col justify-between max-h-[750px]">
-				<BarItem text="Home" href="/">
-					<HomeIcon />
+				<BarItem text="Mews" href="/">
+					<PostsIcon />
 				</BarItem>
+
 				<BarItem text="Search" className="hidden md:flex" href="/search">
 					<SearchIcon />
 				</BarItem>
@@ -44,9 +46,6 @@ function Navbar() {
 					<ExploreIcon />
 				</BarItem>
 
-				<BarItem text="Mews" href="/posts">
-					<PostsIcon />
-				</BarItem>
 				<BarItem text="Create" className="flex md:hidden" href="/create">
 					<CreateIcon />
 				</BarItem>
@@ -64,8 +63,15 @@ function Navbar() {
 				<BarItem text="Create" className="hidden md:flex" href="/create">
 					<CreateIcon />
 				</BarItem>
+				<div className="block md:hidden">
+
+					<MoreBar />
+				</div>
 			</div>
-			<MoreBar />
+			<div className="hidden md:block">
+
+				<MoreBar />
+			</div>
 		</section>
 	);
 }

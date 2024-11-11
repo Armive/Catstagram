@@ -55,7 +55,7 @@ export function PostGallery({
 			</div>
 			<Dialog open={Boolean(postViewId)} onOpenChange={() => setPostViewId("")}>
 				<DialogContent
-					className="p-0 md:min-w-[65vw]"
+					className="p-0 md:min-w-[65vw] border-none max-h-[100vh]"
 					aria-describedby={undefined}
 				>
 					{postViewId ? (

@@ -27,7 +27,7 @@ export default function Component() {
 					>
 						<Avatar className="border w-10 h-10">
 							<AvatarImage src="/placeholder-user.jpg" />
-							<AvatarFallback>I1</AvatarFallback>
+							<AvatarFallback className="text-foreground">I1</AvatarFallback>
 						</Avatar>
 						<div className="grid gap-0.5">
 							<p className="text-sm font-medium leading-none">Influencer 1</p>
@@ -43,7 +43,7 @@ export default function Component() {
 					>
 						<Avatar className="border w-10 h-10">
 							<AvatarImage src="/placeholder-user.jpg" />
-							<AvatarFallback>I2</AvatarFallback>
+							<AvatarFallback className="text-foreground">I2</AvatarFallback>
 						</Avatar>
 						<div className="grid gap-0.5">
 							<p className="text-sm font-medium leading-none">Influencer 2</p>
@@ -59,7 +59,7 @@ export default function Component() {
 					>
 						<Avatar className="border w-10 h-10">
 							<AvatarImage src="https://i.pinimg.com/236x/0f/d3/a7/0fd3a743ad2b0454e0e9431a80f266b7.jpg" />
-							<AvatarFallback>I3</AvatarFallback>
+							<AvatarFallback className="text-foreground">I3</AvatarFallback>
 						</Avatar>
 						<div className="grid gap-0.5">
 							<p className="text-sm font-medium leading-none">Influencer 3</p>
@@ -78,7 +78,7 @@ export default function Component() {
 								className="object-cover"
 								src="https://i.pinimg.com/236x/0f/d3/a7/0fd3a743ad2b0454e0e9431a80f266b7.jpg"
 							/>
-							<AvatarFallback>I1</AvatarFallback>
+							<AvatarFallback className="text-foreground">I1</AvatarFallback>
 						</Avatar>
 						<div className="grid gap-0.5">
 							<p className="text-sm font-medium leading-none">Influencer 1</p>

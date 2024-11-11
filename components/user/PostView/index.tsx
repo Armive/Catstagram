@@ -36,6 +36,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/shared/ui/radio-group";
 import { Label } from "@/components/shared/ui/label";
 import { Textarea } from "@/components/shared/ui/textarea";
 import { reportPostAction } from "@/lib/actions";
+import Link from "next/link";
 
 export default function PostView({
 	data,
@@ -201,258 +202,255 @@ export default function PostView({
 		setReportLoading(false);
 	};
 	return (
-		<main className="flex items-center justify-center relative">
-			<article className="w-full max-w-4xl overflow-hidden shadow-xl rounded-lg border-none">
-				<section className="flex flex-col md:flex-row ">
-					<figure className="md:w-1/2 relative ">
-						<Image
-							alt={data.description}
-							className="w-full h-full object-cover"
-							height="600"
-							src={data.imageUrl || ""}
-							style={{
-								aspectRatio: "600/600",
-								objectFit: "cover",
-							}}
-							width="600"
-						/>
-						{/*Report */}
-						<Dialog>
-							<DialogTrigger asChild>
-								<FlagIcon className="absolute text-white top-5 left-5 p-2 rounded-full  h-auto w-auto hover:bg-white hover:text hover:text-black duration-100" />
-							</DialogTrigger>
-							<DialogContent className="sm:max-w-[425px] ">
-								<DialogHeader>
-									<DialogTitle>Report post</DialogTitle>
-								</DialogHeader>
-								{!reportSubmitted ? (
-									<form onSubmit={handleReportSubmit} className="space-y-4">
-										<RadioGroup name="type">
-											<div className="flex items-center space-x-2">
-												<RadioGroupItem value="spam" id="post-spam" />
-												<Label htmlFor="post-spam">Spam</Label>
-											</div>
-											<div className="flex items-center space-x-2">
-												<RadioGroupItem
-													value="inappropriate"
-													id="post-inappropriate"
-												/>
-												<Label htmlFor="no-animals">
-													It has nothing to do with animals
-												</Label>
-											</div>
-											<div className="flex items-center space-x-2">
-												<RadioGroupItem value="violence" id="post-violence" />
-												<Label htmlFor="abuse">Violence or abuse</Label>
-											</div>
-											<div className="flex items-center space-x-2">
-												<RadioGroupItem value="other" id="post-other" />
-												<Label htmlFor="other">Other</Label>
-											</div>
-										</RadioGroup>
-										<Textarea
-											placeholder="Additional details"
-											name="description"
-										/>
-										<Button type="submit" className="w-full">
-											Submit report
-										</Button>
-									</form>
-								) : (
-									<div className="text-center space-y-4">
-										<AlertTriangleIcon className="h-12 w-12 mx-auto text-yellow-500" />
-										<p>
-											Thanks for your report. We will see it as soon as
-											possible.
-										</p>
+		<div className="flex flex-col md:flex-row w-full max-w-4xl overflow-hidden shadow-xl md:rounded-lg border-none">
+			<section className="md:w-1/2 h-1/2 md:h-auto relative max-h-[50%] md:max-h-auto md:min-h-full">
+				<Image
+					alt={data.description}
+					className="w-full h-full object-cover"
+					height="600"
+					width="600"
+					src={data.imageUrl || ""}
+					style={{
+						aspectRatio: "600/600",
+						objectFit: "cover",
+					}}
+				/>
+				{/*Report */}
+				<Dialog>
+					<DialogTrigger asChild>
+						<FlagIcon className="absolute text-white top-4 left-4 p-2 rounded-full h-auto w-auto hover:bg-white hover:text-black duration-100" />
+					</DialogTrigger>
+					<DialogContent className="sm:max-w-[425px]">
+						<DialogHeader>
+							<DialogTitle>Report post</DialogTitle>
+						</DialogHeader>
+						{!reportSubmitted ? (
+							<form onSubmit={handleReportSubmit} className="gap-4">
+								<RadioGroup name="type">
+									<div className="flex items-center space-x-2">
+										<RadioGroupItem value="spam" id="post-spam" />
+										<Label htmlFor="post-spam">Spam</Label>
 									</div>
-								)}
-							</DialogContent>
-						</Dialog>
-						<figcaption className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black to-transparent text-white">
-							<DialogTitle className="text-[1.5rem] font-semibold max-w-[350px] break-words">
-								{data.description}
-							</DialogTitle>
-							<div className="flex items-center gap-2">
-								<Avatar>
-									<AvatarImage
-										alt="@taco.westie"
-										src={data.profiles.avatar_url || ""}
-									/>
-									<AvatarFallback>{data.profiles.name[0]}</AvatarFallback>
-								</Avatar>
-								<p className="font-semibold">{data?.profiles.name}</p>
-							</div>
-						</figcaption>
-					</figure>
-					<section className="md:w-1/2 flex flex-col bg-black text-white ">
-						<CardContent className="flex flex-col flex-grow overflow-auto ">
-							<ScrollArea className=" h-72 w-[] p-2 ">
-								<div className="flex flex-col gap-5 mt-3">
-									{comments.map((comment) => (
-										<section className=" flex gap-4" key={comment.comment_id}>
-											<Avatar className="w-8 h-8 object-cover">
-												<AvatarImage
-													alt={`${comment.profiles?.name} photo`}
-													src={comment.profiles?.avatar_url || ""}
-												/>
-												<AvatarFallback>
-													{comment.profiles?.name[0]}
-												</AvatarFallback>
-											</Avatar>
-											<div className="flex flex-col gap-1 flex-auto max-w-[200px]">
-												<p className="font-medium">{comment.profiles?.name}</p>
-												{editingCommentId === comment?.comment_id ? (
-													<form
-														onSubmit={(e) => {
-															e.preventDefault();
-															editComment(e, comment.comment_id);
-														}}
-													>
-														<Input
-															className="mt-1 bg-white/20 border-none text-white placeholder-white/70"
-															name="content"
-															defaultValue={comment.content}
-															autoFocus
-														/>
-														<div className="mt-2">
-															<Button
-																type="submit"
-																size="sm"
-																variant="secondary"
-																className="mr-2"
-															>
-																Save
-															</Button>
-															<Button
-																type="button"
-																size="sm"
-																variant="ghost"
-																onClick={() => setEditingCommentId(null)}
-															>
-																Cancel
-															</Button>
-														</div>
-													</form>
-												) : (
-													<p className="text-sm break-words">
-														{comment?.content}
-													</p>
-												)}
-											</div>
-											{comment?.author_id === userId ? (
-												<DropdownMenu>
-													<DropdownMenuTrigger asChild>
-														<Button variant="ghost" size="sm">
-															<MoreVerticalIcon className="h-4 w-4" />
-														</Button>
-													</DropdownMenuTrigger>
-													<DropdownMenuContent align="end">
-														<DropdownMenuItem
-															onSelect={() => {
-																setEditingCommentId(comment.comment_id);
-															}}
-														>
-															<Pencil className="mr-2 h-4 w-4" />
-															<span>Edit</span>
-														</DropdownMenuItem>
-														<DropdownMenuItem
-															onSelect={() => {
-																setDeleteConfirmationId(comment.comment_id);
-															}}
-														>
-															<Trash2 className="mr-2 h-4 w-4" />
-															<span>Delete</span>
-														</DropdownMenuItem>
-													</DropdownMenuContent>
-												</DropdownMenu>
-											) : null}
-										</section>
-									))}
-									{comments.length === 0 ? (
-										<div className="bg-muted p-4 rounded-lg text-center">
-											<p className="text-sm font-medium mb-2">
-												No comments yet
-											</p>
-											<p className="text-xs text-muted-foreground mb-4">
-												Be the first to share your thoughts!
-											</p>
-											<Button variant="secondary" className="w-full">
-												Write a comment
-											</Button>
-										</div>
-									) : null}
-								</div>
-							</ScrollArea>
-						</CardContent>
-						<CardFooter className="flex flex-col space-y-2 ">
-							<nav className="flex justify-between w-full">
-								<div className="flex space-x-2">
-									<Button
-										size="icon"
-										variant="ghost"
-										className="text-white hover:text-gray-300"
-									>
-										<HeartIcon
-											ishearticonpressed={String(isHeartIconPressed)}
-											onClick={onHeartClick}
-											className={clsx(
-												"cursor-pointer active:animate-jump animate-duration-700",
-												{
-													"text-white": isHeartIconPressed,
-													"animate-jelly animate-iteration-count-infinite duration-1000":
-														isHeartLoading,
-												},
-											)}
+									<div className="flex items-center space-x-2">
+										<RadioGroupItem
+											value="inappropriate"
+											id="post-inappropriate"
 										/>
-										<span className="sr-only">Like</span>
-									</Button>
-
-									<Button
-										size="icon"
-										variant="ghost"
-										className="text-white hover:text-gray-300"
-									>
-										<BookMarkIcon
-											isbookmarkiconpressed={String(isBookMarkIconPressed)}
-											onClick={onBookmarkClick}
-											className={clsx(
-												"cursor-pointer active:animate-blurred-fade-in animate-duration-100 text-white",
-												{
-													"animate-fade-out animate-duration-[1000ms] animate-iteration-count-infinite":
-														isBookmarkLoading,
-												},
-											)}
-										/>
-										<span className="sr-only">Bookmark</span>
-									</Button>
-								</div>
-							</nav>
-							<form
-								className="flex w-full items-center space-x-2"
-								onSubmit={createComment}
-							>
-								<Input
-									className="flex-grow border-none bg-gradient-to-br from-purple-500 to-pink-500 placeholder:text-white "
-									placeholder="Add a new comment..."
-									name="content"
-									value={inputValue}
-									onChange={(e) => {
-										setInputValue(e.target.value);
-									}}
-									autoComplete="off"
-								/>
-								<Button
-									size="sm"
-									className="bg-gradient-to-br from-purple-500 to-pink-500 text-white hover:from-purple-600 hover:to-pink-600 h-9"
-								>
-									Post
+										<Label htmlFor="no-animals">
+											It has nothing to do with animals
+										</Label>
+									</div>
+									<div className="flex items-center space-x-2">
+										<RadioGroupItem value="violence" id="post-violence" />
+										<Label htmlFor="abuse">Violence or abuse</Label>
+									</div>
+									<div className="flex items-center space-x-2">
+										<RadioGroupItem value="other" id="post-other" />
+										<Label htmlFor="other">Other</Label>
+									</div>
+								</RadioGroup>
+								<Textarea placeholder="Additional details" name="description" />
+								<Button type="submit" className="w-full">
+									Submit report
 								</Button>
 							</form>
-						</CardFooter>
-					</section>
-				</section>
-			</article>
+						) : (
+							<div className="text-center gap-4">
+								<AlertTriangleIcon className="h-12 w-12 mx-auto text-yellow-500" />
+								<p>
+									Thanks for your report. We will see it as soon as possible.
+								</p>
+							</div>
+						)}
+					</DialogContent>
+				</Dialog>
+				<div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black to-transparent text-white">
+					<DialogTitle className="text-2xl font-semibold max-w-[350px] break-words">
+						{data.description}
+					</DialogTitle>
+					<div className="flex items-center gap-2">
+						<Avatar>
+							<AvatarImage
+								alt="@taco.westie"
+								src={data.profiles.avatar_url || ""}
+							/>
+							<AvatarFallback className="text-foreground">
+								{data.profiles.name[0]}
+							</AvatarFallback>
+						</Avatar>
+						<p className="font-semibold">{data?.profiles.name}</p>
+					</div>
+				</div>
+			</section>
+			<section className="md:w-1/2 flex flex-col bg-background text-foreground h-1/2 md:h-auto">
+				<CardContent className="flex flex-col flex-grow overflow-auto">
+					<ScrollArea className="h-full p-2 pb-0 md:pb-2">
+						<div className="flex flex-col gap-x-5 mt-3">
+							{comments.map((comment) => (
+								<article className=" flex gap-4" key={comment.comment_id}>
+									<Link href={`/${comment.profiles?.handle}`}>
+										<Avatar className="w-8 h-8 object-cover">
+											<AvatarImage
+												alt={`${comment.profiles?.name} photo`}
+												src={comment.profiles?.avatar_url || ""}
+											/>
+											<AvatarFallback className="text-foreground">
+												{comment.profiles?.name[0]}
+											</AvatarFallback>
+										</Avatar>
+									</Link>
+									<div className="flex flex-col gap-1 flex-auto max-w-[200px]">
+										<p className="font-medium">{comment.profiles?.name}</p>
+										{editingCommentId === comment?.comment_id ? (
+											<form
+												onSubmit={(e) => {
+													e.preventDefault();
+													editComment(e, comment.comment_id);
+												}}
+											>
+												<Input
+													className="mt-1 bg-white/20 border-none text-foreground placeholder-white/70"
+													name="content"
+													defaultValue={comment.content}
+													autoFocus
+												/>
+												<div className="mt-2">
+													<Button
+														type="submit"
+														size="sm"
+														variant="secondary"
+														className="mr-2"
+													>
+														Save
+													</Button>
+													<Button
+														type="button"
+														size="sm"
+														variant="ghost"
+														onClick={() => setEditingCommentId(null)}
+													>
+														Cancel
+													</Button>
+												</div>
+											</form>
+										) : (
+											<p className="text-sm break-words">{comment?.content}</p>
+										)}
+									</div>
+									{comment?.author_id === userId ? (
+										<DropdownMenu>
+											<DropdownMenuTrigger asChild>
+												<Button variant="ghost" size="sm">
+													<MoreVerticalIcon className="h-4 w-4" />
+												</Button>
+											</DropdownMenuTrigger>
+											<DropdownMenuContent align="end">
+												<DropdownMenuItem
+													onSelect={() => {
+														setEditingCommentId(comment.comment_id);
+													}}
+												>
+													<Pencil className="mr-2 h-4 w-4" />
+													<span>Edit</span>
+												</DropdownMenuItem>
+												<DropdownMenuItem
+													onSelect={() => {
+														setDeleteConfirmationId(comment.comment_id);
+													}}
+												>
+													<Trash2 className="mr-2 h-4 w-4" />
+													<span>Delete</span>
+												</DropdownMenuItem>
+											</DropdownMenuContent>
+										</DropdownMenu>
+									) : null}
+								</article>
+							))}
+							{comments.length === 0 ? (
+								<div className="bg-background p-4 rounded-lg text-center pb-0 md:pb-4">
+									<p className="text-sm font-medium mb-2 text-foreground">
+										No comments yet
+									</p>
+									<p className="text-xs text-muted-foreground mb-4">
+										Be the first to share your thoughts!
+									</p>
+									<Button
+										variant="secondary"
+										className="w-full bg-background hover:bg-background border-none "
+									>
+										Write a comment
+									</Button>
+								</div>
+							) : null}
+						</div>
+					</ScrollArea>
+				</CardContent>
+				<CardFooter className="flex flex-col space-y-2 ">
+					<nav className="flex justify-between w-full">
+						<div className="flex space-x-2">
+							<Button
+								size="icon"
+								variant="ghost"
+								className="text-foreground dark:hover:text-gray-300 hover:text-gray-600"
+								onClick={onHeartClick}
+							>
+								<HeartIcon
+									ishearticonpressed={String(isHeartIconPressed)}
+									className={clsx(
+										"cursor-pointer active:animate-jump animate-duration-700",
+										{
+											"text-foreground": isHeartIconPressed,
+											"animate-jelly animate-iteration-count-infinite duration-1000":
+												isHeartLoading,
+										},
+									)}
+								/>
+								<span className="sr-only">Like</span>
+							</Button>
+
+							<Button
+								size="icon"
+								variant="ghost"
+								className="text-foreground dark:hover:text-gray-300 hover:text-gray-600"
+								onClick={onBookmarkClick}
+							>
+								<BookMarkIcon
+									isbookmarkiconpressed={String(isBookMarkIconPressed)}
+									className={clsx(
+										"cursor-pointer active:animate-blurred-fade-in animate-duration-100 text-foreground",
+										{
+											"animate-fade-out animate-duration-[1000ms] animate-iteration-count-infinite":
+												isBookmarkLoading,
+										},
+									)}
+								/>
+								<span className="sr-only">Bookmark</span>
+							</Button>
+						</div>
+					</nav>
+					<form
+						className="flex w-full items-center space-x-2"
+						onSubmit={createComment}
+					>
+						<Input
+							className="flex-grow border-none bg-gradient-to-br from-purple-500 to-pink-500 placeholder:text-white text-white"
+							placeholder="Add a new comment..."
+							name="content"
+							value={inputValue}
+							onChange={(e) => {
+								setInputValue(e.target.value);
+							}}
+							autoComplete="off"
+						/>
+						<Button
+							size="sm"
+							className="bg-gradient-to-br from-purple-500 to-pink-500 text-white hover:from-purple-600 hover:to-pink-600 h-9"
+						>
+							Post
+						</Button>
+					</form>
+				</CardFooter>
+			</section>
 			<Dialog open={deleteConfirmationId !== null}>
 				<DialogContent>
 					<DialogHeader>
@@ -478,6 +476,6 @@ export default function PostView({
 					</DialogFooter>
 				</DialogContent>
 			</Dialog>
-		</main>
+		</div>
 	);
 }

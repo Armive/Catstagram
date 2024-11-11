@@ -252,7 +252,9 @@ export function Post({ data, userId }: { data: PostType; userId: string }) {
 									src={data.profiles?.avatar_url || ""}
 									alt="user image"
 								/>
-								<AvatarFallback>{data.profiles?.name?.[0]}</AvatarFallback>
+								<AvatarFallback className="text-foreground">
+									{data.profiles?.name?.[0]}
+								</AvatarFallback>
 							</Avatar>
 						</Link>
 						<div>
@@ -303,13 +305,13 @@ export function Post({ data, userId }: { data: PostType; userId: string }) {
 								variant="ghost"
 								size="icon"
 								className={clsx(
-									"rounded-full bg-white/20  hover:bg-black backdrop-blur-sm",
+									"rounded-full bg-white/20  hover:bg-black hover:text-white backdrop-blur-sm",
 									{ "bg-black": isHeartIconPressed },
 								)}
+								onClick={onHeartClick}
 							>
 								<HeartIcon
 									ishearticonpressed={String(isHeartIconPressed)}
-									onClick={onHeartClick}
 									className={clsx(
 										"cursor-pointer active:animate-jump animate-duration-700",
 										{
@@ -384,13 +386,13 @@ export function Post({ data, userId }: { data: PostType; userId: string }) {
 								variant="secondary"
 								size="icon"
 								className={clsx(
-									"rounded-full  hover:bg-black bg-white/20  backdrop-blur-sm transition-all",
+									"rounded-full  hover:bg-black bg-white/20   backdrop-blur-sm transition-all",
 									{ "bg-black": isBookMarkIconPressed },
 								)}
+								onClick={onBookmarkClick}
 							>
 								<BookMarkIcon
 									isbookmarkiconpressed={String(isBookMarkIconPressed)}
-									onClick={onBookmarkClick}
 									className={clsx(
 										"cursor-pointer active:animate-blurred-fade-in animate-duration-100 text-white",
 										{
@@ -435,7 +437,7 @@ export function Post({ data, userId }: { data: PostType; userId: string }) {
 												alt={comment.profiles?.name}
 												src={comment?.profiles?.avatar_url || ""}
 											/>
-											<AvatarFallback>
+											<AvatarFallback className="text-foreground">
 												{comment?.profiles?.name[0]}
 											</AvatarFallback>
 										</Avatar>
@@ -455,6 +457,7 @@ export function Post({ data, userId }: { data: PostType; userId: string }) {
 														name="content"
 														defaultValue={comment.content}
 														autoFocus
+														autoComplete="off"
 													/>
 													<div className="mt-2">
 														<Button

@@ -1,6 +1,5 @@
 "use client";
 
-import type React from "react";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/shared/ui/button";
@@ -18,7 +17,7 @@ import { useToast } from "@/components/shared/ui/use-toast";
 import { ToastAction } from "@/components/shared/ui/toast";
 import { useRouter } from "next/navigation";
 
-export function GradientTweetComposer({
+export function CreatePostForm({
 	avatar_url,
 	name,
 }: { avatar_url: string; name: string }) {
@@ -85,7 +84,9 @@ export function GradientTweetComposer({
 						<div className="flex items-start space-x-4">
 							<Avatar className="w-12 h-12">
 								<AvatarImage src={avatar_url} alt={name[0]} />
-								<AvatarFallback>{name[0]}</AvatarFallback>
+								<AvatarFallback className="text-foreground">
+									{name[0]}
+								</AvatarFallback>
 							</Avatar>
 							<div className="flex-grow">
 								<div className="relative">

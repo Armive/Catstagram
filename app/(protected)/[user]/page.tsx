@@ -30,15 +30,17 @@ export default async function UserPage(props: {
 	const id = await getUserId();
 	return (
 		<div className="max-w-4xl mx-auto space-y-6">
-			<div className="flex items-start space-x-8 justify-between">
+			<div className="flex md:items-start md:gap-8 md:justify-between flex-col items-center md:flex-row">
 				<div>
-					<Avatar className="w-32 h-32 border-2 border-white">
+					<Avatar className="w-32 h-32 border-2 border-white ">
 						<AvatarImage src={data.avatar_url} alt="Taco Jose" />
-						<AvatarFallback>{data?.name?.[0]}</AvatarFallback>
+						<AvatarFallback className="text-foreground">
+							{data?.name?.[0]}
+						</AvatarFallback>
 					</Avatar>
 				</div>
-				<div className="flex-1">
-					<div className="flex gap-4 items-center mb-4">
+				<div className="md:flex-1">
+					<div className="flex gap-4 items-center mb-4 md:flex-row flex-col">
 						<h1 className="text-2xl font-semibold">{data.name}</h1>
 						{id !== data?.id ? (
 							<FollowButton
@@ -64,32 +66,20 @@ export default async function UserPage(props: {
 							<p className="text-sm text-gray-400">followed</p>
 						</div>
 					</div>
-					<div className="space-y-1">
-						<p className="font-semibold">{data.name}</p>
-						<p className="flex items-center">
-							<CameraIcon className="mr-2 h-4 w-4" /> Dog Lifestyle, tips y
-							diversión peluda 🐾
-						</p>
-						<p className="flex items-center">
-							<MapPinIcon className="mr-2 h-4 w-4" /> Winnipeg 🇨🇦
-						</p>
-						<p className="flex items-center">
-							<LinkIcon className="mr-2 h-4 w-4" /> linktr.ee/Taco.westie
-						</p>
-					</div>
+					<div className="space-y-1" />
 				</div>
 			</div>
-			<Tabs defaultValue="posts" className="w-full">
-				<TabsList className="w-full justify-center bg-transparent">
+			<Tabs defaultValue="posts" className="w-full ">
+				<TabsList className="w-full justify-center bg-transparent ">
 					<TabsTrigger
 						value="posts"
-						className="flex-1 data-[state=active]:bg-white data-[state=active]:text-black rounded-full"
+						className="flex-1 data-[state=active]:bg-white data-[state=active]:text-black rounded-full w-1/2"
 					>
 						<Cat className="w-4 h-4 mr-2" /> MEWS
 					</TabsTrigger>
 					<TabsTrigger
 						value="reels"
-						className="flex-1 data-[state=active]:bg-white data-[state=active]:text-black rounded-full"
+						className="flex-1 data-[state=active]:bg-white data-[state=active]:text-black rounded-full w-1/2"
 					>
 						<Pin className="w-4 h-4 mr-2" /> PINED
 					</TabsTrigger>

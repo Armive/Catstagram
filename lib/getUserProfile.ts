@@ -31,7 +31,7 @@ export const getUserProfile = async (handle: string) => {
 			followed:followers!followers_follower_id_fkey(*)
 			`)
 		.eq("handle", handle);
-	if (data === null) return;
+	if (data === null || !data.length) return;
 	data[0].posts = data?.[0].posts?.map((post: PostType) => {
 		const url = supabase.storage.from("Posts").getPublicUrl(post.url);
 		return { ...post, imageUrl: url.data.publicUrl };

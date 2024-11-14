@@ -19,6 +19,7 @@ import {
 	SwitchIcon,
 } from "../icons";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export function MoreBar() {
 	const router = useRouter();
@@ -48,10 +49,12 @@ export function MoreBar() {
 						<ActivityIcon />
 						<span>Your Activity</span>
 					</DropdownMenuItem>
-					<DropdownMenuItem className="flex gap-2 cursor-pointer">
-						<SavedIcon />
-						<span>Saved</span>
-					</DropdownMenuItem>
+					<Link href="/saved">
+						<DropdownMenuItem className="flex gap-2 cursor-pointer">
+							<SavedIcon />
+							<span>Saved</span>
+						</DropdownMenuItem>
+					</Link>
 					<DropdownMenuItem className="flex gap-2 cursor-pointer">
 						<FlagIcon />
 						<span>Report A Problem</span>

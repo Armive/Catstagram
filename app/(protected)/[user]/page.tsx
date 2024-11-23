@@ -17,6 +17,7 @@ import {
 import { PostGallery } from "@/components/user/PostsGallery";
 import { getUserProfile } from "@/lib/getUserProfile";
 import { getUserId } from "@/lib/getUserId";
+import PinnedPosts from "@/components/user/PinedComponent";
 
 export default async function UserPage(props: {
 	params: Promise<{ user: string }>;
@@ -86,6 +87,9 @@ export default async function UserPage(props: {
 				</TabsList>
 				<TabsContent value="posts" className="mt-6 ">
 					<PostGallery data={data.posts} userId={id} />
+				</TabsContent>
+				<TabsContent value="reels" className="mt-6 ">
+					<PinnedPosts data={data.posts.filter((post) => post.is_pined)} userId={id} />
 				</TabsContent>
 			</Tabs>
 		</div>

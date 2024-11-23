@@ -8,6 +8,7 @@ function HomeIcon() {
 			height="24"
 			viewBox="0 0 24 24"
 		>
+			<title>Home Icon</title>
 			<g
 				fill="none"
 				stroke="currentColor"
@@ -71,6 +72,7 @@ function SearchIcon() {
 			strokeLinejoin="round"
 			xmlns="http://www.w3.org/2000/svg"
 		>
+			<title>Search Icon</title>
 			<path d="M19 11.5a7.5 7.5 0 1 1-15 0 7.5 7.5 0 0 1 15 0m-2.107 5.42 3.08 3.08" />
 		</svg>
 	);
@@ -104,6 +106,7 @@ function ThreePointIcon() {
 			height="24"
 			viewBox="0 0 24 24"
 		>
+			<title>Three Point Icon</title>
 			<path
 				fill="currentColor"
 				d="M2.753 18h18.5a.75.75 0 0 1 .102 1.493l-.102.007h-18.5a.75.75 0 0 1-.102-1.494zh18.5zm0-6.497h18.5a.75.75 0 0 1 .102 1.493l-.102.007h-18.5a.75.75 0 0 1-.102-1.494zh18.5zm-.001-6.5h18.5a.75.75 0 0 1 .102 1.493l-.102.007h-18.5A.75.75 0 0 1 2.65 5.01zh18.5z"
@@ -228,6 +231,7 @@ function CreateIcon() {
 			strokeLinejoin="round"
 			xmlns="http://www.w3.org/2000/svg"
 		>
+			<title>Create Icon</title>
 			<path d="M3 9.4c0-2.24 0-3.36.436-4.216a4 4 0 0 1 1.748-1.748C6.04 3 7.16 3 9.4 3h5.2c2.24 0 3.36 0 4.216.436a4 4 0 0 1 1.748 1.748C21 6.04 21 7.16 21 9.4v5.2c0 2.24 0 3.36-.436 4.216a4 4 0 0 1-1.748 1.748C17.96 21 16.84 21 14.6 21H9.4c-2.24 0-3.36 0-4.216-.436a4 4 0 0 1-1.748-1.748C3 17.96 3 16.84 3 14.6zM15.5 12H12m0 0H8.5m3.5 0V8.5m0 3.5v3.5" />
 		</svg>
 	);
@@ -312,6 +316,7 @@ function SendIcon() {
 			height="24"
 			viewBox="0 0 24 24"
 		>
+			<title>Send Icon</title>
 			<path
 				fill="none"
 				stroke="currentColor"
@@ -516,6 +521,7 @@ function FlagIcon() {
 			height="24"
 			viewBox="-4 -2 24 24"
 		>
+			<title>Flag Icon</title>
 			<path
 				fill="currentColor"
 				d="M2 1h12a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H2v7a1 1 0 0 1-2 0V1a1 1 0 1 1 2 0m0 9h12V3H2z"
@@ -960,6 +966,18 @@ function ReturnIcon() {
 	);
 }
 
+function PinRegularIcon() {
+	return (
+		<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><title>Pin Regular Icon</title><path fill="currentColor" d="m16.243 2.932l4.825 4.826a2.75 2.75 0 0 1-.715 4.404l-4.87 2.435a.75.75 0 0 0-.374.426l-1.44 4.166a1.25 1.25 0 0 1-2.065.476L8.5 16.561L4.06 21H3v-1.062L7.44 15.5l-3.105-3.104a1.25 1.25 0 0 1 .476-2.066l4.166-1.439a.75.75 0 0 0 .426-.374l2.435-4.87a2.75 2.75 0 0 1 4.405-.715m3.765 5.886l-4.826-4.825a1.25 1.25 0 0 0-2.002.324l-2.435 4.871a2.25 2.25 0 0 1-1.278 1.12l-3.789 1.31l6.705 6.704l1.308-3.788a2.25 2.25 0 0 1 1.12-1.278l4.872-2.436a1.25 1.25 0 0 0 .325-2.002" /></svg>
+	)
+}
+
+function PinFilledIcon() {
+	return (
+		<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 28 28"><title>Pin Filled Icon</title><path fill="currentColor" d="M19.039 3.478c-1.59-1.59-4.274-1.124-5.236.907l-2.553 5.39a1.75 1.75 0 0 1-.953.884l-4.13 1.588a1.75 1.75 0 0 0-.61 2.871L8.69 18.25L3 23.94V25h1.06l5.69-5.69l3.132 3.132a1.75 1.75 0 0 0 2.87-.61l1.589-4.13c.161-.419.478-.76.884-.953l5.39-2.553c2.031-.962 2.496-3.646.907-5.235z" /></svg>
+	)
+}
+
 export {
 	HomeIcon,
 	SearchIcon,
@@ -1004,4 +1022,6 @@ export {
 	ReturnIcon,
 	LocationIcon,
 	ThreePointIcon,
+	PinFilledIcon,
+	PinRegularIcon
 };

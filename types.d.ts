@@ -26,6 +26,7 @@ interface PostType {
 	description: string;
 	saved_posts: SavedPost[];
 	imageUrl?: string;
+	is_pined: boolean;
 }
 
 interface Like {

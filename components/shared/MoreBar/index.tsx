@@ -33,13 +33,10 @@ export function MoreBar() {
 		<DropdownMenu>
 			<DropdownMenuTrigger className=" justify-center items-center  gap-5  flex">
 				<MenuIcon />
-				<p className=" text-lg font-light w-[100px] hidden md:flex">More</p>
+				<p className=" text-lg font-light w-[100px] hidden xl:flex">More</p>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent className="w-56">
-				<DropdownMenuLabel className=" justify-center  ">
-					More
-				</DropdownMenuLabel>
-				<DropdownMenuSeparator />
+
 				<DropdownMenuGroup>
 					<DropdownMenuItem className="flex gap-2 cursor-pointer">
 						<SettingsIcon />

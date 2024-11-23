@@ -4,6 +4,7 @@ import { Eye, Heart } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 import PostView from "../PostView";
+import { PinFilledIcon, PinRegularIcon } from "@/components/shared/icons";
 
 export function PostGallery({
 	data,
@@ -26,12 +27,13 @@ export function PostGallery({
 					return (
 						<div
 							key={post.id}
-							className="aspect-square bg-gray-800 overflow-hidden relative group "
+							className="aspect-square bg-black overflow-hidden relative group"
 							onClick={() => {
 								setPostViewId(post.id);
 								addView(post.id);
 							}}
 						>
+
 							<Image
 								src={post.imageUrl || ""}
 								alt="Try to reload"
@@ -40,6 +42,25 @@ export function PostGallery({
 								height={400}
 							/>
 							<div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity gap-3">
+								{
+									userId === post.user_id ? (
+
+										<span className="absolute top-3 right-3 " >
+											{
+												post.is_pined ? (
+													<PinFilledIcon />
+												) : (
+
+													<PinRegularIcon />
+												)
+
+											}
+
+										</span>
+									) : (
+										null
+									)
+								}
 								<span className="flex items-center">
 									<Eye className="w-4 h-4 mr-1" />
 									{post.views}

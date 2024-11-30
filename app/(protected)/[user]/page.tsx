@@ -4,10 +4,9 @@ import {
 	AvatarFallback,
 } from "@/components/shared/ui/avatar";
 
-import { createClient } from "@/utils/supabase/server";
 import { notFound } from "next/navigation";
 import { FollowButton } from "@/components/user/followButton";
-import { CameraIcon, Cat, LinkIcon, MapPinIcon, Pin } from "lucide-react";
+import { Cat, Pin } from "lucide-react";
 import {
 	Tabs,
 	TabsContent,

@@ -490,7 +490,6 @@ function ReloadIcon() {
 		</svg>
 	);
 }
-1;
 
 function SavedIcon() {
 	return (

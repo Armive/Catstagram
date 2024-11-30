@@ -1,5 +1,4 @@
 import { Post } from "@/components/home/Post";
-import { Input } from "@/components/shared/ui/input";
 import { getFeed } from "@/lib/getFeed";
 import { getUserId } from "@/lib/getUserId";
 export default async function Home() {

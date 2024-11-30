@@ -8,7 +8,13 @@ export const getSaved = async () => {
 		.from("saved_posts")
 		.select(
 			`posts(
-            *,
+            id,
+			url,
+			place,
+			views,
+			user_id,
+			created_at,
+			description,
 			profiles(name, avatar_url,handle),
 			post_likes(user_id),
 			saved_posts(user_id),
@@ -18,12 +24,12 @@ export const getSaved = async () => {
          ))`,
 		)
 		.eq("user_id", id);
+	if (data === null) return [];
 
-	const posts = data
-		?.map((d) => d.posts)
-		.map((post: PostType) => {
-			const url = supabase.storage.from("Posts").getPublicUrl(post.url);
-			return { ...post, imageUrl: url.data.publicUrl };
-		}) as PostType[];
-	return posts;
+	/* eslint-disable-next-line     */
+	return data.map((d: any) => {
+		const post = d.posts;
+		const url = supabase.storage.from("Posts").getPublicUrl(post.url);
+		return { ...post, imageUrl: url.data.publicUrl };
+	}) as PostType[];
 };

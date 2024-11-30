@@ -1,6 +1,5 @@
 import Image from "next/image";
 import {
-	HomeIcon,
 	SearchIcon,
 	ExploreIcon,
 	CreateIcon,
@@ -11,7 +10,6 @@ import {
 import { BarItem } from "../NavItem";
 import Link from "next/link";
 import { MoreBar } from "../MoreBar";
-import { House } from "lucide-react";
 
 function Navbar() {
 	return (
@@ -64,12 +62,10 @@ function Navbar() {
 					<CreateIcon />
 				</BarItem>
 				<div className="block md:hidden">
-
 					<MoreBar />
 				</div>
 			</div>
 			<div className="hidden md:block">
-
 				<MoreBar />
 			</div>
 		</section>

@@ -5,7 +5,6 @@ import {
 	DropdownMenuContent,
 	DropdownMenuGroup,
 	DropdownMenuItem,
-	DropdownMenuLabel,
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/shared/ui/dropdown-menu";
@@ -36,7 +35,6 @@ export function MoreBar() {
 				<p className=" text-lg font-light w-[100px] hidden xl:flex">More</p>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent className="w-56">
-
 				<DropdownMenuGroup>
 					<DropdownMenuItem className="flex gap-2 cursor-pointer">
 						<SettingsIcon />

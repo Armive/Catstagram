@@ -36,10 +36,12 @@ export function MoreBar() {
 			</DropdownMenuTrigger>
 			<DropdownMenuContent className="w-56">
 				<DropdownMenuGroup>
-					<DropdownMenuItem className="flex gap-2 cursor-pointer">
-						<SettingsIcon />
-						<span>Settings</span>
-					</DropdownMenuItem>
+					<Link href="/settings">
+						<DropdownMenuItem className="flex gap-2 cursor-pointer">
+							<SettingsIcon />
+							<span>Settings</span>
+						</DropdownMenuItem>
+					</Link>
 					<DropdownMenuItem className="flex gap-2 cursor-pointer">
 						<ActivityIcon />
 						<span>Your Activity</span>

@@ -28,6 +28,7 @@ export function CreatePostForm({
 	const [image, setImage] = useState<File | null>(null);
 	const [isExpanded, setIsExpanded] = useState(false);
 	const [isFormComplete, setIsFormComplete] = useState(false);
+	const [isLoading, setIsLoading] = useState(false)
 
 	const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		if (e.target.files?.[0]) {
@@ -37,10 +38,12 @@ export function CreatePostForm({
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
+		if (isLoading) return
 
 		const formData = new FormData(e.target as HTMLFormElement);
 		formData.append("file", image as Blob);
 
+		setIsLoading(true)
 		const data = await createPostAction(formData);
 		if (data.status === "ok") {
 			toast({
@@ -61,7 +64,9 @@ export function CreatePostForm({
 			setImage(null);
 			setIsExpanded(false);
 			setIsFormComplete(false);
+			setIsLoading(false)
 		} else {
+			setIsLoading(false)
 			toast({
 				title: "Internal server error",
 			});
@@ -183,11 +188,12 @@ export function CreatePostForm({
 								transition={{ duration: 0.3 }}
 							>
 								<Button
+									disabled={isLoading}
 									type="submit"
 									className="rounded-full px-6 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white dark:from-blue-600 dark:to-purple-600 dark:hover:from-blue-700 dark:hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed"
 								>
 									<Send className="w-4 h-4 mr-2" />
-									Post
+									{isLoading ? "Loading..." : "Send"}
 								</Button>
 							</motion.div>
 						)}

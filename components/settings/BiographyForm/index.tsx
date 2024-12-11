@@ -1,0 +1,114 @@
+'use client'
+
+import React, { useState } from 'react'
+import ReactMarkdown from 'react-markdown'
+import EmojiPicker, { type EmojiClickData, EmojiStyle } from 'emoji-picker-react'
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/shared/ui/card"
+import { Textarea } from "@/components/shared/ui/textarea"
+import { Switch } from "@/components/shared/ui/switch"
+import { Label } from "@/components/shared/ui/label"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/shared/ui/tabs"
+import { Button } from "@/components/shared/ui/button"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/shared/ui/popover"
+import { SmileIcon } from 'lucide-react'
+import { updateBiography } from '@/lib/actions'
+import { useToast } from "@/components/shared/ui/use-toast";
+
+export default function MarkdownInputPreview() {
+    const [text, setText] = useState('')
+    const [isMarkdown, setIsMarkdown] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
+
+    const handleEmojiClick = (emojiData: EmojiClickData) => {
+        setText((prevText) => prevText + emojiData.emoji)
+    }
+
+    const { toast } = useToast()
+
+
+    const onClick = async () => {
+        if (isLoading) return
+        setIsLoading(true)
+
+        const data = await updateBiography(text)
+        if (data.status === "ok") {
+            toast({
+                title: "Your profile description has been updated successfully"
+            })
+        }
+        setIsLoading(false)
+
+
+
+    }
+
+
+    return (
+        <Card className="w-full max-w-2xl mx-auto">
+            <CardHeader>
+                <CardTitle>Biography</CardTitle>
+                <CardDescription>The Description About your Profile</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+                <Tabs defaultValue="edit" className="w-full">
+                    <TabsList className="grid w-full grid-cols-2">
+                        <TabsTrigger value="edit">Edit</TabsTrigger>
+                        <TabsTrigger value="preview" disabled={!isMarkdown}>Preview</TabsTrigger>
+                    </TabsList>
+                    <TabsContent value="edit">
+                        <div className="relative">
+                            <Textarea
+                                placeholder="Enter your text here..."
+                                value={text}
+                                onChange={(e) => setText(e.target.value)}
+                                rows={10}
+                                className="w-full pr-10 resize-none"
+                                disabled={isLoading}
+
+                            />
+                            <Popover>
+                                <PopoverTrigger asChild>
+                                    <Button
+                                        variant="outline"
+                                        size="icon"
+                                        className="absolute right-2 top-2"
+                                        aria-label="Insertar emoji"
+                                    >
+                                        <SmileIcon className="h-4 w-4" />
+                                    </Button>
+                                </PopoverTrigger>
+                                <PopoverContent className="w-full p-0">
+                                    <EmojiPicker
+                                        onEmojiClick={handleEmojiClick}
+                                        emojiStyle={EmojiStyle.APPLE}
+                                        autoFocusSearch
+                                    />
+                                </PopoverContent>
+                            </Popover>
+                        </div>
+                    </TabsContent>
+                    <TabsContent value="preview">
+                        {isMarkdown && (
+                            <div className="prose dark:prose-invert max-w-none border-border border rounded-md min-h-[258px] p-2 ">
+                                <ReactMarkdown>{text}</ReactMarkdown>
+                            </div>
+                        )}
+                    </TabsContent>
+                </Tabs>
+
+            </CardContent>
+            <CardFooter className='gap-6'>
+                <Button onClick={onClick} disabled={isLoading}>{isLoading ? "Loading..." : "Save Changes"}</Button>
+                <div className="flex items-center space-x-2  ">
+                    <Switch
+                        id="markdown-mode"
+                        checked={isMarkdown}
+                        onCheckedChange={setIsMarkdown}
+                    />
+                    <Label htmlFor="markdown-mode">Modo Markdown</Label>
+                </div>
+            </CardFooter>
+        </Card>
+    )
+}
+

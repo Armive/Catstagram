@@ -139,3 +139,16 @@ export const verifyAccount = async (): Promise<{ status: "error" | "ok" }> => {
 		.eq("id", id);
 	return error?.message ? { status: "error" } : { status: "ok" };
 };
+
+export const updateBiography = async (
+	biography: string,
+): Promise<{ status: "error" | "ok" }> => {
+	const supabase = await createClient();
+	const id = await getUserId();
+	const { error } = await supabase
+		.from("profiles")
+		.update({ description: biography })
+		.eq("id", id);
+
+	return error?.message ? { status: "error" } : { status: "ok" };
+};

@@ -23,15 +23,14 @@ import {
 	SelectValue,
 } from "@/components/shared/ui/select";
 import { Trash2 } from "lucide-react";
-import { Textarea } from "@/components/shared/ui/textarea";
+import MarkdownInputPreview from "@/components/settings/BiographyForm";
 import { VerifyAccount } from "@/components/settings/VerifyAccount";
 import { getUserData } from "@/lib/getUserData";
 import { getUserId } from "@/lib/getUserId";
 
-export default async function Settings() {
+export default async function EditProfile() {
 	const id = await getUserId();
 	const profile = await getUserData(id);
-
 	return (
 		<div className="flex min-h-screen">
 			<main className="flex-1 p-8">
@@ -97,28 +96,7 @@ export default async function Settings() {
 								<Button>Save Changes</Button>
 							</CardFooter>
 						</Card>
-						<Card className="flex flex-col">
-							<CardHeader>
-								<CardTitle>Biography</CardTitle>
-								<CardDescription>
-									The Description About your Profile
-								</CardDescription>
-							</CardHeader>
-							<CardContent className="flex-1">
-								<div className="grid w-full max-w-sm items-center gap-1.5">
-									<Label htmlFor="description">Description</Label>
-									<Textarea
-										id="description"
-										maxLength={400}
-										className="resize-none"
-										placeholder="Example: I love to code and I also love to read"
-									/>
-								</div>
-							</CardContent>
-							<CardFooter>
-								<Button>Save Changes</Button>
-							</CardFooter>
-						</Card>
+						<MarkdownInputPreview />
 						<Card className="flex flex-col">
 							<CardHeader>
 								<CardTitle>Gender</CardTitle>
@@ -138,13 +116,13 @@ export default async function Settings() {
 									</Select>
 								</section>
 							</CardContent>
-							<CardFooter>
+							<CardFooter >
 								<Button>Save Changes</Button>
 							</CardFooter>
 						</Card>
 						<VerifyAccount isVerified={profile.is_verified} />
-						<Card className="flex flex-col">
-							<CardHeader className="flex-1">
+						<Card className="flex flex-col" >
+							<CardHeader>
 								<CardTitle>Delete my account</CardTitle>
 								<CardDescription>
 									If you delete your account all your information, including
@@ -152,10 +130,13 @@ export default async function Settings() {
 									items, will be deleted.
 								</CardDescription>
 							</CardHeader>
-							<CardFooter>
+							<CardContent className="flex-1">
 								<Button className="flex gap-2" variant="destructive">
-									<Trash2 height={22} width={22} /> Delete account
+									<Trash2 /> Delete account
 								</Button>
+							</CardContent>
+							<CardFooter>
+								<Button>Save Changes</Button>
 							</CardFooter>
 						</Card>
 					</div>

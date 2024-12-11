@@ -8,6 +8,7 @@ import {
 	Trash2,
 	Pencil,
 	AlertTriangleIcon,
+	VerifiedIcon,
 } from "lucide-react";
 import {
 	AvatarImage,
@@ -258,8 +259,17 @@ export function Post({ data, userId }: { data: PostType; userId: string }) {
 							</Avatar>
 						</Link>
 						<div>
-							<Link href={`/${data.profiles.handle}`}>
+							<Link
+								href={`/${data.profiles.handle}`}
+								className="flex gap-2"
+								title={
+									data.profiles.is_verified
+										? `${data.profiles.name} (verified)`
+										: data.profiles.name
+								}
+							>
 								<p className="font-semibold text-sm">{data.profiles?.name}</p>
+								{data.profiles.is_verified ? <VerifiedIcon /> : null}
 							</Link>
 							{data.place ? (
 								<p className="text-xs flex items-center">

@@ -2,6 +2,8 @@ interface Profile {
 	name: string;
 	avatar_url: string | null;
 	handle: string;
+	is_verified: boolean;
+	description: string;
 }
 interface Comments {
 	comment_id: string;

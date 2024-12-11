@@ -5,7 +5,7 @@ export const getFeed = async () => {
 	let { data } = await supabase
 		.from("posts")
 		.select(`*,
-			profiles(name, avatar_url,handle),
+			profiles(name, avatar_url,handle,is_verified),
 			post_likes(user_id),
 			saved_posts(user_id),
 			comments(*

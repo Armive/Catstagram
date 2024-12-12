@@ -96,7 +96,7 @@ export default async function EditProfile() {
 								<Button>Save Changes</Button>
 							</CardFooter>
 						</Card>
-						<MarkdownInputPreview />
+						<MarkdownInputPreview description={profile.description} />
 						<Card className="flex flex-col">
 							<CardHeader>
 								<CardTitle>Gender</CardTitle>
@@ -135,9 +135,7 @@ export default async function EditProfile() {
 									<Trash2 /> Delete account
 								</Button>
 							</CardContent>
-							<CardFooter>
-								<Button>Save Changes</Button>
-							</CardFooter>
+
 						</Card>
 					</div>
 				</div>

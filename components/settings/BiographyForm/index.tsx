@@ -5,7 +5,6 @@ import ReactMarkdown from 'react-markdown'
 import EmojiPicker, { type EmojiClickData, EmojiStyle } from 'emoji-picker-react'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/shared/ui/card"
 import { Textarea } from "@/components/shared/ui/textarea"
-import { Switch } from "@/components/shared/ui/switch"
 import { Label } from "@/components/shared/ui/label"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/shared/ui/tabs"
 import { Button } from "@/components/shared/ui/button"
@@ -13,10 +12,10 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/shared/ui/
 import { SmileIcon } from 'lucide-react'
 import { updateBiography } from '@/lib/actions'
 import { useToast } from "@/components/shared/ui/use-toast";
+import { MarkdownIcon } from '@/components/shared/icons'
 
-export default function MarkdownInputPreview() {
-    const [text, setText] = useState('')
-    const [isMarkdown, setIsMarkdown] = useState(false)
+export default function MarkdownInputPreview({ description }: { description: string }) {
+    const [text, setText] = useState(description || '')
     const [isLoading, setIsLoading] = useState(false)
 
     const handleEmojiClick = (emojiData: EmojiClickData) => {
@@ -53,7 +52,7 @@ export default function MarkdownInputPreview() {
                 <Tabs defaultValue="edit" className="w-full">
                     <TabsList className="grid w-full grid-cols-2">
                         <TabsTrigger value="edit">Edit</TabsTrigger>
-                        <TabsTrigger value="preview" disabled={!isMarkdown}>Preview</TabsTrigger>
+                        <TabsTrigger value="preview" >Preview</TabsTrigger>
                     </TabsList>
                     <TabsContent value="edit">
                         <div className="relative">
@@ -64,7 +63,6 @@ export default function MarkdownInputPreview() {
                                 rows={10}
                                 className="w-full pr-10 resize-none"
                                 disabled={isLoading}
-
                             />
                             <Popover>
                                 <PopoverTrigger asChild>
@@ -88,25 +86,17 @@ export default function MarkdownInputPreview() {
                         </div>
                     </TabsContent>
                     <TabsContent value="preview">
-                        {isMarkdown && (
-                            <div className="prose dark:prose-invert max-w-none border-border border rounded-md min-h-[258px] p-2 ">
-                                <ReactMarkdown>{text}</ReactMarkdown>
-                            </div>
-                        )}
+                        <div className="prose dark:prose-invert max-w-none border-border border rounded-md min-h-[258px] p-2 ">
+                            <ReactMarkdown>{text}</ReactMarkdown>
+                        </div>
                     </TabsContent>
                 </Tabs>
 
             </CardContent>
             <CardFooter className='gap-6'>
                 <Button onClick={onClick} disabled={isLoading}>{isLoading ? "Loading..." : "Save Changes"}</Button>
-                <div className="flex items-center space-x-2  ">
-                    <Switch
-                        id="markdown-mode"
-                        checked={isMarkdown}
-                        onCheckedChange={setIsMarkdown}
-                    />
-                    <Label htmlFor="markdown-mode">Modo Markdown</Label>
-                </div>
+
+                <Label htmlFor="markdown-mode" className='flex items-center gap-2'><MarkdownIcon /> supported.</Label>
             </CardFooter>
         </Card>
     )

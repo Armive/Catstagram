@@ -70,7 +70,7 @@ export default function MarkdownInputPreview({ description }: { description: str
                                         variant="outline"
                                         size="icon"
                                         className="absolute right-2 top-2"
-                                        aria-label="Insertar emoji"
+                                        aria-label="Insert emojis"
                                     >
                                         <SmileIcon className="h-4 w-4" />
                                     </Button>
@@ -87,7 +87,7 @@ export default function MarkdownInputPreview({ description }: { description: str
                     </TabsContent>
                     <TabsContent value="preview">
                         <div className="prose dark:prose-invert max-w-none border-border border rounded-md min-h-[258px] p-2 ">
-                            <ReactMarkdown>{text}</ReactMarkdown>
+                            <ReactMarkdown disallowedElements={['img']}>{text}</ReactMarkdown>
                         </div>
                     </TabsContent>
                 </Tabs>

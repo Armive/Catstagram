@@ -1,4 +1,5 @@
 "use client";
+import ReactMarkdown from 'react-markdown'
 import { Card, CardContent } from "@/components/shared/ui/card";
 import {
 	MapPinIcon,
@@ -268,7 +269,12 @@ export function Post({ data, userId }: { data: PostType; userId: string }) {
 										: data.profiles.name
 								}
 							>
-								<p className="font-semibold text-sm">{data.profiles?.name}</p>
+								<div>
+									<p className="font-semibold text-sm">{data.profiles?.name}</p>
+									<p className="font-light text-sm text-gray-100">
+										@{data.profiles?.handle}
+									</p>
+								</div>
 								{data.profiles.is_verified ? <VerifiedIcon /> : null}
 							</Link>
 							{data.place ? (

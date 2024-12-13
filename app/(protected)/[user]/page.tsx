@@ -3,10 +3,11 @@ import {
 	Avatar,
 	AvatarFallback,
 } from "@/components/shared/ui/avatar";
+import ReactMarkdown from 'react-markdown'
 
 import { notFound } from "next/navigation";
 import { FollowButton } from "@/components/user/followButton";
-import { Cat, Pin } from "lucide-react";
+import { Cat, Pin, VerifiedIcon } from "lucide-react";
 import {
 	Tabs,
 	TabsContent,
@@ -29,10 +30,10 @@ export default async function UserPage(props: {
 
 	const id = await getUserId();
 	return (
-		<div className="max-w-4xl mx-auto space-y-6">
-			<div className="flex md:items-start md:gap-8 md:justify-between flex-col items-center md:flex-row">
+		<div className="max-w-4xl mx-auto ">
+			<div className="flex md:items-center md:gap-20 md:justify-between flex-col items-center md:flex-row mb-5">
 				<div>
-					<Avatar className="w-32 h-32 border-2 border-white ">
+					<Avatar className="w-32 h-32  md:h-40 md:w-40 border-2 border-white ">
 						<AvatarImage src={data.avatar_url} alt="Taco Jose" />
 						<AvatarFallback className="text-foreground">
 							{data?.name?.[0]}
@@ -41,7 +42,17 @@ export default async function UserPage(props: {
 				</div>
 				<div className="md:flex-1">
 					<div className="flex gap-4 items-center mb-4 md:flex-row flex-col">
-						<h1 className="text-2xl font-semibold">{data.name}</h1>
+						<div>
+							<h1 className="text-2xl font-semibold flex gap-2 items-center">
+								{data.name}
+								{data.is_verified ? <VerifiedIcon /> : null}
+							</h1>
+							<p className="text-md font-medium text-gray-500 ">
+								@{data.handle}
+							</p>
+
+						</div>
+
 						{id !== data?.id ? (
 							<FollowButton
 								initialIsFollowed={data.followers.some(
@@ -66,7 +77,9 @@ export default async function UserPage(props: {
 							<p className="text-sm text-gray-400">followed</p>
 						</div>
 					</div>
-					<div className="space-y-1" />
+					<div className="prose dark:prose-invert  p-2 max-h-[300px] overflow-auto max-w-2xl">
+                            <ReactMarkdown disallowedElements={['img']}>{data.description}</ReactMarkdown>
+                    </div>
 				</div>
 			</div>
 			<Tabs defaultValue="posts" className="w-full ">
@@ -88,7 +101,10 @@ export default async function UserPage(props: {
 					<PostGallery data={data.posts} userId={id} />
 				</TabsContent>
 				<TabsContent value="reels" className="mt-6 ">
-					<PinnedPosts data={data.posts.filter((post) => post.is_pined)} userId={id} />
+					<PinnedPosts
+						data={data.posts.filter((post) => post.is_pined)}
+						userId={id}
+					/>
 				</TabsContent>
 			</Tabs>
 		</div>

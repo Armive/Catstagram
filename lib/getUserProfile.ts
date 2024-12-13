@@ -12,6 +12,9 @@ type GetUserProfileType = {
 	posts: PostType[];
 	followers: Follower[];
 	followed: Follower[];
+	is_verified: boolean;
+	description: string;
+	handle: string;
 };
 
 export const getUserProfile = async (handle: string) => {

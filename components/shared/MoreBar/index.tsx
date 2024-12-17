@@ -5,7 +5,6 @@ import {
 	DropdownMenuContent,
 	DropdownMenuGroup,
 	DropdownMenuItem,
-	DropdownMenuLabel,
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/shared/ui/dropdown-menu";
@@ -19,6 +18,7 @@ import {
 	SwitchIcon,
 } from "../icons";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export function MoreBar() {
 	const router = useRouter();
@@ -30,28 +30,28 @@ export function MoreBar() {
 
 	return (
 		<DropdownMenu>
-			<DropdownMenuTrigger className=" justify-center items-center  gap-5 hidden md:flex">
+			<DropdownMenuTrigger className=" justify-center items-center  gap-5  flex">
 				<MenuIcon />
-				<p className="hidden xl:flex text-lg font-light w-[100px]">More</p>
+				<p className=" text-lg font-light w-[100px] hidden xl:flex">More</p>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent className="w-56">
-				<DropdownMenuLabel className="flex justify-center">
-					More
-				</DropdownMenuLabel>
-				<DropdownMenuSeparator />
 				<DropdownMenuGroup>
-					<DropdownMenuItem className="flex gap-2 cursor-pointer">
-						<SettingsIcon />
-						<span>Settings</span>
-					</DropdownMenuItem>
+					<Link href="/settings">
+						<DropdownMenuItem className="flex gap-2 cursor-pointer">
+							<SettingsIcon />
+							<span>Settings</span>
+						</DropdownMenuItem>
+					</Link>
 					<DropdownMenuItem className="flex gap-2 cursor-pointer">
 						<ActivityIcon />
 						<span>Your Activity</span>
 					</DropdownMenuItem>
-					<DropdownMenuItem className="flex gap-2 cursor-pointer">
-						<SavedIcon />
-						<span>Saved</span>
-					</DropdownMenuItem>
+					<Link href="/saved">
+						<DropdownMenuItem className="flex gap-2 cursor-pointer">
+							<SavedIcon />
+							<span>Saved</span>
+						</DropdownMenuItem>
+					</Link>
 					<DropdownMenuItem className="flex gap-2 cursor-pointer">
 						<FlagIcon />
 						<span>Report A Problem</span>

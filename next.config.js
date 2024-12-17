@@ -7,6 +7,11 @@ const nextConfig = {
 				hostname: "wwmqajtqreqlejynvabz.supabase.co",
 			},
 			{ protocol: "https", hostname: "avatars.githubusercontent.com" },
+
+			{
+				protocol: "https",
+				hostname: "i.pinimg.com",
+			},
 		],
 	},
 };

@@ -1,18 +1,29 @@
-import Link from "next/link";
+
+import Link from 'next/link'
 
 export default function NotFound() {
+
+
   return (
-    <div className="flex  justify-center items-center flex-col gap-5">
-      <h2 className="font-bold text-5xl ">404</h2>
-      <p className="text-center">
-        Could not find the page you were looking for.
-      </p>
+    <div className="min-h-screen bg-background text-foreground flex flex-col items-center justify-center p-4 gap-4">
+
+
+
+      <h1 className="text-9xl font-bold mb-2">404</h1>
+
+
+
       <Link
         href="/"
-        className="bg-white border font-medium border-white text-black rounded-lg duration-200 p-2 hover:bg-gray-200 "
+        className="inline-flex items-center justify-center px-6 py-3  text-base font-medium rounded-full   bg-background text-foreground
+        hover:text-background hover:bg-foreground  transition-colors duration-300"
+
       >
-        Return to Homepage
+        Back to homepage
+
       </Link>
+
     </div>
-  );
+  )
 }
+

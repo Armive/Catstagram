@@ -4,6 +4,7 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import sharp from "sharp";
 import { LoginUser, type SignUpType, User } from "./schemas";
+import { getUserId } from "./getUserId";
 
 export const createPostAction = async (
 	formData: FormData,
@@ -108,4 +109,46 @@ export const signUpAction = async (
 	});
 	if (error) return { status: "error" };
 	return { status: "ok" };
+};
+export const reportPostAction = async (
+	formData: FormData,
+	post_id: string,
+): Promise<{ status: "error" | "ok" }> => {
+	const supabase = await createClient();
+	const id = await getUserId();
+	const description = formData.get("description");
+	const type = formData.get("type");
+	const { error } = await supabase.from("report").insert({
+		description,
+		type,
+		post_id,
+		user_id: id,
+		id: crypto.randomUUID(),
+	});
+
+	return error?.message ? { status: "error" } : { status: "ok" };
+};
+
+export const verifyAccount = async (): Promise<{ status: "error" | "ok" }> => {
+	const supabase = await createClient();
+	const id = await getUserId();
+
+	const { error } = await supabase
+		.from("profiles")
+		.update({ is_verified: true })
+		.eq("id", id);
+	return error?.message ? { status: "error" } : { status: "ok" };
+};
+
+export const updateBiography = async (
+	biography: string,
+): Promise<{ status: "error" | "ok" }> => {
+	const supabase = await createClient();
+	const id = await getUserId();
+	const { error } = await supabase
+		.from("profiles")
+		.update({ description: biography })
+		.eq("id", id);
+
+	return error?.message ? { status: "error" } : { status: "ok" };
 };

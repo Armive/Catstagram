@@ -11,7 +11,7 @@ export default function Component() {
 						<div className="flex-1">
 							<Input
 								type="search"
-								placeholder="Search for influencers..."
+								placeholder="Search people"
 								className="w-full"
 							/>
 						</div>

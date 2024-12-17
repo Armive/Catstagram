@@ -8,6 +8,7 @@ import {
 	Trash2,
 	Pencil,
 	AlertTriangleIcon,
+	VerifiedIcon,
 } from "lucide-react";
 import {
 	AvatarImage,
@@ -48,6 +49,7 @@ import Comment from "../Comment";
 import dynamic from "next/dynamic";
 import clsx from "clsx";
 import Link from "next/link";
+import { reportPostAction } from "@/lib/actions";
 
 const EmojiPostBar = dynamic(() => import("../EmojiPostBar"), { ssr: false });
 export function Post({ data, userId }: { data: PostType; userId: string }) {
@@ -142,24 +144,20 @@ export function Post({ data, userId }: { data: PostType; userId: string }) {
 
 	const [reportLoading, setReportLoading] = useState<boolean>(false);
 	const [reportSubmitted, setReportSubmitted] = useState<boolean>(false);
-	const handleReportSubmit = async (e: SyntheticEvent) => {
+	const handleReportSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		if (reportLoading && !data.id) return;
 		e.preventDefault();
 		setReportLoading(true);
 		// Submit the report to the server
 		const form = e.target as HTMLFormElement;
 		const formData = new FormData(form);
-		formData.append("post_id", data.id as string);
-		const response = await fetch("/api/posts/report", {
-			method: "POST",
-			body: formData,
-		});
-		if (response.status === 200) {
+		const response = await reportPostAction(formData, data.id);
+
+		if (response.status === "ok") {
 			setReportSubmitted(true);
 		}
 		setReportLoading(false);
 	};
-
 	//comments
 	const [comments, setComments] = useState<Comments[] | undefined>(
 		data.comments,
@@ -255,12 +253,28 @@ export function Post({ data, userId }: { data: PostType; userId: string }) {
 									src={data.profiles?.avatar_url || ""}
 									alt="user image"
 								/>
-								<AvatarFallback>{data.profiles?.name?.[0]}</AvatarFallback>
+								<AvatarFallback className="text-foreground">
+									{data.profiles?.name?.[0]}
+								</AvatarFallback>
 							</Avatar>
 						</Link>
 						<div>
-							<Link href={`/${data.profiles.handle}`}>
-								<p className="font-semibold text-sm">{data.profiles?.name}</p>
+							<Link
+								href={`/${data.profiles.handle}`}
+								className="flex gap-2"
+								title={
+									data.profiles.is_verified
+										? `${data.profiles.name} (verified)`
+										: data.profiles.name
+								}
+							>
+								<div>
+									<p className="font-semibold text-sm">{data.profiles?.name}</p>
+									<p className="font-light text-sm text-gray-100">
+										@{data.profiles?.handle}
+									</p>
+								</div>
+								{data.profiles.is_verified ? <VerifiedIcon /> : null}
 							</Link>
 							{data.place ? (
 								<p className="text-xs flex items-center">
@@ -306,13 +320,13 @@ export function Post({ data, userId }: { data: PostType; userId: string }) {
 								variant="ghost"
 								size="icon"
 								className={clsx(
-									"rounded-full bg-white/20  hover:bg-black backdrop-blur-sm",
+									"rounded-full bg-white/20  hover:bg-black hover:text-white backdrop-blur-sm",
 									{ "bg-black": isHeartIconPressed },
 								)}
+								onClick={onHeartClick}
 							>
 								<HeartIcon
 									ishearticonpressed={String(isHeartIconPressed)}
-									onClick={onHeartClick}
 									className={clsx(
 										"cursor-pointer active:animate-jump animate-duration-700",
 										{
@@ -387,13 +401,13 @@ export function Post({ data, userId }: { data: PostType; userId: string }) {
 								variant="secondary"
 								size="icon"
 								className={clsx(
-									"rounded-full  hover:bg-black bg-white/20  backdrop-blur-sm transition-all",
+									"rounded-full  hover:bg-black bg-white/20   backdrop-blur-sm transition-all",
 									{ "bg-black": isBookMarkIconPressed },
 								)}
+								onClick={onBookmarkClick}
 							>
 								<BookMarkIcon
 									isbookmarkiconpressed={String(isBookMarkIconPressed)}
-									onClick={onBookmarkClick}
 									className={clsx(
 										"cursor-pointer active:animate-blurred-fade-in animate-duration-100 text-white",
 										{
@@ -438,7 +452,7 @@ export function Post({ data, userId }: { data: PostType; userId: string }) {
 												alt={comment.profiles?.name}
 												src={comment?.profiles?.avatar_url || ""}
 											/>
-											<AvatarFallback>
+											<AvatarFallback className="text-foreground">
 												{comment?.profiles?.name[0]}
 											</AvatarFallback>
 										</Avatar>
@@ -458,6 +472,7 @@ export function Post({ data, userId }: { data: PostType; userId: string }) {
 														name="content"
 														defaultValue={comment.content}
 														autoFocus
+														autoComplete="off"
 													/>
 													<div className="mt-2">
 														<Button

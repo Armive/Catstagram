@@ -2,6 +2,8 @@ interface Profile {
 	name: string;
 	avatar_url: string | null;
 	handle: string;
+	is_verified: boolean;
+	description: string;
 }
 interface Comments {
 	comment_id: string;
@@ -26,6 +28,7 @@ interface PostType {
 	description: string;
 	saved_posts: SavedPost[];
 	imageUrl?: string;
+	is_pined: boolean;
 }
 
 interface Like {

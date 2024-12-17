@@ -26,7 +26,9 @@ export function SearchItem({
 					>
 						<Avatar className="w-8 h-8 border">
 							<AvatarImage src="https://github.com/guaudev.png" />
-							<AvatarFallback>{name}</AvatarFallback>
+							<AvatarFallback className="text-foreground">
+								{name}
+							</AvatarFallback>
 						</Avatar>
 					</div>
 					<span className="font-bold">{name}</span>

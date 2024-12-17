@@ -1,6 +1,5 @@
 "use client";
 
-import type React from "react";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/shared/ui/button";
@@ -18,7 +17,7 @@ import { useToast } from "@/components/shared/ui/use-toast";
 import { ToastAction } from "@/components/shared/ui/toast";
 import { useRouter } from "next/navigation";
 
-export function GradientTweetComposer({
+export function CreatePostForm({
 	avatar_url,
 	name,
 }: { avatar_url: string; name: string }) {
@@ -29,6 +28,7 @@ export function GradientTweetComposer({
 	const [image, setImage] = useState<File | null>(null);
 	const [isExpanded, setIsExpanded] = useState(false);
 	const [isFormComplete, setIsFormComplete] = useState(false);
+	const [isLoading, setIsLoading] = useState(false)
 
 	const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		if (e.target.files?.[0]) {
@@ -38,10 +38,12 @@ export function GradientTweetComposer({
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
+		if (isLoading) return
 
 		const formData = new FormData(e.target as HTMLFormElement);
 		formData.append("file", image as Blob);
 
+		setIsLoading(true)
 		const data = await createPostAction(formData);
 		if (data.status === "ok") {
 			toast({
@@ -62,7 +64,9 @@ export function GradientTweetComposer({
 			setImage(null);
 			setIsExpanded(false);
 			setIsFormComplete(false);
+			setIsLoading(false)
 		} else {
+			setIsLoading(false)
 			toast({
 				title: "Internal server error",
 			});
@@ -85,7 +89,9 @@ export function GradientTweetComposer({
 						<div className="flex items-start space-x-4">
 							<Avatar className="w-12 h-12">
 								<AvatarImage src={avatar_url} alt={name[0]} />
-								<AvatarFallback>{name[0]}</AvatarFallback>
+								<AvatarFallback className="text-foreground">
+									{name[0]}
+								</AvatarFallback>
 							</Avatar>
 							<div className="flex-grow">
 								<div className="relative">
@@ -182,11 +188,12 @@ export function GradientTweetComposer({
 								transition={{ duration: 0.3 }}
 							>
 								<Button
+									disabled={isLoading}
 									type="submit"
 									className="rounded-full px-6 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white dark:from-blue-600 dark:to-purple-600 dark:hover:from-blue-700 dark:hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed"
 								>
 									<Send className="w-4 h-4 mr-2" />
-									Post
+									{isLoading ? "Loading..." : "Send"}
 								</Button>
 							</motion.div>
 						)}

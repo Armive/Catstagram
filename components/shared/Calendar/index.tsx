@@ -17,7 +17,7 @@ export function Calendar() {
 
 	const currentYear = new Date().getFullYear();
 	const years = Array.from({ length: 124 }, (_, i) => currentYear - i);
-	const months = [
+	const [months] = useState([
 		"January",
 		"February",
 		"March",
@@ -30,7 +30,7 @@ export function Calendar() {
 		"October",
 		"November",
 		"December",
-	];
+	]);
 
 	useEffect(() => {
 		if (month || year) {
@@ -58,7 +58,7 @@ export function Calendar() {
 				setDay("");
 			}
 		}
-	}, [month, year, currentYear, day]);
+	}, [month, year, currentYear, day, months]);
 
 	return (
 		<div className="w-full max-w-sm space-y-4">

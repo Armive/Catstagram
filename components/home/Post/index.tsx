@@ -1,5 +1,4 @@
 "use client";
-import ReactMarkdown from 'react-markdown'
 import { Card, CardContent } from "@/components/shared/ui/card";
 import {
 	MapPinIcon,

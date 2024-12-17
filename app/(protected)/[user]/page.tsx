@@ -4,7 +4,7 @@ import {
 	AvatarFallback,
 } from "@/components/shared/ui/avatar";
 import ReactMarkdown from 'react-markdown'
-
+import remarkGfm from "remark-gfm";
 import { notFound } from "next/navigation";
 import { FollowButton } from "@/components/user/followButton";
 import { Cat, Pin, VerifiedIcon } from "lucide-react";
@@ -32,13 +32,16 @@ export default async function UserPage(props: {
 	return (
 		<div className="max-w-4xl mx-auto ">
 			<div className="flex md:items-center md:gap-20 md:justify-between flex-col items-center md:flex-row mb-5">
-				<div>
-					<Avatar className="w-32 h-32  md:h-40 md:w-40 border-2 border-white ">
+				<div className="flex items-center flex-col gap-3">
+					<Avatar className="w-32 h-32  md:h-40 md:w-40  border-2	 border-border">
 						<AvatarImage src={data.avatar_url} alt="Taco Jose" />
 						<AvatarFallback className="text-foreground">
 							{data?.name?.[0]}
 						</AvatarFallback>
 					</Avatar>
+					<p className="text-md font-medium text-foreground ">
+						@{data.handle}
+					</p>
 				</div>
 				<div className="md:flex-1">
 					<div className="flex gap-4 items-center mb-4 md:flex-row flex-col">
@@ -47,9 +50,7 @@ export default async function UserPage(props: {
 								{data.name}
 								{data.is_verified ? <VerifiedIcon /> : null}
 							</h1>
-							<p className="text-md font-medium text-gray-500 ">
-								@{data.handle}
-							</p>
+
 
 						</div>
 
@@ -64,22 +65,22 @@ export default async function UserPage(props: {
 						) : null}
 					</div>
 					<div className="flex space-x-8 mb-4">
-						<div className="text-center">
-							<p className="font-semibold">{data?.posts.length || 0}</p>
-							<p className="text-sm text-gray-400">Posts</p>
+						<div className="flex gap-3  justify-center ">
+							<p className="font-bold">{data?.posts.length || 0}</p>
+							<p className="text-sm text-foreground font-semibold">posts</p>
 						</div>
-						<div className="text-center">
-							<p className="font-semibold">{data?.followers.length}</p>
-							<p className="text-sm text-gray-400">Followers</p>
+						<div className="flex  gap-3  justify-center ">
+							<p className="font-bold">{data?.followers.length}</p>
+							<p className="text-sm text-foreground font-semibold">followers</p>
 						</div>
-						<div className="text-center">
-							<p className="font-semibold">{data?.followed.length}</p>
-							<p className="text-sm text-gray-400">followed</p>
+						<div className="flex gap-3  justify-center ">
+							<p className="font-bold">{data?.followed.length}</p>
+							<p className="text-sm text-foreground font-semibold">followed</p>
 						</div>
 					</div>
-					<div className="prose dark:prose-invert  p-2 max-h-[300px] overflow-auto max-w-2xl">
-                            <ReactMarkdown disallowedElements={['img']}>{data.description}</ReactMarkdown>
-                    </div>
+					<div className="prose dark:prose-invert prose-h1:text-2xl prose-h2:text-[20px]   p-2 max-h-[300px] overflow-auto max-w-2xl">
+						<ReactMarkdown remarkPlugins={[remarkGfm]} >{data.description.replaceAll('\n', '  \n')}</ReactMarkdown>
+					</div>
 				</div>
 			</div>
 			<Tabs defaultValue="posts" className="w-full ">

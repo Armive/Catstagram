@@ -13,6 +13,8 @@ import { SmileIcon } from 'lucide-react'
 import { updateBiography } from '@/lib/actions'
 import { useToast } from "@/components/shared/ui/use-toast";
 import { MarkdownIcon } from '@/components/shared/icons'
+import remarkGfm from "remark-gfm";
+
 
 export default function MarkdownInputPreview({ description }: { description: string }) {
     const [text, setText] = useState(description || '')
@@ -63,6 +65,7 @@ export default function MarkdownInputPreview({ description }: { description: str
                                 rows={10}
                                 className="w-full pr-10 resize-none"
                                 disabled={isLoading}
+                                maxLength={300}
                             />
                             <Popover>
                                 <PopoverTrigger asChild>
@@ -86,8 +89,8 @@ export default function MarkdownInputPreview({ description }: { description: str
                         </div>
                     </TabsContent>
                     <TabsContent value="preview">
-                        <div className="prose dark:prose-invert max-w-none border-border border rounded-md min-h-[258px] p-2 ">
-                            <ReactMarkdown disallowedElements={['img']}>{text}</ReactMarkdown>
+                        <div className="prose dark:prose-invert prose-h1:text-2xl prose-h2:text-[20px]  max-w-none border-border border rounded-md min-h-[258px] p-2 ">
+                            <ReactMarkdown disallowedElements={['img']} remarkPlugins={[remarkGfm]}>{text.replaceAll('\n', '  \n')}</ReactMarkdown>
                         </div>
                     </TabsContent>
                 </Tabs>

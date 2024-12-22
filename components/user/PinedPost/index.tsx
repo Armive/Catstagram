@@ -33,6 +33,9 @@ export const PinedPost = ({
 
 	const [isHeartLoading, setIsHeartLoading] = useState(false);
 
+	const [isPined, setIsPined] = useState(post.is_pined);
+
+
 	const onHeartClick = async () => {
 		if (!post.id || isHeartLoading) return;
 		setIsHeartLoading(true);
@@ -92,6 +95,22 @@ export const PinedPost = ({
 		}
 		setIsBookmarkLoading(false);
 	};
+
+	const onUnpin = async (event: React.MouseEvent<HTMLSpanElement>) => {
+		event.stopPropagation();
+		const res = await fetch("/api/posts/pined", {
+			method: "DELETE",
+			body: JSON.stringify({
+				post_id: post.id,
+			}),
+
+		});
+		if (res.status === 200) {
+			setIsPined(false);
+		}
+	}
+	if (!isPined) return null;
+
 	return (
 		<motion.div
 			key={post.id}
@@ -112,20 +131,25 @@ export const PinedPost = ({
 						{post.profiles.name}
 					</span>
 				</div>
-				<DropdownMenu>
-					<DropdownMenuTrigger asChild>
-						<Button
-							variant="ghost"
-							size="icon"
-							className="text-muted-foreground hover:text-foreground"
-						>
-							<MoreHorizontal className="h-5 w-5" />
-						</Button>
-					</DropdownMenuTrigger>
-					<DropdownMenuContent align="end">
-						<DropdownMenuItem>Unpin post</DropdownMenuItem>
-					</DropdownMenuContent>
-				</DropdownMenu>
+				{
+					post.user_id === userId ? (
+
+						<DropdownMenu>
+							<DropdownMenuTrigger asChild>
+								<Button
+									variant="ghost"
+									size="icon"
+									className="text-muted-foreground hover:text-foreground"
+								>
+									<MoreHorizontal className="h-5 w-5" />
+								</Button>
+							</DropdownMenuTrigger>
+							<DropdownMenuContent align="end">
+								<DropdownMenuItem onClick={onUnpin}>Unpin post</DropdownMenuItem>
+							</DropdownMenuContent>
+						</DropdownMenu>
+					) : null
+				}
 			</div>
 			<div className="relative aspect-square">
 				<Image
@@ -274,6 +298,6 @@ export const PinedPost = ({
 					</motion.button>
 				</form>
 			</div>
-		</motion.div>
+		</motion.div >
 	);
 };

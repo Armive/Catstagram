@@ -109,7 +109,7 @@ export const PinedPost = ({
 			setIsPined(false);
 		}
 	}
-	if (!isPined) return null;
+
 
 
 	//comments
@@ -135,6 +135,10 @@ export const PinedPost = ({
 		setInputValue("");
 		setIsInputLoading(false);
 	};
+
+
+
+	if (!isPined) return null;
 
 	return (
 		<motion.div

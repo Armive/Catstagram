@@ -37,6 +37,7 @@ import { Label } from "@/components/shared/ui/label";
 import { Textarea } from "@/components/shared/ui/textarea";
 import { reportPostAction } from "@/lib/actions";
 import Link from "next/link";
+import { set } from "date-fns";
 
 export default function PostView({
 	data,
@@ -116,10 +117,14 @@ export default function PostView({
 	};
 
 	//Comments
+	const [isInputLoading, setIsInputLoading] = useState(false);
 	const [comments, setComments] = useState<Comments[]>(data.comments);
 	const [inputValue, setInputValue] = useState("");
 	const createComment: FormEventHandler<HTMLFormElement> = async (e) => {
 		e.preventDefault();
+		if (isInputLoading) return;
+		setIsInputLoading(true);
+
 		const formData = new FormData(e.target as HTMLFormElement);
 		const content = formData.get("content");
 		const response = await fetch("/api/posts/comments", {
@@ -133,6 +138,7 @@ export default function PostView({
 		const { data: newComments } = await response.json();
 		setComments((prevComments) => [newComments[0], ...(prevComments ?? [])]);
 		setInputValue("");
+		setIsInputLoading(false);
 	};
 	const [deleteConfirmationId, setDeleteConfirmationId] = useState<
 		string | null
@@ -201,6 +207,8 @@ export default function PostView({
 		}
 		setReportLoading(false);
 	};
+
+
 	return (
 		<div className="flex flex-col md:flex-row w-full max-w-4xl overflow-hidden shadow-xl md:rounded-lg border-none">
 			<section className="md:w-1/2 h-1/2 md:h-auto relative max-h-[50%] md:max-h-auto md:min-h-full">
@@ -264,35 +272,44 @@ export default function PostView({
 						)}
 					</DialogContent>
 				</Dialog>
-				<div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black to-transparent text-white">
-					<DialogTitle className="text-2xl font-semibold max-w-[350px] break-words">
-						{data.description}
-					</DialogTitle>
-					<div className="flex items-center gap-2">
-						<Avatar>
-							<AvatarImage
-								alt="@taco.westie"
-								src={data.profiles.avatar_url || ""}
-							/>
-							<AvatarFallback className="text-foreground">
-								{data.profiles.name[0]}
-							</AvatarFallback>
-						</Avatar>
-						<p className="font-semibold">{data?.profiles.name}</p>
-					</div>
-				</div>
+
 			</section>
 			<section className="md:w-1/2 flex flex-col bg-background text-foreground h-1/2 md:h-auto">
 				<CardContent className="flex flex-col flex-grow overflow-auto">
-					<ScrollArea className="h-full p-2 pb-0 md:pb-2">
-						<div className="flex flex-col gap-x-5 mt-3">
+					<ScrollArea className="h-80	l p-2 pb-0 md:pb-2">
+						<div className="text-foreground ">
+							<div className="flex items-center gap-2">
+								<Avatar>
+									<AvatarImage
+										alt="@taco.westie"
+										src={data.profiles.avatar_url || ""}
+										height={32}
+										width={32}
+									/>
+									<AvatarFallback className="text-foreground">
+										{data.profiles.name[0]}
+									</AvatarFallback>
+								</Avatar>
+								<div>
+
+									<p className="font-semibold">{data?.profiles.name}</p>
+									<DialogTitle className="text-sm font-semibold max-w-[350px] break-words">
+										{data.description}
+									</DialogTitle>
+								</div>
+							</div>
+						</div>
+
+						<div className="flex flex-col gap-x-5 mt-3 gap-4">
 							{comments.map((comment) => (
 								<article className=" flex gap-4" key={comment.comment_id}>
 									<Link href={`/${comment.profiles?.handle}`}>
-										<Avatar className="w-8 h-8 object-cover">
+										<Avatar className=" object-cover">
 											<AvatarImage
 												alt={`${comment.profiles?.name} photo`}
 												src={comment.profiles?.avatar_url || ""}
+												height={32}
+												width={32}
 											/>
 											<AvatarFallback className="text-foreground">
 												{comment.profiles?.name[0]}
@@ -366,22 +383,7 @@ export default function PostView({
 									) : null}
 								</article>
 							))}
-							{comments.length === 0 ? (
-								<div className="bg-background p-4 rounded-lg text-center pb-0 md:pb-4">
-									<p className="text-sm font-medium mb-2 text-foreground">
-										No comments yet
-									</p>
-									<p className="text-xs text-muted-foreground mb-4">
-										Be the first to share your thoughts!
-									</p>
-									<Button
-										variant="secondary"
-										className="w-full bg-background hover:bg-background border-none "
-									>
-										Write a comment
-									</Button>
-								</div>
-							) : null}
+
 						</div>
 					</ScrollArea>
 				</CardContent>
@@ -441,6 +443,7 @@ export default function PostView({
 								setInputValue(e.target.value);
 							}}
 							autoComplete="off"
+							disabled={isInputLoading}
 						/>
 						<Button
 							size="sm"

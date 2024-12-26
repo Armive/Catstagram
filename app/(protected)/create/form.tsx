@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { type DragEvent, useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/shared/ui/button";
 import { Input } from "@/components/shared/ui/input";
@@ -16,6 +16,11 @@ import { createPostAction } from "@/lib/actions";
 import { useToast } from "@/components/shared/ui/use-toast";
 import { ToastAction } from "@/components/shared/ui/toast";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
+import { Dialog, DialogTitle, DialogTrigger } from "@/components/shared/ui/dialog";
+import { DialogContent } from "@/components/shared/ui/dialog";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
+import clsx from "clsx";
 
 export function CreatePostForm({
 	avatar_url,
@@ -81,6 +86,33 @@ export function CreatePostForm({
 		setIsFormComplete(description.length >= 20 && image !== null);
 	}, [description, image]);
 
+
+	//drag and drop
+	const [dragLoading, setDragLoading] = useState(false)
+	const onDragOver = (e: DragEvent<HTMLDivElement>) => {
+		e.preventDefault();
+		setDragLoading(true);
+	};
+
+	const onDragLeave = (e: DragEvent<HTMLDivElement>) => {
+		e.preventDefault();
+		setDragLoading(false);
+	};
+	const onDragEnd = (e: DragEvent<HTMLDivElement>) => {
+		e.preventDefault();
+		setDragLoading(false);
+	};
+
+	const onDrop = (e: DragEvent<HTMLDivElement>) => {
+		e.preventDefault();
+		setDragLoading(false);
+		if (e.dataTransfer?.files?.length) {
+			setImage(e.dataTransfer?.files?.[0]);
+		}
+	};
+
+
+
 	return (
 		<Card className="w-full max-w-2xl mx-auto bg-gradient-to-br from-blue-50 to-purple-50 dark:from-gray-900 dark:to-gray-800 shadow-lg">
 			<form onSubmit={handleSubmit}>
@@ -94,7 +126,13 @@ export function CreatePostForm({
 								</AvatarFallback>
 							</Avatar>
 							<div className="flex-grow">
-								<div className="relative">
+								<div className={clsx("relative flex gap-2", {
+									"outline-2 outline-dashed outline-gray-300 dark:outline-gray-700": dragLoading
+								})}
+									onDragOver={onDragOver}
+									onDragLeave={onDragLeave}
+									onDragEnd={onDragEnd}
+									onDrop={onDrop}>
 									<Input
 										type="file"
 										accept="image/*"
@@ -104,7 +142,17 @@ export function CreatePostForm({
 											handleImageChange(e);
 										}}
 									/>
+									{image ? (<Dialog>
+										<DialogTrigger>
+											<Image src={URL.createObjectURL(image)} alt="Post image" height={50} width={50} className="object-cover rounded-md aspect-square" />
+										</DialogTrigger>
+										<DialogContent className="p-0 m-0 max-w-[400px] border-none">
+											<VisuallyHidden><DialogTitle>Post image</DialogTitle></VisuallyHidden>
+											<Image src={URL.createObjectURL(image)} alt="Post image" height={400} width={400} className="object-cover rounded-md aspect-square" />
+										</DialogContent>
+									</Dialog>) : null}
 									<label
+
 										htmlFor="image-upload"
 										className="flex items-center justify-center w-full p-2 bg-gradient-to-r from-pink-100 to-blue-100 dark:from-gray-800 dark:to-gray-700 rounded-md cursor-pointer hover:opacity-80 transition-opacity"
 									>

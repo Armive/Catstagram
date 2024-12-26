@@ -15,7 +15,7 @@ import {
 } from "@/components/shared/ui/dropdown-menu";
 import { BookMarkIcon, HeartIcon } from "@/components/shared/icons";
 import clsx from "clsx";
-import { useState } from "react";
+import { type FormEventHandler, useState } from "react";
 export const PinedPost = ({
 	post,
 	userId,
@@ -111,6 +111,31 @@ export const PinedPost = ({
 	}
 	if (!isPined) return null;
 
+
+	//comments
+	const [isInputLoading, setIsInputLoading] = useState(false);
+	const [comments, setComments] = useState<Comments[]>(post.comments);
+	const [inputValue, setInputValue] = useState("");
+	const createComment: FormEventHandler<HTMLFormElement> = async (e) => {
+		e.preventDefault();
+		if (isInputLoading) return;
+		setIsInputLoading(true);
+
+
+		const response = await fetch("/api/posts/comments", {
+			method: "POST",
+			body: JSON.stringify({
+				content: inputValue,
+				post_id: post.id,
+			}),
+		});
+		if (response.status !== 200) return;
+		const { data: newComments } = await response.json();
+		setComments((prevComments) => [newComments[0], ...(prevComments ?? [])]);
+		setInputValue("");
+		setIsInputLoading(false);
+	};
+
 	return (
 		<motion.div
 			key={post.id}
@@ -162,7 +187,13 @@ export const PinedPost = ({
 			<div className="p-4">
 				<div className="flex justify-between max-[400px]:flex-col max-[400px]:gap-3">
 					<p className="font-semibold  text-foreground flex items-center">
-						{post.post_likes.length} Hearts
+						{initialIsheartIconPressed
+							? isHeartIconPressed
+								? post.post_likes?.length
+								: (post.post_likes?.length || 0) - 1
+							: isHeartIconPressed
+								? (post.post_likes?.length || 0) + 1
+								: post.post_likes?.length} Hearts
 					</p>
 					<p className="text-foreground font-semibold flex items-center">
 						{post.description}
@@ -208,66 +239,75 @@ export const PinedPost = ({
 						</Button>
 					</div>
 				</div>
-				<div className=" mx-auto p-3 rounded-lg shadow-md">
-					<div onClick={() => setIsOpen(!isOpen)}>
-						<motion.button
-							whileHover={{ scale: 1.05 }}
-							whileTap={{ scale: 0.95 }}
-							style={{
-								display: "flex",
-								alignItems: "center",
-								transitionProperty:
-									"background-color, border-color ,text-decoration-color ",
-								transitionDuration: "200",
-							}}
-						>
-							<span className="mr-2 text-foreground">See al the comments</span>
-							<motion.span
-								animate={{ rotate: isOpen ? 180 : 0 }}
-								transition={{ duration: 0.3 }}
-							/>
-						</motion.button>
-					</div>
+				{
+					comments.length ? (
 
-					<AnimatePresence>
-						{isOpen && (
-							<motion.div
-								initial={{ opacity: 0, height: 0 }}
-								animate={{ opacity: 1, height: "auto" }}
-								exit={{ opacity: 0, height: 0 }}
-								transition={{ duration: 0.3, ease: "easeInOut" }}
-							>
-								<ul>
-									{post.comments.slice(0, 2).map((comment) => (
-										<motion.li
-											key={comment.comment_id}
-											initial={{ opacity: 0, y: 20 }}
-											animate={{ opacity: 1, y: 0 }}
-											exit={{ opacity: 0, y: -20 }}
-											transition={{ duration: 0.2 }}
-										>
-											<p
-												key={comment.comment_id}
-												className="mt-1 text-sm text-foreground"
-											>
-												<span className="font-semibold mr-2 text-foreground">
-													{comment.profiles?.name}
-												</span>
-												{comment.content}
-											</p>
-										</motion.li>
-									))}
-								</ul>
-							</motion.div>
-						)}
-					</AnimatePresence>
-				</div>
+						<div className=" mx-auto p-3 rounded-lg shadow-md">
+							<div onClick={() => setIsOpen(!isOpen)}>
+								<motion.button
+									whileHover={{ scale: 1.05 }}
+									whileTap={{ scale: 0.95 }}
+									style={{
+										display: "flex",
+										alignItems: "center",
+										transitionProperty:
+											"background-color, border-color ,text-decoration-color ",
+										transitionDuration: "200",
+									}}
+								>
+									<span className="mr-2 text-foreground">{isOpen ? "Hide all comments" : "See al the comments"}</span>
+									<motion.span
+										animate={{ rotate: isOpen ? 180 : 0 }}
+										transition={{ duration: 0.3 }}
+									/>
+								</motion.button>
+							</div>
 
-				<form className="relative  ">
+							<AnimatePresence>
+								{isOpen && (
+									<motion.div
+										initial={{ opacity: 0, height: 0 }}
+										animate={{ opacity: 1, height: "auto" }}
+										exit={{ opacity: 0, height: 0 }}
+										transition={{ duration: 0.3, ease: "easeInOut" }}
+									>
+										<ul>
+											{comments.map((comment) => (
+												<motion.li
+													key={comment.comment_id}
+													initial={{ opacity: 0, y: 20 }}
+													animate={{ opacity: 1, y: 0 }}
+													exit={{ opacity: 0, y: -20 }}
+													transition={{ duration: 0.2 }}
+												>
+													<p
+														key={comment.comment_id}
+														className="mt-1 text-sm text-foreground"
+													>
+														<span className="font-semibold mr-2 text-foreground">
+															{comment.profiles?.name}
+														</span>
+														{comment.content}
+													</p>
+												</motion.li>
+											))}
+										</ul>
+									</motion.div>
+								)}
+							</AnimatePresence>
+						</div>
+					) : null
+				}
+
+				<form className="relative mt-4" onSubmit={createComment}>
 					<input
 						type="text"
 						placeholder="Write your comment..."
 						className="w-full py-2 pl-4 pr-12 text-black bg-white border-2 border-transparent rounded-full focus:outline-none focus:border-gray-950 transition-colors duration-300 ease-in-out placeholder:text-black"
+						onChange={(e) => setInputValue(e.target.value)}
+						value={inputValue}
+						disabled={isInputLoading}
+
 					/>
 					<div
 						className="absolute inset-0 rounded-full opacity-50 pointer-events-none"
@@ -279,6 +319,7 @@ export const PinedPost = ({
 					<motion.button
 						whileTap={{ scale: 1.05 }}
 						whileHover={{ scale: 0.95 }}
+						disabled={isInputLoading}
 						style={{
 							background: "black",
 							boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",

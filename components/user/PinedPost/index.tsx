@@ -259,7 +259,7 @@ export const PinedPost = ({
 										transitionDuration: "200",
 									}}
 								>
-									<span className="mr-2 text-foreground">{isOpen ? "Hide all comments" : "See al the comments"}</span>
+									<span className="mr-2 text-foreground">{isOpen ? "Hide comments" : "See comments"}</span>
 									<motion.span
 										animate={{ rotate: isOpen ? 180 : 0 }}
 										transition={{ duration: 0.3 }}

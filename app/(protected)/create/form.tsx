@@ -80,9 +80,6 @@ export function CreatePostForm({
 
 	useEffect(() => {
 		setIsExpanded(Boolean(image));
-	}, [image]);
-
-	useEffect(() => {
 		setIsFormComplete(description.length >= 20 && image !== null);
 	}, [description, image]);
 
@@ -152,7 +149,6 @@ export function CreatePostForm({
 										</DialogContent>
 									</Dialog>) : null}
 									<label
-
 										htmlFor="image-upload"
 										className="flex items-center justify-center w-full p-2 bg-gradient-to-r from-pink-100 to-blue-100 dark:from-gray-800 dark:to-gray-700 rounded-md cursor-pointer hover:opacity-80 transition-opacity"
 									>
@@ -191,7 +187,7 @@ export function CreatePostForm({
 											placeholder="Add the post title"
 											className="pl-10 pt-2 bg-gradient-to-r from-blue-100 to-purple-100 dark:from-gray-800 dark:to-gray-700 border-none placeholder-gray-400 resize-none min-h-[100px] focus-visible:ring-transparent"
 											maxLength={100}
-											minLength={10}
+											minLength={20}
 											name="description"
 										/>
 									</div>
@@ -201,7 +197,6 @@ export function CreatePostForm({
 											placeholder="Add location (optional)"
 											value={place}
 											onChange={(e) => {
-												e.preventDefault();
 												setPlace(e.target.value);
 											}}
 											className="pl-10 bg-gradient-to-r from-purple-100 to-pink-100 dark:from-gray-800 dark:to-gray-700 border-none placeholder-gray-400 focus-visible:ring-transparent"

@@ -18,7 +18,7 @@ export function SavedGallery({ data }: { data: PostType[] }) {
 			<header className="mb-8">
 				<h1 className="text-3xl font-bold text-primary">Saved Posts</h1>
 				<p className="text-muted-foreground mt-2">
-					Your personal collection of favorite cat moments
+					Your personal collection of favorite pet moments
 				</p>
 			</header>
 
@@ -38,7 +38,7 @@ export function SavedGallery({ data }: { data: PostType[] }) {
 
 			{filteredPosts.length === 0 ? (
 				<p className="text-center text-muted-foreground">
-					No posts found matching your search.
+					{!data.length ? "No saved posts found, save a post and find it here." : "No posts found matching your search."}
 				</p>
 			) : (
 				<div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">

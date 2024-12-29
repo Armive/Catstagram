@@ -5,7 +5,7 @@ export default async function Home() {
 	const id = await getUserId();
 	const posts = await getFeed();
 	return (
-		<div className=" flex flex-col gap-6  py-6 max-sm:items-center ">
+		<div className="flex flex-col gap-6 py-6 max-sm:items-center">
 			{posts?.map(async (post) => (
 				<Post data={post} userId={id || ""} key={post.id} />
 			))}

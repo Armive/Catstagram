@@ -3,7 +3,7 @@ import { Eye, Heart } from "lucide-react";
 import { PinFilledIcon, PinRegularIcon } from "@/components/shared/icons";
 import { useState } from "react";
 
-export const Post = ({ post, userId, onClick }: { post: PostType, userId: string, onClick: (id: string) => void }) => {
+export const PostItem = ({ post, userId, onClick }: { post: PostType, userId: string, onClick: (id: string) => void }) => {
     const [isPined, setIsPined] = useState(post.is_pined);
     const onPin = async (event: React.MouseEvent<HTMLSpanElement>) => {
         event.stopPropagation();
@@ -64,12 +64,12 @@ export const Post = ({ post, userId, onClick }: { post: PostType, userId: string
                         null
                     )
                 }
-                <span className="flex items-center">
-                    <Eye className="w-4 h-4 mr-1" />
+                <span className="flex items-center gap-1">
+                    <Eye className="w-4 h-4" />
                     {post.views}
                 </span>
-                <span className="flex items-center">
-                    <Heart className="w-4 h-4 mr-1" />
+                <span className="flex items-center gap-1">
+                    <Heart className="w-4 h-4" />
                     {post.post_likes.length}
                 </span>
             </div>

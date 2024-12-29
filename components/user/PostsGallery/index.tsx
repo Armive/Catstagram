@@ -2,7 +2,7 @@
 import { Dialog, DialogContent } from "@/components/shared/ui/dialog";
 import { useState } from "react";
 import PostView from "../PostView";
-import { Post } from "../Post";
+import { PostItem } from "../PostItem";
 
 export function PostGallery({
 	data,
@@ -22,7 +22,7 @@ export function PostGallery({
 	return (
 		<>
 			<div className="grid grid-cols-3 gap-1 w-full">
-				{data.map((post: PostType) => (<Post post={post} userId={userId} key={post.id} onClick={(id) => {
+				{data.map((post: PostType) => (<PostItem post={post} userId={userId} key={post.id} onClick={(id) => {
 					setPostViewId(id);
 					addView(id);
 				}} />))}

@@ -6,7 +6,7 @@ export default function Layout({ children }: { children: ReactNode }) {
 		<>
 			<Navbar />
 			<div
-				className="md:ml-[72px] xl:ml-[244px] p-1 md:p-4 "
+				className="md:ml-[72px] xl:ml-[244px] p-1 md:p-4 mb-14 md:mb-0"
 				aria-hidden="false"
 			>
 				{children}

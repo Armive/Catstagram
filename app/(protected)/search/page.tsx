@@ -2,7 +2,7 @@ import { Input } from "@/components/shared/ui/input";
 import { Table, TableBody } from "@/components/shared/ui/table";
 import { SearchItem } from "@/components/search/SearchItem";
 
-export default function Component() {
+export default function Search() {
 	return (
 		<div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
 			<div className="bg-background rounded-lg shadow-sm overflow-hidden">

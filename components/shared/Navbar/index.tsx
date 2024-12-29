@@ -13,7 +13,7 @@ import { MoreBar } from "../MoreBar";
 
 function Navbar() {
 	return (
-		<section className="flex h-[50px] fixed bottom-0 items-center justify-between w-full  p-3 xl:p-7  px-7 md:px-0  border-t border-gray-300/15 md:flex-col md:w-[72px] md:h-full md:border-r md:border-t-0 xl:w-[244px] xl:items-start md:py-7 z-50 bg-background">
+		<section className="flex h-12 fixed bottom-0 items-center justify-between w-full  p-3 xl:p-7  px-7 md:px-0  border-t border-gray-300/15 md:flex-col md:w-[72px] md:h-full md:border-r md:border-t-0 xl:w-[244px] xl:items-start md:py-7 z-50 bg-background">
 			<Link href="/">
 				<Image
 					src="/catstagramLogo.png"

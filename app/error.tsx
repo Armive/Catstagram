@@ -16,14 +16,10 @@ export default function ErrorPage({
 
 	return (
 		<div className="min-h-screen bg-background text-foreground flex flex-col items-center justify-center p-4 gap-4">
-
-
-
 			<h1 className="text-6xl font-bold mb-2">ERROR</h1>
 			<p className="text-xl text-foreground">
 				There is a bug, we will fix it soon.
 			</p>
-
 			<motion.div
 				initial={{ opacity: 0, y: 20 }}
 				animate={{ opacity: 1, y: 0 }}
@@ -76,4 +72,3 @@ export default function ErrorPage({
 		</div>
 	)
 }
-

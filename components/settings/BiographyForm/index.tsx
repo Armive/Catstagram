@@ -16,7 +16,7 @@ import { MarkdownIcon } from '@/components/shared/icons'
 import remarkGfm from "remark-gfm";
 
 
-export default function MarkdownInputPreview({ description }: { description: string }) {
+export default function BiographyForm({ description }: { description: string }) {
     const [text, setText] = useState(description || '')
     const [isLoading, setIsLoading] = useState(false)
 

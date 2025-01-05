@@ -37,11 +37,13 @@ import { Label } from "@/components/shared/ui/label";
 import { Textarea } from "@/components/shared/ui/textarea";
 import { reportPostAction } from "@/lib/actions";
 import Link from "next/link";
+import { useToast } from "@/components/shared/ui/use-toast";
 
 export default function PostView({
 	data,
 	userId,
 }: { data: PostType; userId: string }) {
+	const { toast } = useToast()
 	const initialIsheartIconPressed = data.post_likes?.some(
 		(e) => e.user_id === userId,
 	);
@@ -66,7 +68,11 @@ export default function PostView({
 					body: JSON.stringify({ post_id: data.id }),
 				},
 			);
-			if (response.status === 200) setIsHeartIconPressed(!isHeartIconPressed);
+			if (response.status === 200) {
+				setIsHeartIconPressed(!isHeartIconPressed);
+				toast({ title: "Post unliked", description: "You unliked this post" })
+			}
+
 		} else {
 			const response = await fetch(
 				`${document.location.origin}/api/posts/hearts`,
@@ -75,7 +81,11 @@ export default function PostView({
 					body: JSON.stringify({ post_id: data.id }),
 				},
 			);
-			if (response.status === 200) setIsHeartIconPressed(!isHeartIconPressed);
+			if (response.status === 200) {
+				setIsHeartIconPressed(!isHeartIconPressed)
+
+				toast({ title: "Post liked", description: "You liked this post" })
+			};
 		}
 		setIsHeartLoading(false);
 	};
@@ -99,8 +109,10 @@ export default function PostView({
 					body: JSON.stringify({ post_id: data.id }),
 				},
 			);
-			if (response.status === 200)
+			if (response.status === 200) {
 				setIsBookMarkIconPressed(!isBookMarkIconPressed);
+				toast({ title: "Post unsaved", description: "You unsaved this post" })
+			}
 		} else {
 			const response = await fetch(
 				`${document.location.origin}/api/posts/saved`,
@@ -109,8 +121,10 @@ export default function PostView({
 					body: JSON.stringify({ post_id: data.id }),
 				},
 			);
-			if (response.status === 200)
+			if (response.status === 200) {
 				setIsBookMarkIconPressed(!isBookMarkIconPressed);
+				toast({ title: "Post saved", description: "You saved this post" })
+			}
 		}
 		setIsBookmarkLoading(false);
 	};
@@ -138,6 +152,7 @@ export default function PostView({
 		setComments((prevComments) => [newComments[0], ...(prevComments ?? [])]);
 		setInputValue("");
 		setIsInputLoading(false);
+		toast({ title: "Comment posted", description: "Your comment was posted" })
 	};
 	const [deleteConfirmationId, setDeleteConfirmationId] = useState<
 		string | null
@@ -154,6 +169,7 @@ export default function PostView({
 			setComments((prevComments) =>
 				prevComments?.filter((c) => c.comment_id !== id),
 			);
+			toast({ title: "Comment deleted", description: "Your comment was deleted" })
 		}
 		setDeleteConfirmationId(null);
 	};
@@ -186,6 +202,7 @@ export default function PostView({
 			}
 			return prevComments;
 		});
+		toast({ title: "Comment edited", description: "Your comment was edited" })
 	};
 
 	//report
@@ -203,6 +220,7 @@ export default function PostView({
 
 		if (response.status === "ok") {
 			setReportSubmitted(true);
+			toast({ title: "Post reported", description: "Your report was submitted" })
 		}
 		setReportLoading(false);
 	};

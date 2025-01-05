@@ -50,9 +50,13 @@ import dynamic from "next/dynamic";
 import clsx from "clsx";
 import Link from "next/link";
 import { reportPostAction } from "@/lib/actions";
+import { useToast } from "@/components/shared/ui/use-toast";
 
 const EmojiPostBar = dynamic(() => import("../EmojiPostBar"), { ssr: false });
 export function Post({ data, userId }: { data: PostType; userId: string }) {
+
+	const { toast } = useToast()
+
 	const initialIsheartIconPressed = data.post_likes?.some(
 		(e) => e.user_id === userId,
 	);
@@ -77,7 +81,10 @@ export function Post({ data, userId }: { data: PostType; userId: string }) {
 					body: JSON.stringify({ post_id: data.id }),
 				},
 			);
-			if (response.status === 200) setIsHeartIconPressed(!isHeartIconPressed);
+			if (response.status === 200) {
+				setIsHeartIconPressed(!isHeartIconPressed);
+				toast({ title: "Post unliked", description: "Your post has been unliked" })
+			}
 		} else {
 			const response = await fetch(
 				`${document.location.origin}/api/posts/hearts`,
@@ -86,7 +93,11 @@ export function Post({ data, userId }: { data: PostType; userId: string }) {
 					body: JSON.stringify({ post_id: data.id }),
 				},
 			);
-			if (response.status === 200) setIsHeartIconPressed(!isHeartIconPressed);
+			if (response.status === 200) {
+				setIsHeartIconPressed(!isHeartIconPressed);
+				toast({ title: "Post liked", description: "Your post has been liked" })
+			}
+
 		}
 		setIsHeartLoading(false);
 	};
@@ -110,8 +121,10 @@ export function Post({ data, userId }: { data: PostType; userId: string }) {
 					body: JSON.stringify({ post_id: data.id }),
 				},
 			);
-			if (response.status === 200)
+			if (response.status === 200) {
+				toast({ title: "Post unsaved", description: "Your post has been unsaved" })
 				setIsBookMarkIconPressed(!isBookMarkIconPressed);
+			}
 		} else {
 			const response = await fetch(
 				`${document.location.origin}/api/posts/saved`,
@@ -120,8 +133,10 @@ export function Post({ data, userId }: { data: PostType; userId: string }) {
 					body: JSON.stringify({ post_id: data.id }),
 				},
 			);
-			if (response.status === 200)
+			if (response.status === 200) {
+				toast({ title: "Post saved", description: "Your post has been saved" })
 				setIsBookMarkIconPressed(!isBookMarkIconPressed);
+			}
 		}
 		setIsBookmarkLoading(false);
 	};
@@ -155,6 +170,7 @@ export function Post({ data, userId }: { data: PostType; userId: string }) {
 
 		if (response.status === "ok") {
 			setReportSubmitted(true);
+			toast({ title: "Report submitted", description: "Your report has been submitted" })
 		}
 		setReportLoading(false);
 	};
@@ -187,6 +203,7 @@ export function Post({ data, userId }: { data: PostType; userId: string }) {
 		setComments((prevComments) => [newComments[0], ...(prevComments ?? [])]);
 		setCommentCreateLoading(false);
 		setShowInput(false);
+		toast({ title: "Comment created", description: "Your comment has been created" })
 	};
 	// delete
 	const [deleteConfirmationId, setDeleteConfirmationId] = useState<
@@ -204,6 +221,7 @@ export function Post({ data, userId }: { data: PostType; userId: string }) {
 			setComments((prevComments) =>
 				prevComments?.filter((c) => c.comment_id !== id),
 			);
+			toast({ title: "Comment deleted", description: "Your comment has been deleted" })
 		}
 		setDeleteConfirmationId(null);
 	};
@@ -236,6 +254,7 @@ export function Post({ data, userId }: { data: PostType; userId: string }) {
 			}
 			return prevComments;
 		});
+		toast({ title: "Comment edited", description: "Your comment has been edited" })
 	};
 
 	return (

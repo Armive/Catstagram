@@ -16,10 +16,12 @@ import {
 import { BookMarkIcon, HeartIcon } from "@/components/shared/icons";
 import clsx from "clsx";
 import { type FormEventHandler, useState } from "react";
+import { useToast } from "@/components/shared/ui/use-toast";
 export const PinedPost = ({
 	post,
 	userId,
 }: { post: PostType; userId: string }) => {
+	const { toast } = useToast()
 	const [isOpen, setIsOpen] = useState(false);
 	const initialIsheartIconPressed = post.post_likes?.some(
 		(e) => e.user_id === userId,
@@ -47,7 +49,13 @@ export const PinedPost = ({
 					body: JSON.stringify({ post_id: post.id }),
 				},
 			);
-			if (response.status === 200) setIsHeartIconPressed(!isHeartIconPressed);
+			if (response.status === 200) {
+				setIsHeartIconPressed(!isHeartIconPressed);
+				toast({
+					title: "Post unliked",
+					description: "You have unliked the post",
+				});
+			}
 		} else {
 			const response = await fetch(
 				`${document.location.origin}/api/posts/hearts`,
@@ -56,7 +64,13 @@ export const PinedPost = ({
 					body: JSON.stringify({ post_id: post.id }),
 				},
 			);
-			if (response.status === 200) setIsHeartIconPressed(!isHeartIconPressed);
+			if (response.status === 200) {
+				setIsHeartIconPressed(!isHeartIconPressed)
+				toast({
+					title: "Post liked",
+					description: "You have liked the post",
+				});
+			};
 		}
 		setIsHeartLoading(false);
 	};
@@ -80,8 +94,13 @@ export const PinedPost = ({
 					body: JSON.stringify({ post_id: post.id }),
 				},
 			);
-			if (response.status === 200)
+			if (response.status === 200) {
 				setIsBookMarkIconPressed(!isBookMarkIconPressed);
+				toast({
+					title: "Post unsaved",
+					description: "You have unsaved the post",
+				});
+			}
 		} else {
 			const response = await fetch(
 				`${document.location.origin}/api/posts/saved`,
@@ -90,8 +109,13 @@ export const PinedPost = ({
 					body: JSON.stringify({ post_id: post.id }),
 				},
 			);
-			if (response.status === 200)
+			if (response.status === 200) {
 				setIsBookMarkIconPressed(!isBookMarkIconPressed);
+				toast({
+					title: "Post saved",
+					description: "You have saved the post",
+				});
+			}
 		}
 		setIsBookmarkLoading(false);
 	};
@@ -107,6 +131,10 @@ export const PinedPost = ({
 		});
 		if (res.status === 200) {
 			setIsPined(false);
+			toast({
+				title: "Post Unpinned",
+				description: "You have unpinned the post",
+			});
 		}
 	}
 
@@ -134,6 +162,7 @@ export const PinedPost = ({
 		setComments((prevComments) => [newComments[0], ...(prevComments ?? [])]);
 		setInputValue("");
 		setIsInputLoading(false);
+		toast({ title: "Comment added", description: "You have added a comment" });
 	};
 
 

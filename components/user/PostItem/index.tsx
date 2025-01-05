@@ -2,8 +2,10 @@ import Image from "next/image";
 import { Eye, Heart } from "lucide-react";
 import { PinFilledIcon, PinRegularIcon } from "@/components/shared/icons";
 import { useState } from "react";
+import { useToast } from "@/components/shared/ui/use-toast";
 
 export const PostItem = ({ post, userId, onClick }: { post: PostType, userId: string, onClick: (id: string) => void }) => {
+    const { toast } = useToast();
     const [isPined, setIsPined] = useState(post.is_pined);
     const onPin = async (event: React.MouseEvent<HTMLSpanElement>) => {
         event.stopPropagation();
@@ -15,6 +17,10 @@ export const PostItem = ({ post, userId, onClick }: { post: PostType, userId: st
         });
         if (res.status === 200) {
             setIsPined(true);
+            toast({
+                title: "Post pined",
+                description: "Post has been pined"
+            })
         }
     }
     const onUnpin = async (event: React.MouseEvent<HTMLSpanElement>) => {
@@ -27,6 +33,10 @@ export const PostItem = ({ post, userId, onClick }: { post: PostType, userId: st
         });
         if (res.status === 200) {
             setIsPined(false);
+            toast({
+                title: "Post unpined",
+                description: "Post has been unpined"
+            })
         }
     }
     return (
